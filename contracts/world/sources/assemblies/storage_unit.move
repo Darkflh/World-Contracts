@@ -60,6 +60,8 @@ const ENetworkNodeMismatch: vector<u8> =
 const EStorageUnitInvalidState: vector<u8> = b"Storage Unit should be offline";
 #[error(code = 10)]
 const ESenderCannotAccessCharacter: vector<u8> = b"Address cannot access Character";
+#[error(code = 11)]
+const EItemParentMismatch: vector<u8> = b"Item was not withdrawn from this storage unit";
 
 // Future thought: Can we make the behaviour attached dynamically using dof
 // === Structs ===
@@ -185,6 +187,7 @@ public fun deposit_item<Auth: drop>(
     );
     assert!(storage_unit.status.is_online(), ENotOnline);
     assert!(inventory::tenant(&item) == storage_unit.key.tenant(), ETenantMismatch);
+    assert!(inventory::parent_id(&item) == storage_unit_id, EItemParentMismatch);
     let inventory = df::borrow_mut<ID, Inventory>(
         &mut storage_unit.id,
         storage_unit.owner_cap_id,
@@ -202,7 +205,8 @@ public fun withdraw_item<Auth: drop>(
     character: &Character,
     _: Auth,
     type_id: u64,
-    _: &mut TxContext,
+    quantity: u32,
+    ctx: &mut TxContext,
 ): Item {
     let storage_unit_id = object::id(storage_unit);
     assert!(
@@ -219,6 +223,9 @@ public fun withdraw_item<Auth: drop>(
         storage_unit.key,
         character,
         type_id,
+        quantity,
+        storage_unit.location.hash(),
+        ctx,
     )
 }
 
@@ -239,12 +246,7 @@ public fun deposit_by_owner<T: key>(
     assert!(storage_unit.status.is_online(), ENotOnline);
     check_inventory_authorization(owner_cap, storage_unit, character.id());
     assert!(inventory::tenant(&item) == storage_unit.key.tenant(), ETenantMismatch);
-
-    // This check is only required for ephemeral inventory
-    location::verify_same_location(
-        storage_unit.location.hash(),
-        item.get_item_location_hash(),
-    );
+    assert!(inventory::parent_id(&item) == storage_unit_id, EItemParentMismatch);
 
     let inventory = df::borrow_mut<ID, Inventory>(
         &mut storage_unit.id,
@@ -265,6 +267,7 @@ public fun withdraw_by_owner<T: key>(
     admin_acl: &AdminACL,
     owner_cap: &OwnerCap<T>,
     type_id: u64,
+    quantity: u32,
     ctx: &mut TxContext,
 ): Item {
     // TODO: Add proximity_proof verification when location service is available.
@@ -286,6 +289,9 @@ public fun withdraw_by_owner<T: key>(
         storage_unit.key,
         character,
         type_id,
+        quantity,
+        storage_unit.location.hash(),
+        ctx,
     )
 }
 
@@ -600,8 +606,6 @@ public fun game_item_to_chain_inventory<T: key>(
         type_id,
         volume,
         quantity,
-        storage_unit.location.hash(),
-        ctx,
     )
 }
 
@@ -781,7 +785,5 @@ public fun game_item_to_chain_inventory_test<T: key>(
         type_id,
         volume,
         quantity,
-        storage_unit.location.hash(),
-        ctx,
     )
 }

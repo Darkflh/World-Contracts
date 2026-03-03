@@ -1,10 +1,20 @@
-/// This module implements the logic of inventory operations such as depositing, withdrawing and transferring items between inventories.
-///
-/// Bridging items from game to chain and back:
-/// - The game is the “trusted bridge” for bringing items from the game to the chain.
-/// - To bridge an item from game to chain, the game server will call an authenticated on-chain function to mint the item into an on-chain inventory.
-/// - To bridge an item from chain to game, the chain emits an event and burns the on-chain item. The game server listens to the event to create the item in the game.
-/// - The `game to chain`(mint) action is restricted by an admin capability and the `chain to game`(burn) action is restricted by a proximity proof.
+// This module implements the logic of inventory operations such as depositing, withdrawing and transferring items between inventories.
+//
+// Items have two forms, inspired by Sui's `Coin` / `Balance` split:
+//
+// - **`ItemEntry`** (at-rest) — lightweight `copy, drop, store` dynamic field data inside `Inventory`.
+// - **`Item`** (in-transit) — a Sui object created on withdrawal, consumed on deposit.
+//   Carries a `parent_id` so the parent assembly can verify origin on deposit.
+//   Also carries location data for more robust proximity validation in the future.
+//
+// # Bridging
+//
+// The game server is the trusted bridge between game and chain.
+//
+// - **Game → Chain (mint):** The game server calls an admin-gated function to mint
+//   items directly into an on-chain inventory. Restricted by admin capability.
+// - **Chain → Game (burn):** Burns the on-chain item and emits an event; the game
+//   server listens to recreate the item in-game. Restricted by proximity proof.
 module world::inventory;
 
 use std::string::String;
@@ -27,26 +37,57 @@ const EInventoryInsufficientCapacity: vector<u8> = b"Insufficient capacity in th
 const EItemDoesNotExist: vector<u8> = b"Item not found";
 #[error(code = 4)]
 const EInventoryInsufficientQuantity: vector<u8> = b"Insufficient quantity in inventory";
-#[error(code = 5)]
-const EItemVolumeMismatch: vector<u8> = b"Item volume must match existing item with same type_id";
+#[error(code = 6)]
+const ETypeIdMismatch: vector<u8> = b"Item type_id must match for join operation";
+#[error(code = 7)]
+const ESplitQuantityInvalid: vector<u8> =
+    b"Split quantity must be greater than 0 and less than item quantity";
 
 // === Structs ===
 
-// The inventory struct uses the id of the assembly it is attached to, so it does not have a key.
+// On-chain inventory that tracks items by `type_id`.
+//
+// Each `type_id` maps to a single `ItemEntry`. `used_capacity` is the running
+// total of `volume * quantity` across every entry. It must never exceed
+// `max_capacity`.
+//
+// The inventory struct is a dynamic field entry attached to its host assembly, so it does not have a key.
 // Note: Gas cost is high, lookup and insert complexity for VecMap is o(n). The alternative is to use a Table and a separate Vector.
-// However it is ideal for this use case.
+// Currently, VecMap seems to be the best fit for this use case but can be revisited if performance becomes an issue.
 public struct Inventory has store {
     max_capacity: u64,
     used_capacity: u64,
-    items: VecMap<u64, Item>,
+    items: VecMap<u64, ItemEntry>,
 }
 
-// TODO: Use Sui's `Coin<T>` and `Balance<T>` for stackability
-// TODO: Move item as its own module
-// Item has a key as its minted on-chain and can be transferred from one inventory to another.
-// It has store ability as it needs to be wrapped in a parent. Item should always have a parent eg: Inventory, ship etc.
+// At-rest item data stored inside an `Inventory`.
+//
+// Has `copy, drop, store` — no UID, no object overhead. Think of this as the
+// `Balance` to `Item`'s `Coin`.
+//
+// Does **not** store location or parent_id — these are just-in-time metadata injected by the
+// parent layer (e.g. StorageUnit) when creating a transit `Item` on withdrawal.
+//
+// Note: we assume that volume is constant for a given type_id.
+public struct ItemEntry has copy, drop, store {
+    tenant: String,
+    type_id: u64,
+    item_id: u64,
+    volume: u64,
+    quantity: u32,
+}
+
+/// Transit form of an item — created on withdraw, consumed on deposit.
+///
+/// Carries a fresh UID so it can be transferred between inventories as a
+/// first-class Sui object. Destroyed (UID deleted) when deposited.
+///
+/// `parent_id` is the object ID of the assembly this item was withdrawn from
+/// (e.g. a StorageUnit). The parent layer checks this on deposit to ensure items
+/// return to their origin.
 public struct Item has key, store {
     id: UID,
+    parent_id: ID,
     tenant: String,
     type_id: u64,
     item_id: u64,
@@ -113,8 +154,15 @@ public fun contains_item(inventory: &Inventory, type_id: u64): bool {
     inventory.items.contains(&type_id)
 }
 
+/// Returns the location hash from the transit Item (metadata only, not used for
+/// deposit validation — parent_id is used instead).
 public fun get_item_location_hash(item: &Item): vector<u8> {
     item.location.hash()
+}
+
+/// Returns the object ID of the assembly this item was withdrawn from.
+public fun parent_id(item: &Item): ID {
+    item.parent_id
 }
 
 public fun max_capacity(inventory: &Inventory): u64 {
@@ -131,6 +179,12 @@ public fun quantity(item: &Item): u32 {
 
 // === Package Functions ===
 
+/// Merge `other` into this entry. Both must have the same `type_id`.
+public(package) fun join(entry: &mut ItemEntry, other: ItemEntry) {
+    assert!(entry.type_id == other.type_id, ETypeIdMismatch);
+    entry.quantity = entry.quantity + other.quantity;
+}
+
 public(package) fun create(max_capacity: u64): Inventory {
     assert!(max_capacity != 0, EInventoryInvalidCapacity);
 
@@ -141,9 +195,11 @@ public(package) fun create(max_capacity: u64): Inventory {
     }
 }
 
-/// Mints items into inventory (Game → Chain bridge)
-/// Admin-only function for trusted game server
-/// Creates new item or adds to existing if type_id already exists
+// Mints items into inventory (Game → Chain bridge).
+// Package-scoped — only callable from within the `world` module.
+// This ensures that minting only happens from trusted sources.
+// If the type_id already exists, increases quantity in place.
+// Otherwise, creates a new entry.
 public(package) fun mint_items(
     inventory: &mut Inventory,
     assembly_id: ID,
@@ -154,42 +210,32 @@ public(package) fun mint_items(
     type_id: u64,
     volume: u64,
     quantity: u32,
-    location_hash: vector<u8>,
-    ctx: &mut TxContext,
 ) {
     assert!(type_id != 0, ETypeIdEmpty);
 
-    if (inventory.items.contains(&type_id)) {
-        increase_item_quantity(inventory, assembly_id, assembly_key, character, type_id, quantity);
+    let req_capacity = calculate_volume(volume, quantity);
+    let remaining = inventory.max_capacity - inventory.used_capacity;
+    assert!(req_capacity <= remaining, EInventoryInsufficientCapacity);
+    inventory.used_capacity = inventory.used_capacity + req_capacity;
+
+    let emit_item_id = if (inventory.items.contains(&type_id)) {
+        let entry = &mut inventory.items[&type_id];
+        entry.quantity = entry.quantity + quantity;
+        entry.item_id
     } else {
-        let type_uid = object::new(ctx);
-        let item = Item {
-            id: type_uid,
-            tenant,
-            type_id,
-            item_id,
-            volume,
-            quantity,
-            location: location::attach(location_hash),
-        };
+        inventory.items.insert(type_id, ItemEntry { tenant, type_id, item_id, volume, quantity });
+        item_id
+    };
 
-        let req_capacity = calculate_volume(volume, quantity);
-        let remaining_capacity = inventory.max_capacity - inventory.used_capacity;
-        assert!(req_capacity <= remaining_capacity, EInventoryInsufficientCapacity);
-
-        inventory.used_capacity = inventory.used_capacity + req_capacity;
-        inventory.items.insert(type_id, item);
-
-        event::emit(ItemMintedEvent {
-            assembly_id,
-            assembly_key,
-            character_id: character.id(),
-            character_key: character.key(),
-            item_id,
-            type_id,
-            quantity,
-        });
-    }
+    event::emit(ItemMintedEvent {
+        assembly_id,
+        assembly_key,
+        character_id: character.id(),
+        character_key: character.key(),
+        item_id: emit_item_id,
+        type_id,
+        quantity,
+    });
 }
 
 // TODO: remove proximity proof check as it will be handled in the parent module
@@ -216,8 +262,13 @@ public(package) fun burn_items_with_proof(
     burn_items(inventory, assembly_id, assembly_key, character, type_id, quantity);
 }
 
-// A wrapper function to transfer between inventories
-// If the inventory already has an item with the same type_id, adds quantity to the existing item instead of inserting.
+// Deposits a transit `Item` back into the inventory.
+//
+// Destroys the `Item`'s UID, extracts its data into an `ItemEntry`, and either
+// joins into the existing entry or creates a new one.
+//
+// Parent-ID validation is **not** done here — that is the responsibility of the
+// parent layer (e.g. storage_unit.move) which has access to the assembly's object ID.
 public(package) fun deposit_item(
     inventory: &mut Inventory,
     assembly_id: ID,
@@ -225,93 +276,112 @@ public(package) fun deposit_item(
     character: &Character,
     item: Item,
 ) {
-    let type_id = item.type_id;
-    let req_capacity = calculate_volume(item.volume, item.quantity);
-    let remaining_capacity = inventory.max_capacity - inventory.used_capacity;
-    assert!(req_capacity <= remaining_capacity, EInventoryInsufficientCapacity);
+    let Item { id, parent_id: _, tenant, type_id, item_id, volume, quantity, location } = item;
+    id.delete();
+    location.remove();
 
-    if (inventory.items.contains(&type_id)) {
+    let req_capacity = calculate_volume(volume, quantity);
+    let remaining = inventory.max_capacity - inventory.used_capacity;
+    assert!(req_capacity <= remaining, EInventoryInsufficientCapacity);
+    inventory.used_capacity = inventory.used_capacity + req_capacity;
+
+    let entry = ItemEntry { tenant, type_id, item_id, volume, quantity };
+
+    let dep_item_id = if (inventory.items.contains(&type_id)) {
         let existing = &mut inventory.items[&type_id];
-        assert!(item.volume == existing.volume, EItemVolumeMismatch);
-        inventory.used_capacity = inventory.used_capacity + req_capacity;
-        existing.quantity = existing.quantity + item.quantity;
-
-        event::emit(ItemDepositedEvent {
-            assembly_id,
-            assembly_key,
-            character_id: character.id(),
-            character_key: character.key(),
-            item_id: existing.item_id,
-            type_id,
-            quantity: item.quantity,
-        });
-        let Item { id, location, .. } = item;
-        location.remove();
-        id.delete();
+        let existing_item_id = existing.item_id;
+        existing.join(entry);
+        existing_item_id
     } else {
-        inventory.used_capacity = inventory.used_capacity + req_capacity;
-
-        event::emit(ItemDepositedEvent {
-            assembly_id,
-            assembly_key,
-            character_id: character.id(),
-            character_key: character.key(),
-            item_id: item.item_id,
-            type_id,
-            quantity: item.quantity,
-        });
-        inventory.items.insert(type_id, item);
+        inventory.items.insert(type_id, entry);
+        item_id
     };
+
+    event::emit(ItemDepositedEvent {
+        assembly_id,
+        assembly_key,
+        character_id: character.id(),
+        character_key: character.key(),
+        item_id: dep_item_id,
+        type_id,
+        quantity,
+    });
 }
 
-// A wrapper function to transfer between inventories
-/// Withdraws the item with the specified type_id and returns the whole Item.
+// Withdraws items from the inventory and wraps them into a transit `Item`.
+//
+// `location_hash` is injected by the parent layer (e.g. StorageUnit) — it is not
+// stored in `ItemEntry` since it is just-in-time metadata for the transit `Item`.
+//
+// `assembly_id` doubles as the `parent_id` on the resulting `Item`.
 public(package) fun withdraw_item(
     inventory: &mut Inventory,
     assembly_id: ID,
     assembly_key: TenantItemId,
     character: &Character,
     type_id: u64,
+    quantity: u32,
+    location_hash: vector<u8>,
+    ctx: &mut TxContext,
 ): Item {
     assert!(inventory.items.contains(&type_id), EItemDoesNotExist);
+    assert!(quantity > 0, ESplitQuantityInvalid);
 
-    let (_, item) = inventory.items.remove(&type_id);
-    let volume_freed = calculate_volume(item.volume, item.quantity);
-    inventory.used_capacity = inventory.used_capacity - volume_freed;
+    let entry = &inventory.items[&type_id];
+    assert!(entry.quantity >= quantity, EInventoryInsufficientQuantity);
+    let volume = entry.volume;
+    let item_id = entry.item_id;
+    let tenant = entry.tenant;
+
+    let capacity_freed = calculate_volume(volume, quantity);
+    inventory.used_capacity = inventory.used_capacity - capacity_freed;
+
+    if (entry.quantity == quantity) {
+        inventory.items.remove(&type_id);
+    } else {
+        let entry_mut = &mut inventory.items[&type_id];
+        entry_mut.quantity = entry_mut.quantity - quantity;
+    };
 
     event::emit(ItemWithdrawnEvent {
         assembly_id,
         assembly_key,
         character_id: character.id(),
         character_key: character.key(),
-        item_id: item.item_id,
-        type_id: item.type_id,
-        quantity: item.quantity,
+        item_id,
+        type_id,
+        quantity,
     });
-    item
+
+    Item {
+        id: object::new(ctx),
+        parent_id: assembly_id,
+        tenant,
+        type_id,
+        item_id,
+        volume,
+        quantity,
+        location: location::attach(location_hash),
+    }
 }
 
+/// Destroys the inventory, emitting an `ItemDestroyedEvent` per entry.
 public(package) fun delete(inventory: Inventory, assembly_id: ID, assembly_key: TenantItemId) {
     let Inventory {
         mut items,
         ..,
     } = inventory;
 
-    // Burn the items one by one
+    // Burn items one by one
     while (!items.is_empty()) {
-        let (_, item) = items.pop();
-        let Item { id, item_id, type_id, quantity, location, .. } = item;
-
+        let (_, entry) = items.pop();
         event::emit(ItemDestroyedEvent {
             assembly_id,
             assembly_key,
-            item_id,
-            type_id,
-            quantity,
+            item_id: entry.item_id,
+            type_id: entry.type_id,
+            quantity: entry.quantity,
         });
-
-        location.remove();
-        id.delete();
     };
     items.destroy_empty();
 }
@@ -322,9 +392,11 @@ public(package) fun delete(inventory: Inventory, assembly_id: ID, assembly_key: 
 
 // === Private Functions ===
 
-/// Burns items from on-chain inventory (Chain → Game bridge)
-/// Emits ItemBurnedEvent for game server to create item in-game
-/// Deletes Item object if param quantity = existing quantity, otherwise reduces quantity
+// Burns items from on-chain inventory (Chain → Game bridge).
+//
+// Reduces quantity (or removes the entry entirely if fully burned) and frees
+// the corresponding capacity.
+// Emits an `ItemBurnedEvent` for the game server to recreate the item in-game (when necessary).
 fun burn_items(
     inventory: &mut Inventory,
     assembly_id: ID,
@@ -335,92 +407,33 @@ fun burn_items(
 ) {
     assert!(inventory.items.contains(&type_id), EItemDoesNotExist);
 
-    let should_remove = {
-        let item = &mut inventory.items[&type_id];
-        assert!(item.quantity >= quantity, EInventoryInsufficientQuantity);
+    let entry = &inventory.items[&type_id];
+    assert!(entry.quantity >= quantity, EInventoryInsufficientQuantity);
+    let item_id = entry.item_id;
+    let volume = entry.volume;
 
-        if (item.quantity == quantity) {
-            true
-        } else {
-            // Optimization: Handle partial burn here directly to avoid another lookup
-            let volume_freed = calculate_volume(item.volume, quantity);
+    let capacity_freed = calculate_volume(volume, quantity);
+    inventory.used_capacity = inventory.used_capacity - capacity_freed;
 
-            item.quantity = item.quantity - quantity;
-            inventory.used_capacity = inventory.used_capacity - volume_freed;
-
-            event::emit(ItemBurnedEvent {
-                assembly_id,
-                assembly_key,
-                character_id: character.id(),
-                character_key: character.key(),
-                item_id: item.item_id,
-                type_id,
-                quantity: quantity,
-            });
-            false
-        }
+    if (entry.quantity == quantity) {
+        inventory.items.remove(&type_id);
+    } else {
+        let entry_mut = &mut inventory.items[&type_id];
+        entry_mut.quantity = entry_mut.quantity - quantity;
     };
-
-    if (should_remove) {
-        let (_, removed_item) = inventory.items.remove(&type_id);
-        let volume_freed = calculate_volume(removed_item.volume, removed_item.quantity);
-        inventory.used_capacity = inventory.used_capacity - volume_freed;
-
-        destroy_item(removed_item, character, assembly_id, assembly_key);
-    };
-}
-
-fun destroy_item(
-    item: Item,
-    character: &Character,
-    inventory_assembly_id: ID,
-    inventory_assembly_key: TenantItemId,
-) {
-    let Item { id, item_id, type_id, quantity, location, .. } = item;
 
     event::emit(ItemBurnedEvent {
-        assembly_id: inventory_assembly_id,
-        assembly_key: inventory_assembly_key,
+        assembly_id,
+        assembly_key,
         character_id: character.id(),
         character_key: character.key(),
         item_id,
         type_id,
         quantity,
     });
-
-    location.remove();
-    id.delete();
 }
 
-/// Increases the quantity value of an existing item in the specified inventory.
-fun increase_item_quantity(
-    inventory: &mut Inventory,
-    assembly_id: ID,
-    assembly_key: TenantItemId,
-    character: &Character,
-    type_id: u64,
-    quantity: u32,
-) {
-    let item = &mut inventory.items[&type_id];
-    let req_capacity = calculate_volume(item.volume, quantity);
-
-    let remaining_capacity = inventory.max_capacity - inventory.used_capacity;
-    assert!(req_capacity <= remaining_capacity, EInventoryInsufficientCapacity);
-
-    event::emit(ItemMintedEvent {
-        assembly_id,
-        assembly_key,
-        character_id: character.id(),
-        character_key: character.key(),
-        item_id: item.item_id,
-        type_id,
-        quantity,
-    });
-
-    item.quantity = item.quantity + quantity;
-    inventory.used_capacity = inventory.used_capacity + req_capacity;
-}
-
+/// Total capacity consumed by a single entry: `volume * quantity`.
 fun calculate_volume(volume: u64, quantity: u32): u64 {
     volume * (quantity as u64)
 }
@@ -442,11 +455,11 @@ public fun item_quantity(inventory: &Inventory, type_id: u64): u32 {
 }
 
 #[test_only]
-public fun item_location(inventory: &Inventory, type_id: u64): vector<u8> {
-    let item = &inventory.items[&type_id];
-    location::hash(&item.location)
+public fun item_volume(inventory: &Inventory, type_id: u64): u64 {
+    inventory.items[&type_id].volume
 }
 
+/// Number of unique type_ids in the inventory.
 #[test_only]
 public fun inventory_item_length(inventory: &Inventory): u64 {
     inventory.items.length()

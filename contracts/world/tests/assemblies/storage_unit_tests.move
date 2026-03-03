@@ -67,6 +67,7 @@ public fun swap_ammo_for_lens_extension<T: key>(
         character,
         SwapAuth {},
         LENS_TYPE_ID,
+        LENS_QUANTITY,
         ctx,
     );
 
@@ -85,6 +86,7 @@ public fun swap_ammo_for_lens_extension<T: key>(
         admin_acl,
         owner_cap,
         AMMO_TYPE_ID,
+        AMMO_QUANTITY,
         ctx,
     );
 
@@ -626,6 +628,7 @@ fun test_deposit_and_withdraw_via_extension() {
                 &character,
                 SwapAuth {},
                 AMMO_TYPE_ID,
+                AMMO_QUANTITY,
                 ts.ctx(),
             );
         ts::return_shared(storage_unit);
@@ -687,6 +690,7 @@ fun test_deposit_and_withdraw_by_owner() {
                 &admin_acl,
                 &owner_cap,
                 AMMO_TYPE_ID,
+                AMMO_QUANTITY,
                 ts.ctx(),
             );
     };
@@ -979,6 +983,7 @@ fun test_withdraw_via_extension_fail_not_authorized() {
             &character,
             SwapAuth {},
             AMMO_TYPE_ID,
+            AMMO_QUANTITY,
             ts.ctx(),
         );
 
@@ -1033,6 +1038,7 @@ fun test_deposit_via_extension_fail_not_authorized() {
                 &admin_acl,
                 &owner_cap,
                 AMMO_TYPE_ID,
+                AMMO_QUANTITY,
                 ts.ctx(),
             );
 
@@ -1098,6 +1104,7 @@ fun test_withdraw_by_owner_fail_wrong_owner() {
             &admin_acl,
             &owner_cap,
             AMMO_TYPE_ID,
+            AMMO_QUANTITY,
             ts.ctx(),
         );
 
@@ -1156,6 +1163,7 @@ fun test_deposit_by_owner_fail_wrong_owner() {
                 &admin_acl,
                 &owner_cap,
                 AMMO_TYPE_ID,
+                AMMO_QUANTITY,
                 ts.ctx(),
             );
 
@@ -1522,6 +1530,7 @@ fun test_deposit_by_owner_fail_tenant_mismatch() {
                 &admin_acl,
                 &owner_cap,
                 AMMO_TYPE_ID,
+                AMMO_QUANTITY,
                 ts.ctx(),
             );
 
@@ -1617,6 +1626,7 @@ fun test_deposit_via_extension_fail_tenant_mismatch() {
                 &admin_acl,
                 &owner_cap,
                 AMMO_TYPE_ID,
+                AMMO_QUANTITY,
                 ts.ctx(),
             );
 
@@ -1805,5 +1815,104 @@ fun test_fail_network_node_offline() {
     };
 
     clock.destroy_for_testing();
+    ts::end(ts);
+}
+
+/// Test that deposit via extension fails when item parent_id doesn't match storage unit
+/// Scenario: Withdraw item from storage unit A, try to deposit into storage unit B
+/// Expected: Transaction aborts with EItemParentMismatch error
+#[test]
+#[expected_failure(abort_code = storage_unit::EItemParentMismatch)]
+fun test_deposit_via_extension_fail_parent_id_mismatch() {
+    let mut ts = ts::begin(governor());
+    setup_nwn(&mut ts);
+    let character_id = create_character(&mut ts, user_a(), CHARACTER_A_ITEM_ID);
+
+    // Create storage unit A at LOCATION_A_HASH
+    let (storage_a_id, nwn_a_id) = create_storage_unit(
+        &mut ts,
+        character_id,
+        LOCATION_A_HASH,
+        STORAGE_A_ITEM_ID,
+        STORAGE_A_TYPE_ID,
+    );
+    online_storage_unit(&mut ts, user_a(), character_id, storage_a_id, nwn_a_id);
+    mint_ammo<StorageUnit>(&mut ts, storage_a_id, character_id, user_a());
+
+    // Authorize extension on storage unit A and withdraw item
+    ts::next_tx(&mut ts, user_a());
+    {
+        let mut storage_unit = ts::take_shared_by_id<StorageUnit>(&ts, storage_a_id);
+        let mut character = ts::take_shared_by_id<Character>(&ts, character_id);
+        let (owner_cap, receipt) = character.borrow_owner_cap<StorageUnit>(
+            ts::most_recent_receiving_ticket<OwnerCap<StorageUnit>>(&character_id),
+            ts.ctx(),
+        );
+        storage_unit.authorize_extension<SwapAuth>(&owner_cap);
+        ts::return_shared(storage_unit);
+        character.return_owner_cap(owner_cap, receipt);
+        ts::return_shared(character);
+    };
+
+    ts::next_tx(&mut ts, user_a());
+    let item: Item;
+    {
+        let mut storage_unit = ts::take_shared_by_id<StorageUnit>(&ts, storage_a_id);
+        let character = ts::take_shared_by_id<Character>(&ts, character_id);
+        item =
+            storage_unit.withdraw_item<SwapAuth>(
+                &character,
+                SwapAuth {},
+                AMMO_TYPE_ID,
+                AMMO_QUANTITY,
+                ts.ctx(),
+            );
+        ts::return_shared(storage_unit);
+        ts::return_shared(character);
+    };
+
+    // Create storage unit B at a different location (reuses same NWN since same tenant)
+    let (storage_b_id, nwn_b_id) = create_storage_unit(
+        &mut ts,
+        character_id,
+        test_helpers::get_verified_location_hash(),
+        STORAGE_A_ITEM_ID + 1,
+        STORAGE_A_TYPE_ID,
+    );
+
+    // Bring storage unit B online manually (NWN already online from storage unit A)
+    ts::next_tx(&mut ts, user_a());
+    {
+        let mut storage_unit = ts::take_shared_by_id<StorageUnit>(&ts, storage_b_id);
+        let mut nwn = ts::take_shared_by_id<NetworkNode>(&ts, nwn_b_id);
+        let energy_config = ts::take_shared<EnergyConfig>(&ts);
+        let mut character = ts::take_shared_by_id<Character>(&ts, character_id);
+        let (owner_cap, receipt) = character.borrow_owner_cap<StorageUnit>(
+            ts::most_recent_receiving_ticket<OwnerCap<StorageUnit>>(&character_id),
+            ts.ctx(),
+        );
+        storage_unit.online(&mut nwn, &energy_config, &owner_cap);
+        storage_unit.authorize_extension<SwapAuth>(&owner_cap);
+        character.return_owner_cap(owner_cap, receipt);
+        ts::return_shared(storage_unit);
+        ts::return_shared(nwn);
+        ts::return_shared(energy_config);
+        ts::return_shared(character);
+    };
+
+    // Try to deposit item from storage unit A into storage unit B — parent_id mismatch
+    ts::next_tx(&mut ts, user_a());
+    {
+        let mut storage_unit = ts::take_shared_by_id<StorageUnit>(&ts, storage_b_id);
+        let character = ts::take_shared_by_id<Character>(&ts, character_id);
+        storage_unit.deposit_item<SwapAuth>(
+            &character,
+            item,
+            SwapAuth {},
+            ts.ctx(),
+        );
+        ts::return_shared(storage_unit);
+        ts::return_shared(character);
+    };
     ts::end(ts);
 }
