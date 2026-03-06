@@ -15,7 +15,7 @@ import { LOCATION_HASH, GAME_CHARACTER_ID, NWN_TYPE_ID, NWN_ITEM_ID } from "../u
 
 export const FUEL_MAX_CAPACITY = 10000n;
 export const FUEL_BURN_RATE_IN_MS = BigInt(3600 * 1000); // 1 hour
-export const MAX_ENERGY_PRODUCTION = 100n;
+export const MAX_ENERGY_PRODUCTION = 500n;
 
 async function createNetworkNode(
     characterObjectId: string,

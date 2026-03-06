@@ -754,10 +754,10 @@ fun peel_return_target_priority_list_from_bcs(bcs_data: &mut bcs::BCS): ReturnTa
 
 /// Default rules for turret to shoot:
 /// - No line of sight to target: exclude from the return list (cannot fire without sight)
-/// - Same tribe as owner and not aggressor: exclude from the return list
+/// - Same tribe as owner: exclude from the return list (never target tribe members)
 /// - STOPPED_ATTACK (candidate's behaviour_change): exclude from the return list
 /// - STARTED_ATTACK: add STARTED_ATTACK_WEIGHT_INCREMENT to priority weight
-/// - ENTERED: add ENTERED_WEIGHT_INCREMENT to priority weight if not same tribe as owner or is aggressor
+/// - ENTERED: add ENTERED_WEIGHT_INCREMENT to priority weight if not same tribe as owner
 /// - UNSPECIFIED: no change to weight
 fun effective_weight_and_excluded(
     candidate: &TargetCandidate,
@@ -770,16 +770,14 @@ fun effective_weight_and_excluded(
     
     let mut weight = candidate.priority_weight;
     let same_tribe = candidate.character_tribe == character::tribe(owner_character);
-    let mut excluded = same_tribe && !candidate.is_aggressor;
+    let mut excluded = same_tribe;
     let reason = candidate.behaviour_change;
     if (reason == BehaviourChangeReason::STOPPED_ATTACK) {
         excluded = true;
     } else if (reason == BehaviourChangeReason::STARTED_ATTACK) {
         weight = weight + STARTED_ATTACK_WEIGHT_INCREMENT;
     } else if (reason == BehaviourChangeReason::ENTERED) {
-        if (
-            candidate.character_tribe != character::tribe(owner_character) || candidate.is_aggressor == true
-        ) {
+        if (candidate.character_tribe != character::tribe(owner_character)) {
             weight = weight + ENTERED_WEIGHT_INCREMENT;
         }
     };

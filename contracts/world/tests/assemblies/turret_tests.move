@@ -548,9 +548,8 @@ fun priority_list_same_tribe_aggressor_included() {
             receipt,
         );
         let decoded = turret::unpack_return_priority_list(result);
-        assert_eq!(vector::length(&decoded), 1);
-        let entry = vector::borrow(&decoded, 0);
-        assert_eq!(turret::return_priority_weight(entry), 10);
+        // Changed: same-tribe aggressors are now excluded (never target tribe members)
+        assert_eq!(vector::length(&decoded), 0);
         ts::return_shared(character);
         ts::return_shared(turret);
     };
