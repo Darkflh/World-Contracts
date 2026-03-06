@@ -76,6 +76,8 @@ public struct Turret has key {
     extension: Option<TypeName>,
     fire_rate_ms: u64,
     last_fire_time_ms: u64,
+    locked_target_id: Option<u64>,
+    lock_time_ms: u64,
 }
 
 /// Target information struct
@@ -140,6 +142,12 @@ public struct ExtensionAuthorizedEvent has copy, drop {
     extension_type: TypeName,
     previous_extension: Option<TypeName>,
     owner_cap_id: ID,
+}
+
+public struct TargetLockedEvent has copy, drop {
+    turret_id: ID,
+    target_id: u64,
+    locked: bool,
 }
 
 // === Public Functions ===
@@ -442,6 +450,85 @@ public fun set_fire_rate_ms(turret: &mut Turret, owner_cap: &OwnerCap<Turret>, n
     turret.fire_rate_ms = new_fire_rate_ms;
 }
 
+/// Locks onto a target to improve accuracy. Resets lock time to 0.
+public fun lock_target(turret: &mut Turret, target_id: u64) {
+    turret.locked_target_id = option::some(target_id);
+    turret.lock_time_ms = 0;
+    event::emit(TargetLockedEvent {
+        turret_id: object::id(turret),
+        target_id,
+        locked: true,
+    });
+}
+
+/// Unlocks the current target.
+public fun unlock_target(turret: &mut Turret) {
+    let turret_id = object::id(turret);
+    let current_target = turret.locked_target_id;
+    turret.locked_target_id = option::none();
+    turret.lock_time_ms = 0;
+    
+    if (option::is_some(&current_target)) {
+        event::emit(TargetLockedEvent {
+            turret_id,
+            target_id: *option::borrow(&current_target),
+            locked: false,
+        });
+    };
+}
+
+/// Checks if turret has a locked target.
+public fun has_locked_target(turret: &Turret): bool {
+    option::is_some(&turret.locked_target_id)
+}
+
+/// Returns the locked target ID if any.
+public fun locked_target_id(turret: &Turret): Option<u64> {
+    turret.locked_target_id
+}
+
+/// Returns the current lock time in milliseconds.
+public fun lock_time_ms(turret: &Turret): u64 {
+    turret.lock_time_ms
+}
+
+/// Updates lock time when target is targeted. If target_id differs from locked target, breaks lock.
+public fun update_lock_time(turret: &mut Turret, current_time_ms: u64, target_id: u64) {
+    if (option::contains(&turret.locked_target_id, &target_id)) {
+        // Continue building lock time
+        if (current_time_ms > turret.lock_time_ms) {
+            turret.lock_time_ms = current_time_ms;
+        };
+    } else {
+        // Different target or no lock - break lock
+        turret.locked_target_id = option::none();
+        turret.lock_time_ms = 0;
+    };
+}
+
+/// Calculates accuracy bonus (0-100) based on lock duration.
+/// Full accuracy (100) at 5 seconds of sustained lock.
+public fun calculate_accuracy_bonus(turret: &Turret, current_time_ms: u64): u64 {
+    if (!has_locked_target(turret)) {
+        return 0
+    };
+    
+    let lock_duration = if (current_time_ms > turret.lock_time_ms) {
+        current_time_ms - turret.lock_time_ms
+    } else {
+        0
+    };
+    
+    // 5 seconds (5000ms) = 100% accuracy bonus
+    let max_lock_time: u64 = 5000;
+    if (lock_duration >= max_lock_time) {
+        return 100
+    };
+    
+    // Linear scaling: (lock_duration / max_lock_time) * 100
+    ((lock_duration * 100) / max_lock_time)
+}
+
 /// Constructs a ReturnTargetPriorityList entry (for extensions and tests).
 public fun new_return_target_priority_list(
     target_item_id: u64,
@@ -492,6 +579,8 @@ public fun anchor(
         extension: option::none(),
         fire_rate_ms: 15000,
         last_fire_time_ms: 0,
+        locked_target_id: option::none(),
+        lock_time_ms: 0,
     };
 
     network_node.connect_assembly(turret_id);
