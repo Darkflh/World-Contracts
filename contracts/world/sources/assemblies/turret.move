@@ -74,6 +74,8 @@ public struct Turret has key {
     energy_source_id: Option<ID>,
     metadata: Option<Metadata>,
     extension: Option<TypeName>,
+    fire_rate_ms: u64,
+    last_fire_time_ms: u64,
 }
 
 /// Target information struct
@@ -101,6 +103,8 @@ public struct TargetCandidate has copy, drop, store {
     priority_weight: u64,
     // One reason per candidate; game sends the single most relevant (e.g. STARTED_ATTACK over ENTERED when both apply).
     behaviour_change: BehaviourChangeReason,
+    // whether the turret has line of sight to this target
+    has_line_of_sight: bool,
 }
 
 /// Return Target info struct
@@ -400,6 +404,44 @@ public fun return_priority_weight(entry: &ReturnTargetPriorityList): u64 {
     entry.priority_weight
 }
 
+/// Returns whether the target has line of sight to the turret.
+public fun has_line_of_sight(candidate: &TargetCandidate): bool {
+    candidate.has_line_of_sight
+}
+
+/// Returns the turret's fire rate in milliseconds (time between shots).
+public fun fire_rate_ms(turret: &Turret): u64 {
+    turret.fire_rate_ms
+}
+
+/// Returns the turret's last fire time in milliseconds.
+public fun last_fire_time_ms(turret: &Turret): u64 {
+    turret.last_fire_time_ms
+}
+
+/// Checks if enough time has passed since the last fire for the next shot.
+/// current_time_ms: current game time in milliseconds
+public fun can_fire(turret: &Turret, current_time_ms: u64): bool {
+    let time_since_last_fire = if (current_time_ms > turret.last_fire_time_ms) {
+        current_time_ms - turret.last_fire_time_ms
+    } else {
+        0
+    };
+    time_since_last_fire >= turret.fire_rate_ms
+}
+
+/// Updates the turret's last fire time. Should be called when the turret fires.
+public fun update_last_fire_time(turret: &mut Turret, current_time_ms: u64) {
+    turret.last_fire_time_ms = current_time_ms;
+}
+
+/// Sets a new fire rate for the turret (in milliseconds).
+public fun set_fire_rate_ms(turret: &mut Turret, owner_cap: &OwnerCap<Turret>, new_fire_rate_ms: u64) {
+    let turret_id = object::id(turret);
+    assert!(access::is_authorized(owner_cap, turret_id), ETurretNotAuthorized);
+    turret.fire_rate_ms = new_fire_rate_ms;
+}
+
 /// Constructs a ReturnTargetPriorityList entry (for extensions and tests).
 public fun new_return_target_priority_list(
     target_item_id: u64,
@@ -448,6 +490,8 @@ public fun anchor(
         energy_source_id: option::some(network_node_id),
         metadata: option::none(),
         extension: option::none(),
+        fire_rate_ms: 15000,
+        last_fire_time_ms: 0,
     };
 
     network_node.connect_assembly(turret_id);
@@ -588,6 +632,7 @@ fun peel_target_candidate_from_bcs(bcs_data: &mut bcs::BCS): TargetCandidate {
     let is_aggressor = bcs_data.peel_bool();
     let priority_weight = bcs_data.peel_u64();
     let behaviour_change = peel_behaviour_change_reason(bcs_data.peel_u8());
+    let has_line_of_sight = bcs_data.peel_bool();
     TargetCandidate {
         item_id,
         type_id,
@@ -600,6 +645,7 @@ fun peel_target_candidate_from_bcs(bcs_data: &mut bcs::BCS): TargetCandidate {
         is_aggressor,
         priority_weight,
         behaviour_change,
+        has_line_of_sight,
     }
 }
 
@@ -618,6 +664,7 @@ fun peel_return_target_priority_list_from_bcs(bcs_data: &mut bcs::BCS): ReturnTa
 }
 
 /// Default rules for turret to shoot:
+/// - No line of sight to target: exclude from the return list (cannot fire without sight)
 /// - Same tribe as owner and not aggressor: exclude from the return list
 /// - STOPPED_ATTACK (candidate's behaviour_change): exclude from the return list
 /// - STARTED_ATTACK: add STARTED_ATTACK_WEIGHT_INCREMENT to priority weight
@@ -627,6 +674,11 @@ fun effective_weight_and_excluded(
     candidate: &TargetCandidate,
     owner_character: &Character,
 ): (u64, bool) {
+    // First check: no line of sight means target cannot be engaged
+    if (!candidate.has_line_of_sight) {
+        return (0, true)
+    };
+    
     let mut weight = candidate.priority_weight;
     let same_tribe = candidate.character_tribe == character::tribe(owner_character);
     let mut excluded = same_tribe && !candidate.is_aggressor;
