@@ -14,8 +14,7 @@ import {
     LOCATION_HASH,
     GAME_CHARACTER_ID,
     NWN_ITEM_ID,
-    ASSEMBLY_TYPE_ID,
-    ASSEMBLY_ITEM_ID,
+    ASSEMBLIES,
 } from "../utils/constants";
 import { deriveObjectId } from "../utils/derive-object-id";
 
@@ -86,13 +85,15 @@ async function main() {
             config.packageId
         );
 
-        await createAssembly(
-            characterObject,
-            networkNodeObject,
-            ASSEMBLY_TYPE_ID,
-            ASSEMBLY_ITEM_ID,
-            ctx
-        );
+        for (const assembly of ASSEMBLIES) {
+            await createAssembly(
+                characterObject,
+                networkNodeObject,
+                assembly.typeId,
+                assembly.itemId,
+                ctx
+            );
+        }
     } catch (error) {
         handleError(error);
     }

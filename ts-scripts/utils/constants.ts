@@ -12,12 +12,15 @@ type TestResources = {
     locationHash: string;
     character: { gameCharacterId: number; gameCharacterBId: number; gameCharacterCId?: number };
     networkNode: { typeId: number; itemId: number };
-    assembly: { typeId: number; itemId: number };
+    assembly?: { typeId: number; itemId: number };
+    assemblies?: Array<{ typeId: number; itemId: number }>;
     storageUnit: { typeId: number; itemId: number };
     gate: { typeId: number; itemId1: number; itemId2: number };
     turret: { typeId: number; itemId: number };
     item: { typeId: number; itemId: number };
 };
+
+type AssemblyResource = { typeId: number; itemId: number };
 
 function getTestResourcesPath(): string {
     const override = process.env.TEST_RESOURCES_PATH;
@@ -40,6 +43,20 @@ function loadTestResources(): TestResources {
 
 const res = loadTestResources();
 
+function getAssemblies(resources: TestResources): AssemblyResource[] {
+    if (Array.isArray(resources.assemblies) && resources.assemblies.length > 0) {
+        return resources.assemblies;
+    }
+    if (resources.assembly) {
+        return [resources.assembly];
+    }
+    throw new Error(
+        "No assembly configuration found in test-resources.json. Add 'assemblies' (preferred) or 'assembly'."
+    );
+}
+
+const assemblyResources = getAssemblies(res);
+
 // Location
 export const LOCATION_HASH = res.locationHash;
 
@@ -53,8 +70,13 @@ export const NWN_TYPE_ID = BigInt(res.networkNode.typeId);
 export const NWN_ITEM_ID = BigInt(res.networkNode.itemId);
 
 // Assembly
-export const ASSEMBLY_TYPE_ID = BigInt(res.assembly.typeId);
-export const ASSEMBLY_ITEM_ID = BigInt(res.assembly.itemId);
+export const ASSEMBLIES = assemblyResources.map((assembly) => ({
+    typeId: BigInt(assembly.typeId),
+    itemId: BigInt(assembly.itemId),
+}));
+// Backward-compatible aliases for scripts that still use a single assembly
+export const ASSEMBLY_TYPE_ID = ASSEMBLIES[0].typeId;
+export const ASSEMBLY_ITEM_ID = ASSEMBLIES[0].itemId;
 
 // Storage Unit
 export const STORAGE_A_TYPE_ID = BigInt(res.storageUnit.typeId);

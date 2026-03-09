@@ -15,6 +15,12 @@
     "typeId": 87119,
     "itemId": 9999000005
   },
+  "assemblies": [
+    {
+      "typeId": 88068,
+      "itemId": 9999000006
+    }
+  ],
   "storageUnit": {
     "typeId": 88082,
     "itemId": 888800006

@@ -5,7 +5,7 @@ import { SuiJsonRpcClient } from "@mysten/sui/jsonRpc";
 import { Ed25519Keypair } from "@mysten/sui/keypairs/ed25519";
 import { HydratedWorldConfig, getConfig, MODULES } from "../utils/config";
 import { deriveObjectId } from "../utils/derive-object-id";
-import { NWN_ITEM_ID, ASSEMBLY_ITEM_ID, GAME_CHARACTER_ID } from "../utils/constants";
+import { NWN_ITEM_ID, ASSEMBLIES, GAME_CHARACTER_ID } from "../utils/constants";
 import {
     getEnvConfig,
     handleError,
@@ -99,18 +99,22 @@ async function main() {
             config.packageId
         );
 
-        const assemblyObject = deriveObjectId(
-            config.objectRegistry,
-            ASSEMBLY_ITEM_ID,
-            config.packageId
-        );
+        for (const assembly of ASSEMBLIES) {
+            const assemblyObject = deriveObjectId(
+                config.objectRegistry,
+                assembly.itemId,
+                config.packageId
+            );
 
-        const assemblyOwnerCap = await getOwnerCap(assemblyObject, client, config, ctx.address);
-        if (!assemblyOwnerCap) {
-            throw new Error(`OwnerCap not found for ${assemblyObject}`);
+            const assemblyOwnerCap = await getOwnerCap(assemblyObject, client, config, ctx.address);
+            if (!assemblyOwnerCap) {
+                throw new Error(
+                    `OwnerCap not found for assembly itemId ${assembly.itemId.toString()} (object ${assemblyObject})`
+                );
+            }
+
+            await online(networkNodeObject, assemblyObject, assemblyOwnerCap, client, keypair, config);
         }
-
-        await online(networkNodeObject, assemblyObject, assemblyOwnerCap, client, keypair, config);
     } catch (error) {
         handleError(error);
     }
