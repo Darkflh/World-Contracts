@@ -29,3 +29,4 @@ DATACORE_BASE_URL=https://evedataco.re pnpm build-item-catalog
 
 - This is off-chain reference data for scripts/UI.
 - On-chain logic should continue to use `typeId` / `itemId` directly.
+- GitHub Actions workflow `.github/workflows/refresh-item-catalog.yml` refreshes this weekly and can be run manually.
