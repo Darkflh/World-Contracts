@@ -1,7 +1,12 @@
 # EVE Frontier Cycle 4 Wipe Recovery Plan
+
+> **⚠️ NOTE FOR HACKATHON:** This document is for **testnet wipe recovery reference only**.  
+> **For the hackathon**, use [UTOPIA_DEPLOYMENT_GUIDE.md](UTOPIA_DEPLOYMENT_GUIDE.md) instead.  
+> The hackathon uses the **Utopia sandbox server** (separate from testnet - no wipe needed).
+
 **Wipe Date: March 11, 2026** (Ending Cycle 4, Beginning Cycle 5)  
 **Character: Dark III**  
-**Hackathon Preparation**
+**Context: Testnet Recovery**
 
 ---
 
