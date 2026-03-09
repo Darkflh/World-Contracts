@@ -8,6 +8,16 @@ set -euo pipefail
 
 DELAY_SECONDS="${DELAY_SECONDS:-${1:-2}}"
 
+NETWORK="${SUI_NETWORK:-localnet}"
+EXTRACTED_IDS_FILE="./deployments/${NETWORK}/extracted-object-ids.json"
+
+has_builder_ids=false
+if [[ -n "${BUILDER_PACKAGE_ID:-}" ]]; then
+  has_builder_ids=true
+elif [[ -f "${EXTRACTED_IDS_FILE}" ]] && grep -q '"builder"' "${EXTRACTED_IDS_FILE}" && grep -q '"packageId"' "${EXTRACTED_IDS_FILE}"; then
+  has_builder_ids=true
+fi
+
 commands=(
   "create-character"
   "create-nwn"
@@ -22,20 +32,37 @@ commands=(
   "online-gates"
   "link-gates"
   "jump"
-  "configure-builder-extension-rules"
-  "authorise-gate"
-  "authorise-storage-unit"
   "deposit-to-ephemeral-inventory"
-  "issue-tribe-jump-permit"
-  "jump-with-permit"
-  "collect-corpse-bounty"
+)
+
+if [[ "${has_builder_ids}" == "true" ]]; then
+  commands+=(
+    "configure-builder-extension-rules"
+    "authorise-gate"
+    "authorise-storage-unit"
+    "issue-tribe-jump-permit"
+    "jump-with-permit"
+    "collect-corpse-bounty"
+  )
+else
+  echo "Builder extension IDs not found (BUILDER_PACKAGE_ID/env/extracted IDs)."
+  echo "Skipping builder-extension integration steps."
+fi
+
+commands+=(
   "create-assembly"
   "online"
   "update-fuel"
   "anchor-turret"
   "online-turret"
   "get-priority-list"
-  "authorize-turret-extension"
+)
+
+if [[ "${has_builder_ids}" == "true" ]]; then
+  commands+=("authorize-turret-extension")
+fi
+
+commands+=(
   "get-priority-list"
   "offline-nwn"
   "unanchor-nwn"

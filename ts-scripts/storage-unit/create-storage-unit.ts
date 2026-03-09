@@ -17,6 +17,26 @@ import { deriveObjectId } from "../utils/derive-object-id";
 
 const MAX_CAPACITY = 1000000000000n;
 
+async function objectExists(
+    objectId: string,
+    ctx: ReturnType<typeof initializeContext>
+): Promise<boolean> {
+    try {
+        const object = await ctx.client.getObject({
+            id: objectId,
+            options: { showType: true },
+        });
+
+        if (object.data) {
+            return true;
+        }
+
+        return false;
+    } catch {
+        return false;
+    }
+}
+
 async function createStorageUnit(
     characterObjectId: string,
     networkNodeObjectId: string,
@@ -90,6 +110,18 @@ async function main() {
             NWN_ITEM_ID,
             config.packageId
         );
+
+        const storageUnitObject = deriveObjectId(
+            config.objectRegistry,
+            STORAGE_A_ITEM_ID,
+            config.packageId
+        );
+
+        if (await objectExists(storageUnitObject, ctx)) {
+            console.log("Storage Unit already exists on-chain. Skipping create.");
+            console.log("Storage Unit Object Id: ", storageUnitObject);
+            return;
+        }
 
         await createStorageUnit(
             characterObject,

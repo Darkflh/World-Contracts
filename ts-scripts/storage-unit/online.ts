@@ -89,7 +89,27 @@ async function main() {
             throw new Error(`OwnerCap not found for ${assemblyObject}`);
         }
 
-        await online(networkNodeObject, assemblyObject, assemblyOwnerCap, client, keypair, config);
+        try {
+            await online(
+                networkNodeObject,
+                assemblyObject,
+                assemblyOwnerCap,
+                client,
+                keypair,
+                config
+            );
+        } catch (error) {
+            const message = error instanceof Error ? error.message : String(error);
+            const alreadyOnline =
+                message.includes("::status::online") && message.includes("abort code: 0");
+
+            if (alreadyOnline) {
+                console.log("\nStorage Unit is already online. Skipping.");
+                return;
+            }
+
+            throw error;
+        }
     } catch (error) {
         handleError(error);
     }

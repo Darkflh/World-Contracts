@@ -17,6 +17,26 @@ export const FUEL_MAX_CAPACITY = 10000n;
 export const FUEL_BURN_RATE_IN_MS = BigInt(3600 * 1000); // 1 hour
 export const MAX_ENERGY_PRODUCTION = 500n;
 
+async function objectExists(
+    objectId: string,
+    ctx: ReturnType<typeof initializeContext>
+): Promise<boolean> {
+    try {
+        const object = await ctx.client.getObject({
+            id: objectId,
+            options: { showType: true },
+        });
+
+        if (object.data) {
+            return true;
+        }
+
+        return false;
+    } catch {
+        return false;
+    }
+}
+
 async function createNetworkNode(
     characterObjectId: string,
     typeId: bigint,
@@ -77,6 +97,18 @@ async function main() {
             GAME_CHARACTER_ID,
             ctx.config.packageId
         );
+
+        const networkNodeObject = deriveObjectId(
+            ctx.config.objectRegistry,
+            Number(NWN_ITEM_ID),
+            ctx.config.packageId
+        );
+
+        if (await objectExists(networkNodeObject, ctx)) {
+            console.log("NWN already exists on-chain. Skipping create.");
+            console.log("NWN Object Id: ", networkNodeObject);
+            return;
+        }
 
         await createNetworkNode(characterObject, NWN_TYPE_ID, NWN_ITEM_ID, ctx);
     } catch (error) {

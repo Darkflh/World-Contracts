@@ -78,7 +78,20 @@ async function main() {
             throw new Error(`OwnerCap not found for network node ${networkNodeObject}`);
         }
 
-        await online(networkNodeObject, networkNodeOwnerCap, ctx);
+        try {
+            await online(networkNodeObject, networkNodeOwnerCap, ctx);
+        } catch (error) {
+            const message = error instanceof Error ? error.message : String(error);
+            const alreadyOnline =
+                message.includes("::fuel::start_burning") && message.includes("abort code: 12");
+
+            if (alreadyOnline) {
+                console.log("\nNetwork Node is already online. Skipping.");
+                return;
+            }
+
+            throw error;
+        }
     } catch (error) {
         handleError(error);
     }
