@@ -26,10 +26,10 @@ const STORAGE_A_ITEM_ID: u64 = 90002;
 const DUMMY_ITEM_ID: u64 = 002;
 
 // Item constants
-const AMMO_TYPE_ID: u64 = 88069;
-const AMMO_ITEM_ID: u64 = 1000004145107;
-const AMMO_VOLUME: u64 = 100;
-const AMMO_QUANTITY: u32 = 10;
+const TEST_ITEM_TYPE_ID: u64 = 88069;
+const TEST_ITEM_ITEM_ID: u64 = 1000004145107;
+const TEST_ITEM_VOLUME: u64 = 100;
+const TEST_ITEM_QUANTITY: u32 = 10;
 
 const LENS_TYPE_ID: u64 = 88070;
 const LENS_ITEM_ID: u64 = 1000004145108;
@@ -82,8 +82,8 @@ public fun swap_ammo_for_lens_extension<T: key>(
     let ammo = storage_unit.withdraw_by_owner(
         character,
         owner_cap,
-        AMMO_TYPE_ID,
-        AMMO_QUANTITY,
+        TEST_ITEM_TYPE_ID,
+        TEST_ITEM_QUANTITY,
         ctx,
     );
 
@@ -125,8 +125,8 @@ public fun swap_ammo_for_lens_via_extension<T: key>(
     let ammo = storage_unit.withdraw_by_owner(
         character,
         owner_cap,
-        AMMO_TYPE_ID,
-        AMMO_QUANTITY,
+        TEST_ITEM_TYPE_ID,
+        TEST_ITEM_QUANTITY,
         ctx,
     );
 
@@ -294,10 +294,10 @@ fun mint_ammo<T: key>(ts: &mut ts::Scenario, storage_id: ID, character_id: ID, u
         storage_unit.game_item_to_chain_inventory_test<T>(
             &character,
             &owner_cap,
-            AMMO_ITEM_ID,
-            AMMO_TYPE_ID,
-            AMMO_VOLUME,
-            AMMO_QUANTITY,
+            TEST_ITEM_ITEM_ID,
+            TEST_ITEM_TYPE_ID,
+            TEST_ITEM_VOLUME,
+            TEST_ITEM_QUANTITY,
             ts.ctx(),
         );
         character.return_owner_cap(owner_cap, receipt);
@@ -443,10 +443,10 @@ fun test_create_items_on_chain() {
     {
         let storage_unit = ts::take_shared_by_id<StorageUnit>(&ts, storage_id);
         let inv_ref = storage_unit.inventory(owner_cap_id);
-        let used_capacity = (AMMO_QUANTITY as u64 * AMMO_VOLUME);
+        let used_capacity = (TEST_ITEM_QUANTITY as u64 * TEST_ITEM_VOLUME);
         assert_eq!(inv_ref.used_capacity(), used_capacity);
         assert_eq!(inv_ref.remaining_capacity(), MAX_CAPACITY - used_capacity);
-        assert_eq!(inv_ref.item_quantity(AMMO_TYPE_ID), AMMO_QUANTITY);
+        assert_eq!(inv_ref.item_quantity(TEST_ITEM_TYPE_ID), TEST_ITEM_QUANTITY);
         assert_eq!(inv_ref.inventory_item_length(), 1);
         ts::return_shared(storage_unit);
     };
@@ -479,10 +479,10 @@ fun test_game_item_to_chain_and_chain_item_to_game_inventory() {
         let storage_unit = ts::take_shared_by_id<StorageUnit>(&ts, storage_id);
         let inv_ref = storage_unit.inventory(owner_cap_id);
 
-        let used_capacity = (AMMO_QUANTITY as u64 * AMMO_VOLUME);
+        let used_capacity = (TEST_ITEM_QUANTITY as u64 * TEST_ITEM_VOLUME);
         assert_eq!(inv_ref.used_capacity(), used_capacity);
         assert_eq!(inv_ref.remaining_capacity(), MAX_CAPACITY - used_capacity);
-        assert_eq!(inv_ref.item_quantity(AMMO_TYPE_ID), AMMO_QUANTITY);
+        assert_eq!(inv_ref.item_quantity(TEST_ITEM_TYPE_ID), TEST_ITEM_QUANTITY);
         assert_eq!(inv_ref.inventory_item_length(), 1);
         ts::return_shared(storage_unit);
     };
@@ -504,8 +504,8 @@ fun test_game_item_to_chain_and_chain_item_to_game_inventory() {
             &server_registry,
             &character,
             &owner_cap,
-            AMMO_TYPE_ID,
-            AMMO_QUANTITY,
+            TEST_ITEM_TYPE_ID,
+            TEST_ITEM_QUANTITY,
             proof_bytes,
             ts.ctx(),
         );
@@ -667,8 +667,8 @@ fun test_deposit_and_withdraw_via_extension() {
             storage_unit.withdraw_item<SwapAuth>(
                 &character,
                 SwapAuth {},
-                AMMO_TYPE_ID,
-                AMMO_QUANTITY,
+                TEST_ITEM_TYPE_ID,
+                TEST_ITEM_QUANTITY,
                 ts.ctx(),
             );
         ts::return_shared(storage_unit);
@@ -685,7 +685,7 @@ fun test_deposit_and_withdraw_via_extension() {
             SwapAuth {},
             ts.ctx(),
         );
-        assert_eq!(storage_unit.item_quantity(owner_cap_id, AMMO_TYPE_ID), AMMO_QUANTITY);
+        assert_eq!(storage_unit.item_quantity(owner_cap_id, TEST_ITEM_TYPE_ID), TEST_ITEM_QUANTITY);
         ts::return_shared(storage_unit);
         ts::return_shared(character);
     };
@@ -727,8 +727,8 @@ fun test_deposit_and_withdraw_by_owner() {
             storage_unit.withdraw_by_owner(
                 &character,
                 &owner_cap,
-                AMMO_TYPE_ID,
-                AMMO_QUANTITY,
+                TEST_ITEM_TYPE_ID,
+                TEST_ITEM_QUANTITY,
                 ts.ctx(),
             );
     };
@@ -741,7 +741,7 @@ fun test_deposit_and_withdraw_by_owner() {
             &owner_cap,
             ts.ctx(),
         );
-        assert_eq!(storage_unit.item_quantity(owner_cap_id, AMMO_TYPE_ID), AMMO_QUANTITY);
+        assert_eq!(storage_unit.item_quantity(owner_cap_id, TEST_ITEM_TYPE_ID), TEST_ITEM_QUANTITY);
     };
     character.return_owner_cap(owner_cap, receipt);
     ts::return_shared(storage_unit);
@@ -804,7 +804,7 @@ fun test_swap_ammo_for_lens() {
     {
         let storage_unit = ts::take_shared_by_id<StorageUnit>(&ts, storage_id);
 
-        let used_capacity_a = (AMMO_QUANTITY as u64* AMMO_VOLUME);
+        let used_capacity_a = (TEST_ITEM_QUANTITY as u64* TEST_ITEM_VOLUME);
         let used_capacity_b = (LENS_QUANTITY as u64* LENS_VOLUME);
         let inv_ref_a = storage_unit.inventory(character_owner_cap_id);
         let inv_ref_b = storage_unit.inventory(storage_owner_cap_id);
@@ -814,10 +814,10 @@ fun test_swap_ammo_for_lens() {
         assert_eq!(inv_ref_b.used_capacity(), used_capacity_b);
         assert_eq!(inv_ref_b.remaining_capacity(), MAX_CAPACITY - used_capacity_b);
 
-        assert_eq!(storage_unit.item_quantity(character_owner_cap_id, AMMO_TYPE_ID), AMMO_QUANTITY);
+        assert_eq!(storage_unit.item_quantity(character_owner_cap_id, TEST_ITEM_TYPE_ID), TEST_ITEM_QUANTITY);
         assert!(!storage_unit.contains_item(character_owner_cap_id, LENS_TYPE_ID));
         assert_eq!(storage_unit.item_quantity(storage_owner_cap_id, LENS_TYPE_ID), LENS_QUANTITY);
-        assert!(!storage_unit.contains_item(storage_owner_cap_id, AMMO_TYPE_ID));
+        assert!(!storage_unit.contains_item(storage_owner_cap_id, TEST_ITEM_TYPE_ID));
 
         ts::return_shared(storage_unit);
     };
@@ -849,9 +849,9 @@ fun test_swap_ammo_for_lens() {
     {
         let storage_unit = ts::take_shared_by_id<StorageUnit>(&ts, storage_id);
         assert_eq!(storage_unit.item_quantity(character_owner_cap_id, LENS_TYPE_ID), LENS_QUANTITY);
-        assert!(!storage_unit.contains_item(character_owner_cap_id, AMMO_TYPE_ID));
+        assert!(!storage_unit.contains_item(character_owner_cap_id, TEST_ITEM_TYPE_ID));
 
-        assert_eq!(storage_unit.item_quantity(storage_owner_cap_id, AMMO_TYPE_ID), AMMO_QUANTITY);
+        assert_eq!(storage_unit.item_quantity(storage_owner_cap_id, TEST_ITEM_TYPE_ID), TEST_ITEM_QUANTITY);
         assert!(!storage_unit.contains_item(storage_owner_cap_id, LENS_TYPE_ID));
 
         ts::return_shared(storage_unit);
@@ -1015,8 +1015,8 @@ fun test_withdraw_via_extension_fail_not_authorized() {
         let item = storage_unit.withdraw_item<SwapAuth>(
             &character,
             SwapAuth {},
-            AMMO_TYPE_ID,
-            AMMO_QUANTITY,
+            TEST_ITEM_TYPE_ID,
+            TEST_ITEM_QUANTITY,
             ts.ctx(),
         );
 
@@ -1068,8 +1068,8 @@ fun test_deposit_via_extension_fail_not_authorized() {
             storage_unit.withdraw_by_owner(
                 &character,
                 &owner_cap,
-                AMMO_TYPE_ID,
-                AMMO_QUANTITY,
+                TEST_ITEM_TYPE_ID,
+                TEST_ITEM_QUANTITY,
                 ts.ctx(),
             );
 
@@ -1131,8 +1131,8 @@ fun test_withdraw_by_owner_fail_wrong_owner() {
         let item = storage_unit.withdraw_by_owner(
             &character_b,
             &owner_cap,
-            AMMO_TYPE_ID,
-            AMMO_QUANTITY,
+            TEST_ITEM_TYPE_ID,
+            TEST_ITEM_QUANTITY,
             ts.ctx(),
         );
 
@@ -1186,8 +1186,8 @@ fun test_deposit_by_owner_fail_wrong_owner() {
             storage_unit.withdraw_by_owner(
                 &character_a,
                 &owner_cap,
-                AMMO_TYPE_ID,
-                AMMO_QUANTITY,
+                TEST_ITEM_TYPE_ID,
+                TEST_ITEM_QUANTITY,
                 ts.ctx(),
             );
 
@@ -1544,8 +1544,8 @@ fun test_deposit_by_owner_fail_tenant_mismatch() {
             storage_unit.withdraw_by_owner(
                 &character,
                 &owner_cap,
-                AMMO_TYPE_ID,
-                AMMO_QUANTITY,
+                TEST_ITEM_TYPE_ID,
+                TEST_ITEM_QUANTITY,
                 ts.ctx(),
             );
 
@@ -1634,8 +1634,8 @@ fun test_deposit_via_extension_fail_tenant_mismatch() {
             storage_unit.withdraw_by_owner(
                 &character,
                 &owner_cap,
-                AMMO_TYPE_ID,
-                AMMO_QUANTITY,
+                TEST_ITEM_TYPE_ID,
+                TEST_ITEM_QUANTITY,
                 ts.ctx(),
             );
 
@@ -1811,10 +1811,10 @@ fun test_fail_network_node_offline() {
         storage_unit.game_item_to_chain_inventory_test<StorageUnit>(
             &character,
             &owner_cap,
-            AMMO_ITEM_ID,
-            AMMO_TYPE_ID,
-            AMMO_VOLUME,
-            AMMO_QUANTITY,
+            TEST_ITEM_ITEM_ID,
+            TEST_ITEM_TYPE_ID,
+            TEST_ITEM_VOLUME,
+            TEST_ITEM_QUANTITY,
             ts.ctx(),
         );
         character.return_owner_cap(owner_cap, receipt);
@@ -1871,8 +1871,8 @@ fun test_deposit_via_extension_fail_parent_id_mismatch() {
             storage_unit.withdraw_item<SwapAuth>(
                 &character,
                 SwapAuth {},
-                AMMO_TYPE_ID,
-                AMMO_QUANTITY,
+                TEST_ITEM_TYPE_ID,
+                TEST_ITEM_QUANTITY,
                 ts.ctx(),
             );
         ts::return_shared(storage_unit);
@@ -1970,10 +1970,10 @@ fun test_swap_via_extension_to_owned() {
     ts::next_tx(&mut ts, admin());
     {
         let storage_unit = ts::take_shared_by_id<StorageUnit>(&ts, storage_id);
-        assert_eq!(storage_unit.item_quantity(character_owner_cap_id, AMMO_TYPE_ID), AMMO_QUANTITY);
+        assert_eq!(storage_unit.item_quantity(character_owner_cap_id, TEST_ITEM_TYPE_ID), TEST_ITEM_QUANTITY);
         assert!(!storage_unit.contains_item(character_owner_cap_id, LENS_TYPE_ID));
         assert_eq!(storage_unit.item_quantity(storage_owner_cap_id, LENS_TYPE_ID), LENS_QUANTITY);
-        assert!(!storage_unit.contains_item(storage_owner_cap_id, AMMO_TYPE_ID));
+        assert!(!storage_unit.contains_item(storage_owner_cap_id, TEST_ITEM_TYPE_ID));
         ts::return_shared(storage_unit);
     };
 
@@ -2004,8 +2004,8 @@ fun test_swap_via_extension_to_owned() {
     {
         let storage_unit = ts::take_shared_by_id<StorageUnit>(&ts, storage_id);
         assert_eq!(storage_unit.item_quantity(character_owner_cap_id, LENS_TYPE_ID), LENS_QUANTITY);
-        assert!(!storage_unit.contains_item(character_owner_cap_id, AMMO_TYPE_ID));
-        assert_eq!(storage_unit.item_quantity(storage_owner_cap_id, AMMO_TYPE_ID), AMMO_QUANTITY);
+        assert!(!storage_unit.contains_item(character_owner_cap_id, TEST_ITEM_TYPE_ID));
+        assert_eq!(storage_unit.item_quantity(storage_owner_cap_id, TEST_ITEM_TYPE_ID), TEST_ITEM_QUANTITY);
         assert!(!storage_unit.contains_item(storage_owner_cap_id, LENS_TYPE_ID));
         ts::return_shared(storage_unit);
     };
@@ -2068,8 +2068,8 @@ fun test_deposit_to_owned_creates_owned_inventory() {
         let item = storage_unit.withdraw_item<SwapAuth>(
             &character,
             SwapAuth {},
-            AMMO_TYPE_ID,
-            AMMO_QUANTITY,
+            TEST_ITEM_TYPE_ID,
+            TEST_ITEM_QUANTITY,
             ts.ctx(),
         );
         storage_unit.deposit_to_owned<SwapAuth>(
@@ -2090,8 +2090,8 @@ fun test_deposit_to_owned_creates_owned_inventory() {
         assert!(storage_unit.has_inventory(character_b_owner_cap_id));
         assert_eq!(storage_unit.inventory_keys().length(), 2);
         assert_eq!(
-            storage_unit.item_quantity(character_b_owner_cap_id, AMMO_TYPE_ID),
-            AMMO_QUANTITY,
+            storage_unit.item_quantity(character_b_owner_cap_id, TEST_ITEM_TYPE_ID),
+            TEST_ITEM_QUANTITY,
         );
         ts::return_shared(storage_unit);
     };
@@ -2134,8 +2134,8 @@ fun test_deposit_to_owned_fail_not_authorized() {
             storage_unit.withdraw_by_owner(
                 &character,
                 &owner_cap,
-                AMMO_TYPE_ID,
-                AMMO_QUANTITY,
+                TEST_ITEM_TYPE_ID,
+                TEST_ITEM_QUANTITY,
                 ts.ctx(),
             );
 
@@ -2209,8 +2209,8 @@ fun test_deposit_to_owned_fail_parent_id_mismatch() {
             storage_unit.withdraw_item<SwapAuth>(
                 &character,
                 SwapAuth {},
-                AMMO_TYPE_ID,
-                AMMO_QUANTITY,
+                TEST_ITEM_TYPE_ID,
+                TEST_ITEM_QUANTITY,
                 ts.ctx(),
             );
         ts::return_shared(storage_unit);

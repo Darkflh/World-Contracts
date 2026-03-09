@@ -18,10 +18,10 @@ const STORAGE_ITEM_ID: u64 = 5500004145107;
 const LOCATION_A_HASH: vector<u8> =
     x"7a8f3b2e9c4d1a6f5e8b2d9c3f7a1e5b7a8f3b2e9c4d1a6f5e8b2d9c3f7a1e5b";
 const MAX_CAPACITY: u64 = 1000;
-const AMMO_TYPE_ID: u64 = 88069;
-const AMMO_ITEM_ID: u64 = 1000004145107;
-const AMMO_VOLUME: u64 = 100;
-const AMMO_QUANTITY: u32 = 10;
+const TEST_ITEM_TYPE_ID: u64 = 88069;
+const TEST_ITEM_ITEM_ID: u64 = 1000004145107;
+const TEST_ITEM_VOLUME: u64 = 100;
+const TEST_ITEM_QUANTITY: u32 = 10;
 const STATUS_ONLINE: u8 = 1;
 const STATUS_OFFLINE: u8 = 2;
 
@@ -136,10 +136,10 @@ fun mint_ammo(ts: &mut ts::Scenario, character_id: ID) {
             assembly_key,
             &character,
             tenant(),
-            AMMO_ITEM_ID,
-            AMMO_TYPE_ID,
-            AMMO_VOLUME,
-            AMMO_QUANTITY,
+            TEST_ITEM_ITEM_ID,
+            TEST_ITEM_TYPE_ID,
+            TEST_ITEM_VOLUME,
+            TEST_ITEM_QUANTITY,
         );
         ts::return_shared(storage_unit);
         ts::return_shared(character);
@@ -186,11 +186,11 @@ fun mint_items() {
     {
         let storage_unit = ts::take_shared<StorageUnit>(&ts);
         let inventory = df::borrow<ID, Inventory>(&storage_unit.id, character_id);
-        let used_capacity = (AMMO_QUANTITY as u64) * AMMO_VOLUME;
+        let used_capacity = (TEST_ITEM_QUANTITY as u64) * TEST_ITEM_VOLUME;
 
         assert_eq!(inventory.used_capacity(), used_capacity);
         assert_eq!(inventory.remaining_capacity(), 0);
-        assert_eq!(inventory.item_quantity(AMMO_TYPE_ID), 10);
+        assert_eq!(inventory.item_quantity(TEST_ITEM_TYPE_ID), 10);
         assert_eq!(inventory.inventory_item_length(), 1);
         assert_eq!(storage_unit.location.hash(), LOCATION_A_HASH);
         ts::return_shared(storage_unit);
@@ -221,18 +221,18 @@ fun mint_items_increases_quantity_when_exists() {
             assembly_key,
             &character,
             tenant(),
-            AMMO_ITEM_ID,
-            AMMO_TYPE_ID,
-            AMMO_VOLUME,
+            TEST_ITEM_ITEM_ID,
+            TEST_ITEM_TYPE_ID,
+            TEST_ITEM_VOLUME,
             5u32,
         );
 
         let inv_ref = df::borrow<ID, Inventory>(&storage_unit.id, character_id);
-        let used_capacity = 5 * AMMO_VOLUME;
+        let used_capacity = 5 * TEST_ITEM_VOLUME;
 
         assert_eq!(inv_ref.used_capacity(), used_capacity);
         assert_eq!(inv_ref.remaining_capacity(), MAX_CAPACITY - used_capacity);
-        assert_eq!(inv_ref.item_quantity(AMMO_TYPE_ID), 5);
+        assert_eq!(inv_ref.item_quantity(TEST_ITEM_TYPE_ID), 5);
         assert_eq!(inv_ref.inventory_item_length(), 1);
         ts::return_shared(storage_unit);
         ts::return_shared(character);
@@ -249,16 +249,16 @@ fun mint_items_increases_quantity_when_exists() {
             assembly_key,
             &character,
             tenant(),
-            AMMO_ITEM_ID,
-            AMMO_TYPE_ID,
-            AMMO_VOLUME,
+            TEST_ITEM_ITEM_ID,
+            TEST_ITEM_TYPE_ID,
+            TEST_ITEM_VOLUME,
             5u32,
         );
 
         let inv_ref = df::borrow<ID, Inventory>(&storage_unit.id, character_id);
         assert_eq!(inv_ref.used_capacity(), MAX_CAPACITY);
         assert_eq!(inv_ref.remaining_capacity(), 0);
-        assert_eq!(inv_ref.item_quantity(AMMO_TYPE_ID), 10);
+        assert_eq!(inv_ref.item_quantity(TEST_ITEM_TYPE_ID), 10);
         assert_eq!(inv_ref.inventory_item_length(), 1);
         ts::return_shared(storage_unit);
         ts::return_shared(character);
@@ -291,8 +291,8 @@ public fun burn_items() {
             assembly_id,
             assembly_key,
             &character,
-            AMMO_TYPE_ID,
-            AMMO_QUANTITY,
+            TEST_ITEM_TYPE_ID,
+            TEST_ITEM_QUANTITY,
         );
 
         let inv_ref = df::borrow<ID, Inventory>(&storage_unit.id, character_id);
@@ -333,12 +333,12 @@ public fun burn_partial_items() {
             assembly_id,
             assembly_key,
             &character,
-            AMMO_TYPE_ID,
+            TEST_ITEM_TYPE_ID,
             5u32, //diff quantity
         );
 
         let inv_ref = df::borrow<ID, Inventory>(&storage_unit.id, character_id);
-        let used_capacity = 5 * AMMO_VOLUME;
+        let used_capacity = 5 * TEST_ITEM_VOLUME;
         assert_eq!(inv_ref.used_capacity(), used_capacity);
         assert_eq!(inv_ref.remaining_capacity(), MAX_CAPACITY - used_capacity);
         assert_eq!(inv_ref.inventory_item_length(), 1);
@@ -373,9 +373,9 @@ public fun deposit_item_merges_quantity_when_same_type_id() {
             assembly_key,
             &character_a,
             tenant(),
-            AMMO_ITEM_ID,
-            AMMO_TYPE_ID,
-            AMMO_VOLUME,
+            TEST_ITEM_ITEM_ID,
+            TEST_ITEM_TYPE_ID,
+            TEST_ITEM_VOLUME,
             5u32,
         );
         ts::return_shared(storage_unit);
@@ -403,9 +403,9 @@ public fun deposit_item_merges_quantity_when_same_type_id() {
             assembly_key,
             &character_b,
             tenant(),
-            AMMO_ITEM_ID + 1,
-            AMMO_TYPE_ID,
-            AMMO_VOLUME,
+            TEST_ITEM_ITEM_ID + 1,
+            TEST_ITEM_TYPE_ID,
+            TEST_ITEM_VOLUME,
             3u32,
         );
         ts::return_shared(storage_unit);
@@ -425,7 +425,7 @@ public fun deposit_item_merges_quantity_when_same_type_id() {
             assembly_id,
             assembly_key,
             &character_b,
-            AMMO_TYPE_ID,
+            TEST_ITEM_TYPE_ID,
             3u32,
             LOCATION_A_HASH,
             ts.ctx(),
@@ -444,10 +444,10 @@ public fun deposit_item_merges_quantity_when_same_type_id() {
         let inv_a = df::borrow<ID, Inventory>(&storage_unit.id, character_a_id);
         let inv_b = df::borrow<ID, Inventory>(&storage_unit.id, character_b_id);
         let expected_quantity = 8u32;
-        let expected_used_capacity = (expected_quantity as u64) * AMMO_VOLUME;
+        let expected_used_capacity = (expected_quantity as u64) * TEST_ITEM_VOLUME;
         assert_eq!(inv_a.used_capacity(), expected_used_capacity);
         assert_eq!(inv_a.remaining_capacity(), MAX_CAPACITY - expected_used_capacity);
-        assert_eq!(inv_a.item_quantity(AMMO_TYPE_ID), expected_quantity);
+        assert_eq!(inv_a.item_quantity(TEST_ITEM_TYPE_ID), expected_quantity);
         assert_eq!(inv_a.inventory_item_length(), 1);
         assert_eq!(inv_b.used_capacity(), 0);
         assert_eq!(inv_b.inventory_item_length(), 0);
@@ -511,8 +511,8 @@ public fun deposit_items() {
             assembly_id,
             assembly_key,
             &character_a,
-            AMMO_TYPE_ID,
-            AMMO_QUANTITY,
+            TEST_ITEM_TYPE_ID,
+            TEST_ITEM_QUANTITY,
             LOCATION_A_HASH,
             ts.ctx(),
         );
@@ -531,7 +531,7 @@ public fun deposit_items() {
         ts::return_shared(character_b);
 
         let eph_inv_ref = df::borrow<ID, Inventory>(&storage_unit.id, character_b_id);
-        let used_capacity = (AMMO_QUANTITY as u64) * AMMO_VOLUME;
+        let used_capacity = (TEST_ITEM_QUANTITY as u64) * TEST_ITEM_VOLUME;
         assert_eq!(eph_inv_ref.used_capacity(), used_capacity);
         assert_eq!(eph_inv_ref.remaining_capacity(), MAX_CAPACITY - used_capacity);
         assert_eq!(eph_inv_ref.inventory_item_length(), 1);
@@ -579,10 +579,10 @@ fun burn_items_with_proof() {
             assembly_key,
             &character,
             tenant(),
-            AMMO_TYPE_ID,
-            AMMO_TYPE_ID,
-            AMMO_VOLUME,
-            AMMO_QUANTITY,
+            TEST_ITEM_TYPE_ID,
+            TEST_ITEM_TYPE_ID,
+            TEST_ITEM_VOLUME,
+            TEST_ITEM_QUANTITY,
         );
         ts::return_shared(storage_unit);
         ts::return_shared(character);
@@ -607,8 +607,8 @@ fun burn_items_with_proof() {
             &server_registry,
             location_ref,
             location_proof,
-            AMMO_TYPE_ID,
-            AMMO_QUANTITY,
+            TEST_ITEM_TYPE_ID,
+            TEST_ITEM_QUANTITY,
             ts.ctx(),
         );
         ts::return_shared(character);
@@ -652,19 +652,19 @@ fun withdraw_partial_quantity() {
             assembly_id,
             assembly_key,
             &character,
-            AMMO_TYPE_ID,
+            TEST_ITEM_TYPE_ID,
             5u32,
             LOCATION_A_HASH,
             ts.ctx(),
         );
 
         assert_eq!(item.quantity(), 5);
-        assert_eq!(item.type_id(), AMMO_TYPE_ID);
+        assert_eq!(item.type_id(), TEST_ITEM_TYPE_ID);
 
         let inv_ref = df::borrow<ID, Inventory>(&storage_unit.id, character_id);
-        assert_eq!(inv_ref.item_quantity(AMMO_TYPE_ID), 5);
+        assert_eq!(inv_ref.item_quantity(TEST_ITEM_TYPE_ID), 5);
         assert_eq!(inv_ref.inventory_item_length(), 1);
-        let expected_used = 5u64 * AMMO_VOLUME;
+        let expected_used = 5u64 * TEST_ITEM_VOLUME;
         assert_eq!(inv_ref.used_capacity(), expected_used);
         assert_eq!(inv_ref.remaining_capacity(), MAX_CAPACITY - expected_used);
 
@@ -694,8 +694,8 @@ fun round_trip_split_join_df_quantities() {
     {
         let storage_unit = ts::take_shared<StorageUnit>(&ts);
         let inv_ref = df::borrow<ID, Inventory>(&storage_unit.id, character_id);
-        assert_eq!(inv_ref.item_quantity(AMMO_TYPE_ID), AMMO_QUANTITY);
-        assert_eq!(inv_ref.item_volume(AMMO_TYPE_ID), AMMO_VOLUME);
+        assert_eq!(inv_ref.item_quantity(TEST_ITEM_TYPE_ID), TEST_ITEM_QUANTITY);
+        assert_eq!(inv_ref.item_volume(TEST_ITEM_TYPE_ID), TEST_ITEM_VOLUME);
         assert_eq!(inv_ref.used_capacity(), 1000);
         assert_eq!(inv_ref.inventory_item_length(), 1);
         ts::return_shared(storage_unit);
@@ -713,7 +713,7 @@ fun round_trip_split_join_df_quantities() {
             assembly_id,
             assembly_key,
             &character,
-            AMMO_TYPE_ID,
+            TEST_ITEM_TYPE_ID,
             3u32,
             LOCATION_A_HASH,
             ts.ctx(),
@@ -721,7 +721,7 @@ fun round_trip_split_join_df_quantities() {
 
         assert_eq!(item.quantity(), 3);
         let inv_ref = df::borrow<ID, Inventory>(&storage_unit.id, character_id);
-        assert_eq!(inv_ref.item_quantity(AMMO_TYPE_ID), 7);
+        assert_eq!(inv_ref.item_quantity(TEST_ITEM_TYPE_ID), 7);
         assert_eq!(inv_ref.used_capacity(), 700);
         assert_eq!(inv_ref.inventory_item_length(), 1);
 
@@ -741,8 +741,8 @@ fun round_trip_split_join_df_quantities() {
         inventory.deposit_item(assembly_id, assembly_key, &character, item);
 
         let inv_ref = df::borrow<ID, Inventory>(&storage_unit.id, character_id);
-        assert_eq!(inv_ref.item_quantity(AMMO_TYPE_ID), AMMO_QUANTITY);
-        assert_eq!(inv_ref.item_volume(AMMO_TYPE_ID), AMMO_VOLUME);
+        assert_eq!(inv_ref.item_quantity(TEST_ITEM_TYPE_ID), TEST_ITEM_QUANTITY);
+        assert_eq!(inv_ref.item_volume(TEST_ITEM_TYPE_ID), TEST_ITEM_VOLUME);
         assert_eq!(inv_ref.used_capacity(), 1000);
         assert_eq!(inv_ref.inventory_item_length(), 1);
 
@@ -762,13 +762,13 @@ fun round_trip_split_join_df_quantities() {
             assembly_id,
             assembly_key,
             &character,
-            AMMO_TYPE_ID,
-            AMMO_QUANTITY,
+            TEST_ITEM_TYPE_ID,
+            TEST_ITEM_QUANTITY,
             LOCATION_A_HASH,
             ts.ctx(),
         );
 
-        assert_eq!(inventory::quantity(&item), AMMO_QUANTITY);
+        assert_eq!(inventory::quantity(&item), TEST_ITEM_QUANTITY);
         let inv_ref = df::borrow<ID, Inventory>(&storage_unit.id, character_id);
         assert_eq!(inv_ref.used_capacity(), 0);
         assert_eq!(inv_ref.inventory_item_length(), 0);
@@ -789,8 +789,8 @@ fun round_trip_split_join_df_quantities() {
         inventory.deposit_item(assembly_id, assembly_key, &character, item);
 
         let inv_ref = df::borrow<ID, Inventory>(&storage_unit.id, character_id);
-        assert_eq!(inv_ref.item_quantity(AMMO_TYPE_ID), AMMO_QUANTITY);
-        assert_eq!(inv_ref.item_volume(AMMO_TYPE_ID), AMMO_VOLUME);
+        assert_eq!(inv_ref.item_quantity(TEST_ITEM_TYPE_ID), TEST_ITEM_QUANTITY);
+        assert_eq!(inv_ref.item_volume(TEST_ITEM_TYPE_ID), TEST_ITEM_VOLUME);
         assert_eq!(inv_ref.used_capacity(), 1000);
         assert_eq!(inv_ref.inventory_item_length(), 1);
 
@@ -825,9 +825,9 @@ fun mint_ignores_volume_change() {
             assembly_key,
             &character,
             tenant(),
-            AMMO_ITEM_ID,
-            AMMO_TYPE_ID,
-            AMMO_VOLUME,
+            TEST_ITEM_ITEM_ID,
+            TEST_ITEM_TYPE_ID,
+            TEST_ITEM_VOLUME,
             5u32,
         );
         ts::return_shared(storage_unit);
@@ -847,15 +847,15 @@ fun mint_ignores_volume_change() {
             assembly_key,
             &character,
             tenant(),
-            AMMO_ITEM_ID,
-            AMMO_TYPE_ID,
+            TEST_ITEM_ITEM_ID,
+            TEST_ITEM_TYPE_ID,
             50u64,
             3u32,
         );
 
         let inv_ref = df::borrow<ID, Inventory>(&storage_unit.id, character_id);
-        assert_eq!(inv_ref.item_quantity(AMMO_TYPE_ID), 8);
-        assert_eq!(inv_ref.item_volume(AMMO_TYPE_ID), AMMO_VOLUME);
+        assert_eq!(inv_ref.item_quantity(TEST_ITEM_TYPE_ID), 8);
+        assert_eq!(inv_ref.item_volume(TEST_ITEM_TYPE_ID), TEST_ITEM_VOLUME);
         // 5*100 + 3*100 = 800 (stored volume used, not incoming 50)
         assert_eq!(inv_ref.used_capacity(), 800);
         assert_eq!(inv_ref.remaining_capacity(), MAX_CAPACITY - 800);
@@ -892,9 +892,9 @@ fun deposit_ignores_volume_change() {
             assembly_key,
             &character_a,
             tenant(),
-            AMMO_ITEM_ID,
-            AMMO_TYPE_ID,
-            AMMO_VOLUME,
+            TEST_ITEM_ITEM_ID,
+            TEST_ITEM_TYPE_ID,
+            TEST_ITEM_VOLUME,
             5u32,
         );
         ts::return_shared(storage_unit);
@@ -921,8 +921,8 @@ fun deposit_ignores_volume_change() {
             assembly_key,
             &character_b,
             tenant(),
-            AMMO_ITEM_ID + 1,
-            AMMO_TYPE_ID,
+            TEST_ITEM_ITEM_ID + 1,
+            TEST_ITEM_TYPE_ID,
             50u64,
             3u32,
         );
@@ -943,7 +943,7 @@ fun deposit_ignores_volume_change() {
             assembly_id,
             assembly_key,
             &character_b,
-            AMMO_TYPE_ID,
+            TEST_ITEM_TYPE_ID,
             3u32,
             LOCATION_A_HASH,
             ts.ctx(),
@@ -959,8 +959,8 @@ fun deposit_ignores_volume_change() {
     {
         let storage_unit = ts::take_shared_by_id<StorageUnit>(&ts, storage_unit_id);
         let inv_a = df::borrow<ID, Inventory>(&storage_unit.id, character_a_id);
-        assert_eq!(inv_a.item_quantity(AMMO_TYPE_ID), 8);
-        assert_eq!(inv_a.item_volume(AMMO_TYPE_ID), AMMO_VOLUME);
+        assert_eq!(inv_a.item_quantity(TEST_ITEM_TYPE_ID), 8);
+        assert_eq!(inv_a.item_volume(TEST_ITEM_TYPE_ID), TEST_ITEM_VOLUME);
         // 5*100 + 3*100 = 800 (stored volume used for deposit capacity)
         assert_eq!(inv_a.used_capacity(), 800);
         assert_eq!(inv_a.remaining_capacity(), MAX_CAPACITY - 800);
@@ -994,7 +994,7 @@ fun round_trip_capacity_consistent_with_static_volume() {
             assembly_id,
             assembly_key,
             &character,
-            AMMO_TYPE_ID,
+            TEST_ITEM_TYPE_ID,
             5u32,
             LOCATION_A_HASH,
             ts.ctx(),
@@ -1019,7 +1019,7 @@ fun round_trip_capacity_consistent_with_static_volume() {
         inventory.deposit_item(assembly_id, assembly_key, &character, item);
 
         let inv_ref = df::borrow<ID, Inventory>(&storage_unit.id, character_id);
-        assert_eq!(inv_ref.item_quantity(AMMO_TYPE_ID), 10);
+        assert_eq!(inv_ref.item_quantity(TEST_ITEM_TYPE_ID), 10);
         assert_eq!(inv_ref.used_capacity(), 1000);
         assert_eq!(inv_ref.remaining_capacity(), 0);
 
@@ -1039,7 +1039,7 @@ fun round_trip_capacity_consistent_with_static_volume() {
             assembly_id,
             assembly_key,
             &character,
-            AMMO_TYPE_ID,
+            TEST_ITEM_TYPE_ID,
             10u32,
             LOCATION_A_HASH,
             ts.ctx(),
@@ -1117,10 +1117,10 @@ fun mint_items_fail_empty_type_id() {
             assembly_key,
             &character,
             tenant(),
-            AMMO_ITEM_ID,
+            TEST_ITEM_ITEM_ID,
             0,
-            AMMO_VOLUME,
-            AMMO_QUANTITY,
+            TEST_ITEM_VOLUME,
+            TEST_ITEM_QUANTITY,
         );
         ts::return_shared(character);
         ts::return_shared(storage_unit);
@@ -1155,8 +1155,8 @@ public fun burn_items_fail_item_not_found() {
             assembly_id,
             assembly_key,
             &character,
-            AMMO_TYPE_ID,
-            AMMO_QUANTITY,
+            TEST_ITEM_TYPE_ID,
+            TEST_ITEM_QUANTITY,
         );
         ts::return_shared(storage_unit);
         ts::return_shared(character);
@@ -1189,7 +1189,7 @@ public fun burn_items_fail_insufficient_quantity() {
             assembly_id,
             assembly_key,
             &character,
-            AMMO_TYPE_ID,
+            TEST_ITEM_TYPE_ID,
             15u32,
         );
         ts::return_shared(storage_unit);
@@ -1233,8 +1233,8 @@ fun deposit_item_fail_insufficient_capacity() {
             assembly_id,
             assembly_key,
             &character_a,
-            AMMO_TYPE_ID,
-            AMMO_QUANTITY,
+            TEST_ITEM_TYPE_ID,
+            TEST_ITEM_QUANTITY,
             LOCATION_A_HASH,
             ts.ctx(),
         );
@@ -1285,7 +1285,7 @@ fun withdraw_item_fail_item_not_found() {
             assembly_key,
             &character,
             1222,
-            AMMO_QUANTITY,
+            TEST_ITEM_QUANTITY,
             LOCATION_A_HASH,
             ts.ctx(),
         );
@@ -1322,7 +1322,7 @@ fun withdraw_fail_zero_quantity() {
             assembly_id,
             assembly_key,
             &character,
-            AMMO_TYPE_ID,
+            TEST_ITEM_TYPE_ID,
             0u32,
             LOCATION_A_HASH,
             ts.ctx(),
@@ -1359,7 +1359,7 @@ fun withdraw_fail_exceeds_quantity() {
             assembly_id,
             assembly_key,
             &character,
-            AMMO_TYPE_ID,
+            TEST_ITEM_TYPE_ID,
             15u32,
             LOCATION_A_HASH,
             ts.ctx(),
@@ -1399,9 +1399,9 @@ fun mint_fail_inventory_insufficient_capacity() {
             assembly_key,
             &character,
             tenant(),
-            AMMO_ITEM_ID,
-            AMMO_TYPE_ID,
-            AMMO_VOLUME,
+            TEST_ITEM_ITEM_ID,
+            TEST_ITEM_TYPE_ID,
+            TEST_ITEM_VOLUME,
             15u32,
         );
         ts::return_shared(character);
