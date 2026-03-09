@@ -3,6 +3,7 @@
 **/**/target
 **/**/.trace
 **/**/.coverage*
+**/Move.lock
 
 # Node.js dependencies
 node_modules/
