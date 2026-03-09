@@ -1,0 +1,100 @@
+{
+  "generatedAt": "2026-03-09T12:07:10.118Z",
+  "source": {
+    "baseUrl": "https://evedataco.re",
+    "note": "Off-chain reference data generated from Datacore type pages."
+  },
+  "summary": {
+    "requestedTypes": 7,
+    "resolvedTypes": 7,
+    "failedTypes": 0
+  },
+  "entries": [
+    {
+      "typeId": 446,
+      "name": "Unknown Type 446",
+      "category": "Unknown",
+      "group": "Unknown",
+      "defaultVolume": null,
+      "datacoreItemId": null,
+      "itemIds": [
+        444000001
+      ],
+      "sourceUrl": "https://evedataco.re/explore/types/446"
+    },
+    {
+      "typeId": 555,
+      "name": "Unknown Type 555",
+      "category": "Unknown",
+      "group": "Unknown",
+      "defaultVolume": null,
+      "datacoreItemId": null,
+      "itemIds": [
+        5550000012
+      ],
+      "sourceUrl": "https://evedataco.re/explore/types/555"
+    },
+    {
+      "typeId": 5555,
+      "name": "Unknown Type 5555",
+      "category": "Unknown",
+      "group": "Unknown",
+      "defaultVolume": null,
+      "datacoreItemId": null,
+      "itemIds": [
+        6001
+      ],
+      "sourceUrl": "https://evedataco.re/explore/types/5555"
+    },
+    {
+      "typeId": 87119,
+      "name": "Unknown Type 87119",
+      "category": "Unknown",
+      "group": "Unknown",
+      "defaultVolume": null,
+      "datacoreItemId": null,
+      "itemIds": [
+        9999000005
+      ],
+      "sourceUrl": "https://evedataco.re/explore/types/87119"
+    },
+    {
+      "typeId": 88068,
+      "name": "Unknown Type 88068",
+      "category": "Unknown",
+      "group": "Unknown",
+      "defaultVolume": null,
+      "datacoreItemId": null,
+      "itemIds": [
+        9999000006
+      ],
+      "sourceUrl": "https://evedataco.re/explore/types/88068"
+    },
+    {
+      "typeId": 88082,
+      "name": "Unknown Type 88082",
+      "category": "Unknown",
+      "group": "Unknown",
+      "defaultVolume": null,
+      "datacoreItemId": null,
+      "itemIds": [
+        888800006
+      ],
+      "sourceUrl": "https://evedataco.re/explore/types/88082"
+    },
+    {
+      "typeId": 88086,
+      "name": "Unknown Type 88086",
+      "category": "Unknown",
+      "group": "Unknown",
+      "defaultVolume": null,
+      "datacoreItemId": null,
+      "itemIds": [
+        90185,
+        90186
+      ],
+      "sourceUrl": "https://evedataco.re/explore/types/88086"
+    }
+  ],
+  "failures": []
+}
