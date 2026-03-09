@@ -1,99 +1,3344 @@
 {
-  "generatedAt": "2026-03-09T12:07:10.118Z",
+  "generatedAt": "2026-03-09T12:21:45.592Z",
   "source": {
     "baseUrl": "https://evedataco.re",
-    "note": "Off-chain reference data generated from Datacore type pages."
+    "note": "Off-chain reference data generated from Datacore /api-stillness/types.",
+    "scope": "all"
   },
   "summary": {
-    "requestedTypes": 7,
-    "resolvedTypes": 7,
+    "requestedTypes": 332,
+    "resolvedTypes": 332,
     "failedTypes": 0
   },
   "entries": [
     {
-      "typeId": 446,
-      "name": "Unknown Type 446",
-      "category": "Unknown",
-      "group": "Unknown",
-      "defaultVolume": null,
-      "datacoreItemId": null,
-      "itemIds": [
-        444000001
-      ],
-      "sourceUrl": "https://evedataco.re/explore/types/446"
+      "typeId": 72244,
+      "name": "Feral Data",
+      "category": "Commodity",
+      "group": "Rogue Drone Analysis Data",
+      "defaultVolume": 0.10000000149011612,
+      "datacoreItemId": "45235012352059196166060987948079136779801025207250811219331207816631998001847",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/72244"
     },
     {
-      "typeId": 555,
-      "name": "Unknown Type 555",
-      "category": "Unknown",
-      "group": "Unknown",
-      "defaultVolume": null,
-      "datacoreItemId": null,
-      "itemIds": [
-        5550000012
-      ],
-      "sourceUrl": "https://evedataco.re/explore/types/555"
+      "typeId": 72960,
+      "name": "Hull Repairer",
+      "category": "Module",
+      "group": "Hull Repair Unit",
+      "defaultVolume": 12.5,
+      "datacoreItemId": "87793187498469762423981212042485346723329266176604296361472759698346519175975",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/72960"
     },
     {
-      "typeId": 5555,
-      "name": "Unknown Type 5555",
-      "category": "Unknown",
-      "group": "Unknown",
-      "defaultVolume": null,
-      "datacoreItemId": null,
-      "itemIds": [
-        6001
-      ],
-      "sourceUrl": "https://evedataco.re/explore/types/5555"
+      "typeId": 73192,
+      "name": "Ophidian Sensor Cloak",
+      "category": "Commodity",
+      "group": "License",
+      "defaultVolume": 1,
+      "datacoreItemId": "16491700760890788097030684520397255910840617636529963830003925791980564648782",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/73192"
+    },
+    {
+      "typeId": 73210,
+      "name": "Askur Access Code Cypher",
+      "category": "Commodity",
+      "group": "Commodities",
+      "defaultVolume": 0.10000000149011612,
+      "datacoreItemId": "5025387763494769487400240807641234536420232152265155382007003770276565648633",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/73210"
+    },
+    {
+      "typeId": 73264,
+      "name": "Askur Hive Orders",
+      "category": "Commodity",
+      "group": "Commodities",
+      "defaultVolume": 0.10000000149011612,
+      "datacoreItemId": "26799644604867792570909503939494725416508668242558210240152252103427601980291",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/73264"
+    },
+    {
+      "typeId": 73314,
+      "name": "Settler Intelligence Briefing",
+      "category": "Commodity",
+      "group": "General",
+      "defaultVolume": 0.10000000149011612,
+      "datacoreItemId": "2166896869766677584530440025776873791436083693885613416898444439985939980167",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/73314"
+    },
+    {
+      "typeId": 77484,
+      "name": "Crude Extractor",
+      "category": "Module",
+      "group": "Crude Extractor",
+      "defaultVolume": 20,
+      "datacoreItemId": "67414187251128716561670577389845996551996954956917878774166726969100772133710",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/77484"
+    },
+    {
+      "typeId": 77518,
+      "name": "Lens 3X",
+      "category": "Charge",
+      "group": "Crude Mining Lens",
+      "defaultVolume": 10,
+      "datacoreItemId": "81122252930637930208440956029134514102758156312885229427541994678528325773334",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/77518"
+    },
+    {
+      "typeId": 77728,
+      "name": "Sophrogon",
+      "category": "Material",
+      "group": "Mineral",
+      "defaultVolume": 1,
+      "datacoreItemId": "5426060460386341134034794032212765818343432541106508090211036285260553158658",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/77728"
+    },
+    {
+      "typeId": 77729,
+      "name": "Old Crude Matter",
+      "category": "Asteroid",
+      "group": "Rift",
+      "defaultVolume": 1,
+      "datacoreItemId": "16547294869424327897746957676410653533167870642308424799722544273668833037260",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/77729"
+    },
+    {
+      "typeId": 77753,
+      "name": "Embark",
+      "category": "Module",
+      "group": "Hydrogen Engines",
+      "defaultVolume": 50,
+      "datacoreItemId": "40355499242942717279319600158790798907842234935628620173026384573750353192524",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/77753"
+    },
+    {
+      "typeId": 77800,
+      "name": "Feldspar Crystals",
+      "category": "Asteroid",
+      "group": "Char Ores",
+      "defaultVolume": 1,
+      "datacoreItemId": "3725376810812870852705444693294252674472410729029260297833303372472495153351",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/77800"
+    },
+    {
+      "typeId": 77801,
+      "name": "Nickel-Iron Veins",
+      "category": "Material",
+      "group": "Mineral",
+      "defaultVolume": 0.10000000149011612,
+      "datacoreItemId": "6645208777098630952294799910889018156440240777863138873940811767969312000461",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/77801"
+    },
+    {
+      "typeId": 77803,
+      "name": "Silicon Dust",
+      "category": "Material",
+      "group": "Mineral",
+      "defaultVolume": 0.10000000149011612,
+      "datacoreItemId": "83009751138259273789314677078135856180713171064988859574465222214458219046305",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/77803"
+    },
+    {
+      "typeId": 77804,
+      "name": "Tholin Aggregates",
+      "category": "Material",
+      "group": "Mineral",
+      "defaultVolume": 0.10000000149011612,
+      "datacoreItemId": "16608569028445011186567013935016535115251916259289773229357174101327618705325",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/77804"
+    },
+    {
+      "typeId": 77805,
+      "name": "Platinum-Group Veins",
+      "category": "Material",
+      "group": "Mineral",
+      "defaultVolume": 0.009999999776482582,
+      "datacoreItemId": "1327505873940013120758462688078139315819879088289946115608416774396316552021",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/77805"
+    },
+    {
+      "typeId": 77810,
+      "name": "Platinum-Palladium Matrix",
+      "category": "Asteroid",
+      "group": "Slag Ores",
+      "defaultVolume": 1,
+      "datacoreItemId": "8917962265772235679403104984003790058402323547772832483043898899751438867120",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/77810"
+    },
+    {
+      "typeId": 77811,
+      "name": "Hydrated Sulfide Matrix",
+      "category": "Asteroid",
+      "group": "Comet Ores",
+      "defaultVolume": 1,
+      "datacoreItemId": "93971334893872380566904028678350125351978948326134701957554791477204944728121",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/77811"
+    },
+    {
+      "typeId": 77818,
+      "name": "Unstable Fuel",
+      "category": "Commodity",
+      "group": "Hydrogen Fuel",
+      "defaultVolume": 0.2800000011920929,
+      "datacoreItemId": "21060754760332631444819249910353972166249370445700618592877004689214568553846",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/77818"
+    },
+    {
+      "typeId": 77852,
+      "name": "Small Cutting Laser",
+      "category": "Module",
+      "group": "Asteroid Mining Laser",
+      "defaultVolume": 20,
+      "datacoreItemId": "95533237515046643899389449777139347671343575667266021751783175749000036906920",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/77852"
+    },
+    {
+      "typeId": 77917,
+      "name": "Smart Storage Unit L",
+      "category": "Deployable",
+      "group": "Storage",
+      "defaultVolume": 1000,
+      "datacoreItemId": "40940100685277480868188035339656740127653026096071252140357881826189299333775",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/77917"
+    },
+    {
+      "typeId": 78416,
+      "name": "Apocalypse Protocol Frame",
+      "category": "Commodity",
+      "group": "Exotronic Frames",
+      "defaultVolume": 360,
+      "datacoreItemId": "43869463947154298475963585442575810086081552799825701557299721912493642638862",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/78416"
+    },
+    {
+      "typeId": 78417,
+      "name": "Bastion Program Frame",
+      "category": "Commodity",
+      "group": "Exotronic Frames",
+      "defaultVolume": 120,
+      "datacoreItemId": "114480718682143393635152318293453889066129723633302951706774833117608022158369",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/78417"
+    },
+    {
+      "typeId": 78418,
+      "name": "Nomad Program Frame",
+      "category": "Commodity",
+      "group": "Exotronic Frames",
+      "defaultVolume": 30,
+      "datacoreItemId": "112743344140449679568547461461670656467589517754581445071590194526237196968429",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/78418"
+    },
+    {
+      "typeId": 78420,
+      "name": "Archangel Protocol Frame",
+      "category": "Commodity",
+      "group": "Exotronic Frames",
+      "defaultVolume": 120,
+      "datacoreItemId": "14538166757065871771816909318603082865411928066634491552392545684815113755760",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/78420"
+    },
+    {
+      "typeId": 78421,
+      "name": "Exterminata Protocol Frame",
+      "category": "Commodity",
+      "group": "Exotronic Frames",
+      "defaultVolume": 120,
+      "datacoreItemId": "44736983717468904530931349626026425344985375461797124508169029241848645878547",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/78421"
+    },
+    {
+      "typeId": 78422,
+      "name": "Equilibrium Program Frame",
+      "category": "Commodity",
+      "group": "Exotronic Frames",
+      "defaultVolume": 7200,
+      "datacoreItemId": "54964437814479566560503406084448631826128122504723338546699719144125540119675",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/78422"
+    },
+    {
+      "typeId": 78423,
+      "name": "Water Ice",
+      "category": "Material",
+      "group": "Mineral",
+      "defaultVolume": 0.10000000149011612,
+      "datacoreItemId": "6933547074452663910436584564951879005703584681330831098682410320676981943355",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/78423"
+    },
+    {
+      "typeId": 78426,
+      "name": "Iridosmine Nodules",
+      "category": "Asteroid",
+      "group": "Ingot Ores",
+      "defaultVolume": 1,
+      "datacoreItemId": "39979776667007136353808342935515008268608452898360954585512133830930172448606",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/78426"
+    },
+    {
+      "typeId": 78429,
+      "name": "Deep-Core Carbon Ore",
+      "category": "Asteroid",
+      "group": "Deep-Core Carbon Asteroid",
+      "defaultVolume": 1,
+      "datacoreItemId": "70328353332326396893579379322725520013726399695835710351328330978830607335297",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/78429"
+    },
+    {
+      "typeId": 78434,
+      "name": "Young Crude Matter",
+      "category": "Asteroid",
+      "group": "Rift",
+      "defaultVolume": 1,
+      "datacoreItemId": "94875462503318965317610204602034195220419222124408595288881136441829773595025",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/78434"
+    },
+    {
+      "typeId": 78435,
+      "name": "Eupraxite",
+      "category": "Material",
+      "group": "Mineral",
+      "defaultVolume": 1,
+      "datacoreItemId": "29000134251730766148504276193031920869710440967753961385939993813393962247929",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/78435"
+    },
+    {
+      "typeId": 78437,
+      "name": "EU-90 Fuel",
+      "category": "Commodity",
+      "group": "Crude Fuel",
+      "defaultVolume": 0.2800000011920929,
+      "datacoreItemId": "65942130895751454089742421573254546356205618580174742434740183554344633671528",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/78437"
+    },
+    {
+      "typeId": 78446,
+      "name": "Methane Ice Shards",
+      "category": "Asteroid",
+      "group": "Dewdrop Ores",
+      "defaultVolume": 1,
+      "datacoreItemId": "85528052646318622400302762496454791752189846056384304216863862700967364889366",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/78446"
+    },
+    {
+      "typeId": 78447,
+      "name": "Primitive Kerogen Matrix",
+      "category": "Asteroid",
+      "group": "Ember Ores",
+      "defaultVolume": 1,
+      "datacoreItemId": "82654076386305192248412225860517282067204226057389857447438175452547779414469",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/78447"
+    },
+    {
+      "typeId": 78448,
+      "name": "Aromatic Carbon Veins",
+      "category": "Asteroid",
+      "group": "Glint Ores",
+      "defaultVolume": 1,
+      "datacoreItemId": "41187877470224419667841039031655895381563183998982719594772189664454980939967",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/78448"
+    },
+    {
+      "typeId": 78449,
+      "name": "Tholin Nodules",
+      "category": "Asteroid",
+      "group": "Soot Ores",
+      "defaultVolume": 1,
+      "datacoreItemId": "51843729273665877482657696044524885885020859899416068585964262545295993379239",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/78449"
+    },
+    {
+      "typeId": 78450,
+      "name": "Fluid Core Hermetite",
+      "category": "Asteroid",
+      "group": "Synthetic Hermetite",
+      "defaultVolume": 1,
+      "datacoreItemId": "92649355996837241325270281471942818363627767331582870078824363003770713433693",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/78450"
+    },
+    {
+      "typeId": 78451,
+      "name": "Crystallizing Core Hermetite",
+      "category": "Asteroid",
+      "group": "Synthetic Hermetite",
+      "defaultVolume": 1,
+      "datacoreItemId": "99570313544355604906557672372653885383853021476985900627948595927601932062016",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/78451"
+    },
+    {
+      "typeId": 78452,
+      "name": "Stale Core Hermetite",
+      "category": "Asteroid",
+      "group": "Synthetic Hermetite",
+      "defaultVolume": 1,
+      "datacoreItemId": "115121369136182453721987558196087174668059635881526474885000372052546550479065",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/78452"
+    },
+    {
+      "typeId": 78453,
+      "name": "Sediment Core Hermetite",
+      "category": "Asteroid",
+      "group": "Synthetic Hermetite",
+      "defaultVolume": 1,
+      "datacoreItemId": "77973557694617923017026156006761778752882217437943768087661302956007994909956",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/78453"
+    },
+    {
+      "typeId": 78490,
+      "name": "Velocity CD81",
+      "category": "Module",
+      "group": "Crude Engines",
+      "defaultVolume": 100,
+      "datacoreItemId": "5757808753105481475235424091412584378521265346236347438445465233780810400951",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/78490"
+    },
+    {
+      "typeId": 78502,
+      "name": "Velocity CD82",
+      "category": "Module",
+      "group": "Crude Engines",
+      "defaultVolume": 200,
+      "datacoreItemId": "98407096308317890982548922235305353128368413018571989059931734344282909970392",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/78502"
+    },
+    {
+      "typeId": 78504,
+      "name": "Tempo CD43",
+      "category": "Module",
+      "group": "Crude Engines",
+      "defaultVolume": 400,
+      "datacoreItemId": "12361236191374566650182716089397781024959078790059390443976369145068047738892",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/78504"
+    },
+    {
+      "typeId": 78506,
+      "name": "Celerity CD01",
+      "category": "Module",
+      "group": "Crude Engines",
+      "defaultVolume": 100,
+      "datacoreItemId": "75277707367561200302736883580181545257031065900099467845872702072437874185727",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/78506"
+    },
+    {
+      "typeId": 78507,
+      "name": "Celerity CD02",
+      "category": "Module",
+      "group": "Crude Engines",
+      "defaultVolume": 200,
+      "datacoreItemId": "1821937893783649727985225541276599322959078294294117210371976004562348408493",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/78507"
+    },
+    {
+      "typeId": 78508,
+      "name": "Celerity CD03",
+      "category": "Module",
+      "group": "Crude Engines",
+      "defaultVolume": 400,
+      "datacoreItemId": "63034131821297967205095182660676383620403858912475774910590722745371913493181",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/78508"
+    },
+    {
+      "typeId": 78510,
+      "name": "Tempo CD42",
+      "category": "Module",
+      "group": "Crude Engines",
+      "defaultVolume": 200,
+      "datacoreItemId": "10334534550051498318821373962878909862375315230878682302563212165539418207540",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/78510"
+    },
+    {
+      "typeId": 78511,
+      "name": "Tempo CD41",
+      "category": "Module",
+      "group": "Crude Engines",
+      "defaultVolume": 100,
+      "datacoreItemId": "15995551493052646059518231190343916933306040244289974403120452813799802311074",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/78511"
+    },
+    {
+      "typeId": 78515,
+      "name": "SOF-80 Fuel",
+      "category": "Commodity",
+      "group": "Crude Fuel",
+      "defaultVolume": 0.2800000011920929,
+      "datacoreItemId": "94894977970318478378961709682991524020557283899903502887516758053012815243740",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/78515"
+    },
+    {
+      "typeId": 78516,
+      "name": "EU-40 Fuel",
+      "category": "Commodity",
+      "group": "Crude Fuel",
+      "defaultVolume": 0.2800000011920929,
+      "datacoreItemId": "87287415784859393810559123967402248216054956992605429324700179230991923737084",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/78516"
+    },
+    {
+      "typeId": 81609,
+      "name": "USV",
+      "category": "Ship",
+      "group": "Frigate",
+      "defaultVolume": 40600,
+      "datacoreItemId": "52356452365823579892419425565116816326273216012324107969893739708914100880244",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/81609"
+    },
+    {
+      "typeId": 81611,
+      "name": "Chumaq",
+      "category": "Ship",
+      "group": "Combat Battlecruiser",
+      "defaultVolume": 2315100,
+      "datacoreItemId": "89001301782736642429231760592134688748136634389368158324423479315642867850373",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/81611"
+    },
+    {
+      "typeId": 81656,
+      "name": "EM Disintegrator (S)",
+      "category": "Module",
+      "group": "Precursor Weapon",
+      "defaultVolume": 20,
+      "datacoreItemId": "80357495045137579582721063247596997629049748327241499417144579859166396011133",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/81656"
+    },
+    {
+      "typeId": 81657,
+      "name": "EM Disintegrator (M)",
+      "category": "Module",
+      "group": "Precursor Weapon",
+      "defaultVolume": 80,
+      "datacoreItemId": "98591758584796852902459632624298818750225117913067108826963921301255109694655",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/81657"
+    },
+    {
+      "typeId": 81658,
+      "name": "EM Disintegrator Charge (S)",
+      "category": "Charge",
+      "group": "EM Disintegrator Charge",
+      "defaultVolume": 0.006000000052154064,
+      "datacoreItemId": "62380065226319658644390527330282867876629442309227765239094590677184151527986",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/81658"
+    },
+    {
+      "typeId": 81808,
+      "name": "TADES",
+      "category": "Ship",
+      "group": "Destroyer",
+      "defaultVolume": 104100,
+      "datacoreItemId": "30735756692764652921997778541972890724794528837106556159439309287454333115321",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/81808"
+    },
+    {
+      "typeId": 81846,
+      "name": "Sojourn",
+      "category": "Module",
+      "group": "Hydrogen Engines",
+      "defaultVolume": 50,
+      "datacoreItemId": "33906121006995061442896630370990214625730478471099094027615090560041838093475",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/81846"
+    },
+    {
+      "typeId": 81904,
+      "name": "MCF",
+      "category": "Ship",
+      "group": "Frigate",
+      "defaultVolume": 69600,
+      "datacoreItemId": "700351292313500021864799000130938414729565692100570486849555150664975212884",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/81904"
+    },
+    {
+      "typeId": 81972,
+      "name": "Base Coilgun (S)",
+      "category": "Module",
+      "group": "Mass Driver Weapon",
+      "defaultVolume": 20,
+      "datacoreItemId": "93365409448089770437026494186630103123346454074885573524010810615577000650045",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/81972"
+    },
+    {
+      "typeId": 81974,
+      "name": "Base Autocannon (S)",
+      "category": "Module",
+      "group": "Projectile Weapon",
+      "defaultVolume": 20,
+      "datacoreItemId": "97406697179121589983081144505407213360580751745937241879325760941570822311812",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/81974"
+    },
+    {
+      "typeId": 82028,
+      "name": "Base Coilgun (M)",
+      "category": "Module",
+      "group": "Mass Driver Weapon",
+      "defaultVolume": 80,
+      "datacoreItemId": "25856961283888429435282983493438974629669816210075746191363815622599343237913",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/82028"
+    },
+    {
+      "typeId": 82030,
+      "name": "Base Howitzer (M)",
+      "category": "Module",
+      "group": "Projectile Weapon",
+      "defaultVolume": 80,
+      "datacoreItemId": "110237861701373583637017426749798559906074982760357882777095651566395001548601",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/82030"
+    },
+    {
+      "typeId": 82032,
+      "name": "Base Rapid Plasma (S)",
+      "category": "Module",
+      "group": "Plasma Weapon",
+      "defaultVolume": 20,
+      "datacoreItemId": "79584439591027904377893801529308262948912590325291420438045634761357565725468",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/82032"
+    },
+    {
+      "typeId": 82033,
+      "name": "Rapid Plasma (M)",
+      "category": "Module",
+      "group": "Plasma Weapon",
+      "defaultVolume": 80,
+      "datacoreItemId": "4691894345331825336720796391740986243667469177868726647203680896845692596067",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/82033"
+    },
+    {
+      "typeId": 82084,
+      "name": "Tier 2 Autocannon (S)",
+      "category": "Module",
+      "group": "Projectile Weapon",
+      "defaultVolume": 20,
+      "datacoreItemId": "75302726546493993609464930028310667769699575410629526071077763059157137520467",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/82084"
+    },
+    {
+      "typeId": 82085,
+      "name": "Tier 3 Autocannon (S)",
+      "category": "Module",
+      "group": "Projectile Weapon",
+      "defaultVolume": 20,
+      "datacoreItemId": "17425897347073237939260644860669617420381248610458105209677144676547141050510",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/82085"
+    },
+    {
+      "typeId": 82086,
+      "name": "Tier 2 Rapid Plasma (S)",
+      "category": "Module",
+      "group": "Plasma Weapon",
+      "defaultVolume": 20,
+      "datacoreItemId": "10769041317415191467500698031619961161445861564193449152737875937761112377397",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/82086"
+    },
+    {
+      "typeId": 82087,
+      "name": "Tier 3 Rapid Plasma (S)",
+      "category": "Module",
+      "group": "Plasma Weapon",
+      "defaultVolume": 20,
+      "datacoreItemId": "103035870682956761695152307795481414788882421784358015773248514069339951862074",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/82087"
+    },
+    {
+      "typeId": 82088,
+      "name": "Tier 2 Coilgun (S)",
+      "category": "Module",
+      "group": "Mass Driver Weapon",
+      "defaultVolume": 20,
+      "datacoreItemId": "90963977466911457793242011036087975379721948013219546245431844575233911344465",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/82088"
+    },
+    {
+      "typeId": 82089,
+      "name": "Tier 3 Coilgun (S)",
+      "category": "Module",
+      "group": "Mass Driver Weapon",
+      "defaultVolume": 20,
+      "datacoreItemId": "112836649711354949825065280022497804992409746550647631949363846979573954419112",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/82089"
+    },
+    {
+      "typeId": 82090,
+      "name": "Tier 2 EM Disintegrator (S)",
+      "category": "Module",
+      "group": "Precursor Weapon",
+      "defaultVolume": 20,
+      "datacoreItemId": "85276146878092053391177548194078903164772828273107764983320397022092788816114",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/82090"
+    },
+    {
+      "typeId": 82091,
+      "name": "Tier 3 EM Disintegrator (S)",
+      "category": "Module",
+      "group": "Precursor Weapon",
+      "defaultVolume": 20,
+      "datacoreItemId": "93123640456899288372068013403854346116062154979090892868827408340367864113411",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/82091"
+    },
+    {
+      "typeId": 82092,
+      "name": "Tier 2 Coilgun (M)",
+      "category": "Module",
+      "group": "Mass Driver Weapon",
+      "defaultVolume": 80,
+      "datacoreItemId": "5581499026089352505970145092015313267672226270799798608060483540669531617466",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/82092"
+    },
+    {
+      "typeId": 82093,
+      "name": "Tier 3 Coilgun (M)",
+      "category": "Module",
+      "group": "Mass Driver Weapon",
+      "defaultVolume": 80,
+      "datacoreItemId": "111030730467166497280432458362502892654274681504024493238779802634668108696759",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/82093"
+    },
+    {
+      "typeId": 82094,
+      "name": "Tier 2 EM Disintegrator (M)",
+      "category": "Module",
+      "group": "Precursor Weapon",
+      "defaultVolume": 80,
+      "datacoreItemId": "59102924718020851151242963621988360717663922470928802036496154788091167849509",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/82094"
+    },
+    {
+      "typeId": 82095,
+      "name": "Tier 3 EM Disintegrator (M)",
+      "category": "Module",
+      "group": "Precursor Weapon",
+      "defaultVolume": 80,
+      "datacoreItemId": "65518864072889534715198956381230877336668662778380855899656130821227650280926",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/82095"
+    },
+    {
+      "typeId": 82096,
+      "name": "Tier 2 Rapid Plasma (M)",
+      "category": "Module",
+      "group": "Plasma Weapon",
+      "defaultVolume": 80,
+      "datacoreItemId": "54041535891539602076423306839146160546020175951577051221196764894740869152099",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/82096"
+    },
+    {
+      "typeId": 82097,
+      "name": "Tier 3 Rapid Plasma (M)",
+      "category": "Module",
+      "group": "Plasma Weapon",
+      "defaultVolume": 80,
+      "datacoreItemId": "111158346676483988724145921571744455914640223891422829795036709273265939413641",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/82097"
+    },
+    {
+      "typeId": 82098,
+      "name": "Tier 2 Howitzer (M)",
+      "category": "Module",
+      "group": "Projectile Weapon",
+      "defaultVolume": 80,
+      "datacoreItemId": "103780369786581972970529667317203961198547073887326845969897238820021546271369",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/82098"
+    },
+    {
+      "typeId": 82099,
+      "name": "Tier 3 Howitzer (M)",
+      "category": "Module",
+      "group": "Projectile Weapon",
+      "defaultVolume": 80,
+      "datacoreItemId": "82144322374170078680879123422080318172730973134483381787777718728334709658857",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/82099"
+    },
+    {
+      "typeId": 82126,
+      "name": "AC Gyrojet Ammo 2 (S)",
+      "category": "Charge",
+      "group": "Gyrojet Ammunition",
+      "defaultVolume": 0.30000001192092896,
+      "datacoreItemId": "66064774561328996787127480678808013063783049314700046670336613830869077126659",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/82126"
+    },
+    {
+      "typeId": 82127,
+      "name": "AC Gyrojet Ammo 3 (S)",
+      "category": "Charge",
+      "group": "Gyrojet Ammunition",
+      "defaultVolume": 0.30000001192092896,
+      "datacoreItemId": "23080856228730961423923719648134086372274183628868118055098484998459051942777",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/82127"
+    },
+    {
+      "typeId": 82128,
+      "name": "AC Gyrojet Ammo 1 (S)",
+      "category": "Charge",
+      "group": "Gyrojet Ammunition",
+      "defaultVolume": 0.30000001192092896,
+      "datacoreItemId": "94065623449206765665704604155015561027806047326273340439446150993927552512816",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/82128"
+    },
+    {
+      "typeId": 82130,
+      "name": "Rapid Plasma Ammo 1 (S)",
+      "category": "Charge",
+      "group": "Plasma Charge",
+      "defaultVolume": 0.30000001192092896,
+      "datacoreItemId": "109347207658332637375535162625088603956118764511730825038523124322194732789096",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/82130"
+    },
+    {
+      "typeId": 82131,
+      "name": "Rapid Plasma Ammo 2 (S)",
+      "category": "Charge",
+      "group": "Plasma Charge",
+      "defaultVolume": 0.30000001192092896,
+      "datacoreItemId": "8281392772818464483049657519924533702379363066816194430563477898760751549931",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/82131"
+    },
+    {
+      "typeId": 82132,
+      "name": "Rapid Plasma Ammo 1 (M)",
+      "category": "Charge",
+      "group": "Plasma Charge",
+      "defaultVolume": 0.6499999761581421,
+      "datacoreItemId": "33413067075483399271512870876254872856657849560482099132832655679756639586841",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/82132"
+    },
+    {
+      "typeId": 82133,
+      "name": "Coilgun Ammo 1 (S)",
+      "category": "Charge",
+      "group": "Coilgun Charge",
+      "defaultVolume": 0.30000001192092896,
+      "datacoreItemId": "87989597162801387010449643348430950027340202835066390416033027589688022070857",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/82133"
+    },
+    {
+      "typeId": 82134,
+      "name": "Coilgun Ammo 1 (M)",
+      "category": "Charge",
+      "group": "Coilgun Charge",
+      "defaultVolume": 0.6499999761581421,
+      "datacoreItemId": "36509975271422331056492833032008121189874205791248798002847785569922328926746",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/82134"
+    },
+    {
+      "typeId": 82137,
+      "name": "EM Disintegrator Charge (M)",
+      "category": "Charge",
+      "group": "EM Disintegrator Charge",
+      "defaultVolume": 0.012000000104308128,
+      "datacoreItemId": "35712176772913357576672346113560772874038039081139977368268451474352798321032",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/82137"
+    },
+    {
+      "typeId": 82140,
+      "name": "Howitzer Ammo 1 (M)",
+      "category": "Charge",
+      "group": "Projectile Ammo",
+      "defaultVolume": 0.6499999761581421,
+      "datacoreItemId": "55645557256980099279772605454689913068152410505013282623321288199420643592910",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/82140"
+    },
+    {
+      "typeId": 82410,
+      "name": "Explosive Nanite Sequencer",
+      "category": "Charge",
+      "group": "Nanitic Armor Weave Sequencer",
+      "defaultVolume": 20,
+      "datacoreItemId": "60884975057313809680618764909858045895945803274213040840088288478276699104348",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/82410"
+    },
+    {
+      "typeId": 82411,
+      "name": "EM Nanite Sequencer",
+      "category": "Charge",
+      "group": "Nanitic Armor Weave Sequencer",
+      "defaultVolume": 20,
+      "datacoreItemId": "28338465586562016366745854166287352094682340057508219983872694064357736292412",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/82411"
+    },
+    {
+      "typeId": 82412,
+      "name": "Thermal Nanite Sequencer",
+      "category": "Charge",
+      "group": "Nanitic Armor Weave Sequencer",
+      "defaultVolume": 20,
+      "datacoreItemId": "31565893876113362892426974015901262450886776958474276025602893167134746381739",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/82412"
+    },
+    {
+      "typeId": 82413,
+      "name": "Kinetic Nanite Sequencer",
+      "category": "Charge",
+      "group": "Nanitic Armor Weave Sequencer",
+      "defaultVolume": 20,
+      "datacoreItemId": "3550743246968703827725283436726726630810407155577912116201385595555715262947",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/82413"
+    },
+    {
+      "typeId": 82424,
+      "name": "HAF",
+      "category": "Ship",
+      "group": "Frigate",
+      "defaultVolume": 96332.9375,
+      "datacoreItemId": "19749923480059559616504732096218367576610397101396692003249214717631564524605",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/82424"
+    },
+    {
+      "typeId": 82426,
+      "name": "LORHA",
+      "category": "Ship",
+      "group": "Frigate",
+      "defaultVolume": 43400,
+      "datacoreItemId": "110444938308964610876113647866979456547755722005121194598550494537060950129313",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/82426"
+    },
+    {
+      "typeId": 82430,
+      "name": "MAUL",
+      "category": "Ship",
+      "group": "Cruiser",
+      "defaultVolume": 743900,
+      "datacoreItemId": "36706654053222314271045969143298249530817613094555187259498584926631369889841",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/82430"
+    },
+    {
+      "typeId": 82647,
+      "name": "Bulky Armor Plates II",
+      "category": "Module",
+      "group": "Defensive System",
+      "defaultVolume": 40,
+      "datacoreItemId": "49691272928410853167037420268255346623330562588633081258348712136453384033503",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/82647"
+    },
+    {
+      "typeId": 82648,
+      "name": "Coated Armor Plates II",
+      "category": "Module",
+      "group": "Defensive System",
+      "defaultVolume": 40,
+      "datacoreItemId": "67580870152105238953934531351781351299476847190713553040534852674139448013269",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/82648"
+    },
+    {
+      "typeId": 82649,
+      "name": "Reactive Armor Plates II",
+      "category": "Module",
+      "group": "Defensive System",
+      "defaultVolume": 40,
+      "datacoreItemId": "66657539618341834420871335851684031555611782934129945016148511170529564906901",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/82649"
+    },
+    {
+      "typeId": 82650,
+      "name": "Nimble Armor Plates II",
+      "category": "Module",
+      "group": "Defensive System",
+      "defaultVolume": 40,
+      "datacoreItemId": "108875732765970287134725397474596871438513903703946792356859011457828421583101",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/82650"
+    },
+    {
+      "typeId": 82651,
+      "name": "Systematic Armor Restorer II",
+      "category": "Module",
+      "group": "Armor Repair Unit",
+      "defaultVolume": 150,
+      "datacoreItemId": "108919217374996627470712187617781729263882056291986745650775690857981719289475",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/82651"
+    },
+    {
+      "typeId": 82652,
+      "name": "Bulwark Shield Generator II",
+      "category": "Module",
+      "group": "Defensive System",
+      "defaultVolume": 120,
+      "datacoreItemId": "43681424271415965988488663360397489272729383665721818925081086797458827888163",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/82652"
+    },
+    {
+      "typeId": 82653,
+      "name": "Attuned Shield Generator II",
+      "category": "Module",
+      "group": "Defensive System",
+      "defaultVolume": 120,
+      "datacoreItemId": "55251796391621898531312590716034552151746645305790266061574040352560914048353",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/82653"
+    },
+    {
+      "typeId": 82654,
+      "name": "Reinforced Shield Generator II",
+      "category": "Module",
+      "group": "Defensive System",
+      "defaultVolume": 120,
+      "datacoreItemId": "76628753748729650265979733010603877079442933450701852456794702536793998338555",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/82654"
+    },
+    {
+      "typeId": 82667,
+      "name": "Shield Restorer II",
+      "category": "Module",
+      "group": "Shield Recharger",
+      "defaultVolume": 150,
+      "datacoreItemId": "71735004883271420680893866165027408683593030475358510269843879537532098082202",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/82667"
+    },
+    {
+      "typeId": 82681,
+      "name": "Afterburner II",
+      "category": "Module",
+      "group": "Propulsion Module",
+      "defaultVolume": 20,
+      "datacoreItemId": "29233509932286961805052156841806611113904268476481260578836586744078120074559",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/82681"
+    },
+    {
+      "typeId": 82682,
+      "name": "Warp Entangler II",
+      "category": "Module",
+      "group": "Warp Scrambler",
+      "defaultVolume": 50,
+      "datacoreItemId": "78951624620897079583505097058973694343998159244520951991918620066563068651682",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/82682"
+    },
+    {
+      "typeId": 82683,
+      "name": "Stasis Net II",
+      "category": "Module",
+      "group": "Stasis Web",
+      "defaultVolume": 50,
+      "datacoreItemId": "44768257433824138505114320536950389668144049572710633754803502885341987619016",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/82683"
+    },
+    {
+      "typeId": 82915,
+      "name": "Afterburner IV",
+      "category": "Module",
+      "group": "Propulsion Module",
+      "defaultVolume": 20,
+      "datacoreItemId": "94059092915263568083546192170580327710189390031373396115900261409834871023438",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/82915"
+    },
+    {
+      "typeId": 83421,
+      "name": "Bulky Armor Plates III",
+      "category": "Module",
+      "group": "Defensive System",
+      "defaultVolume": 80,
+      "datacoreItemId": "19319539822798880626406158489888337355218360796786809118555060731900349106575",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/83421"
+    },
+    {
+      "typeId": 83423,
+      "name": "Bulky Armor Plates V",
+      "category": "Module",
+      "group": "Defensive System",
+      "defaultVolume": 320,
+      "datacoreItemId": "46664393634501137605189280466451732791351106180769198546919794420752374960777",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/83423"
+    },
+    {
+      "typeId": 83425,
+      "name": "Coated Armor Plates III",
+      "category": "Module",
+      "group": "Defensive System",
+      "defaultVolume": 80,
+      "datacoreItemId": "73899648328046073165906516911012468891273178879975505977123381268886082352854",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/83425"
+    },
+    {
+      "typeId": 83426,
+      "name": "Coated Armor Plates IV",
+      "category": "Module",
+      "group": "Defensive System",
+      "defaultVolume": 170,
+      "datacoreItemId": "9921487625163451439767289924420644269992169832061071048734315646838769386007",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/83426"
+    },
+    {
+      "typeId": 83429,
+      "name": "Reactive Armor Plates III",
+      "category": "Module",
+      "group": "Defensive System",
+      "defaultVolume": 80,
+      "datacoreItemId": "62875401053145455000185197744197622229882325243036106188400867424079566696379",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/83429"
+    },
+    {
+      "typeId": 83430,
+      "name": "Reactive Armor Plates IV",
+      "category": "Module",
+      "group": "Defensive System",
+      "defaultVolume": 170,
+      "datacoreItemId": "55569515856183600784499200362751511317935635312813401859490416373424841407796",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/83430"
+    },
+    {
+      "typeId": 83433,
+      "name": "Nimble Armor Plates III",
+      "category": "Module",
+      "group": "Defensive System",
+      "defaultVolume": 80,
+      "datacoreItemId": "109224563272926516356612427456799630432636308893756323949368912280917222729307",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/83433"
+    },
+    {
+      "typeId": 83434,
+      "name": "Nimble Armor Plates IV",
+      "category": "Module",
+      "group": "Defensive System",
+      "defaultVolume": 170,
+      "datacoreItemId": "112281792879804676422832984137149717315973280303712987264243445639027692733743",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/83434"
+    },
+    {
+      "typeId": 83437,
+      "name": "Systematic Armor Restorer III",
+      "category": "Module",
+      "group": "Armor Repair Unit",
+      "defaultVolume": 150,
+      "datacoreItemId": "67464503824299826371915975393331452711116669469514643282414822774648129778674",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/83437"
+    },
+    {
+      "typeId": 83438,
+      "name": "Systematic Armor Restorer IV",
+      "category": "Module",
+      "group": "Armor Repair Unit",
+      "defaultVolume": 200,
+      "datacoreItemId": "86287221729683424140170981872611104914876181642332596993352121675251361731101",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/83438"
+    },
+    {
+      "typeId": 83441,
+      "name": "Adaptive Nanitic Armor Weave II",
+      "category": "Module",
+      "group": "Flex Armor Hardener",
+      "defaultVolume": 20,
+      "datacoreItemId": "5445556655746849459435466925401776937459527475839280785984937185616736664778",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/83441"
+    },
+    {
+      "typeId": 83442,
+      "name": "Adaptive Nanitic Armor Weave III",
+      "category": "Module",
+      "group": "Flex Armor Hardener",
+      "defaultVolume": 40,
+      "datacoreItemId": "44223418223721518703909890140427098153770069790092612287875926273041667643468",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/83442"
+    },
+    {
+      "typeId": 83443,
+      "name": "Adaptive Nanitic Armor Weave  IV",
+      "category": "Module",
+      "group": "Flex Armor Hardener",
+      "defaultVolume": 20,
+      "datacoreItemId": "94577368753086011884768688864242863334827421567521513856873377915429643634182",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/83443"
+    },
+    {
+      "typeId": 83448,
+      "name": "Bulwark Shield Generator III",
+      "category": "Module",
+      "group": "Defensive System",
+      "defaultVolume": 300,
+      "datacoreItemId": "76693448850716993424619658994872160545440159237833223852117216096865069180033",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/83448"
+    },
+    {
+      "typeId": 83449,
+      "name": "Bulwark Shield Generator IV",
+      "category": "Module",
+      "group": "Defensive System",
+      "defaultVolume": 624,
+      "datacoreItemId": "105521866691208046175445884054580210608940568881924934118927105636670970111653",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/83449"
+    },
+    {
+      "typeId": 83450,
+      "name": "Attuned Shield Generator III",
+      "category": "Module",
+      "group": "Defensive System",
+      "defaultVolume": 300,
+      "datacoreItemId": "93042121748747871695945906525921866185107125132850252698996332921933668461488",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/83450"
+    },
+    {
+      "typeId": 83451,
+      "name": "Attuned Shield Generator IV",
+      "category": "Module",
+      "group": "Defensive System",
+      "defaultVolume": 300,
+      "datacoreItemId": "50838381472764900088352368542320334056501215578061818607711567641029804520877",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/83451"
+    },
+    {
+      "typeId": 83456,
+      "name": "Reinforced Shield Generator III",
+      "category": "Module",
+      "group": "Defensive System",
+      "defaultVolume": 300,
+      "datacoreItemId": "115737162799310692612069310389161300072197554885204839336159170069169860774466",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/83456"
+    },
+    {
+      "typeId": 83457,
+      "name": "Reinforced Shield Generator IV",
+      "category": "Module",
+      "group": "Defensive System",
+      "defaultVolume": 940,
+      "datacoreItemId": "69709236047613906251984960549592161233085093260088769141376779442917786700064",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/83457"
+    },
+    {
+      "typeId": 83458,
+      "name": "Shield Restorer III",
+      "category": "Module",
+      "group": "Shield Recharger",
+      "defaultVolume": 150,
+      "datacoreItemId": "68165560007891513061950079381329024482035089561687852955349426202461626648930",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/83458"
+    },
+    {
+      "typeId": 83459,
+      "name": "Shield Restorer IV",
+      "category": "Module",
+      "group": "Shield Recharger",
+      "defaultVolume": 200,
+      "datacoreItemId": "67562555199095782151598283887879681161174690323862020400167084909315767913307",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/83459"
+    },
+    {
+      "typeId": 83463,
+      "name": "Synthetic Mining Lens",
+      "category": "Charge",
+      "group": "Asteroid Mining Crystal",
+      "defaultVolume": 2,
+      "datacoreItemId": "101263546454149044199979950471940238723336827706701439805669786901735121115810",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/83463"
+    },
+    {
+      "typeId": 83497,
+      "name": "Cargo Grid II",
+      "category": "Module",
+      "group": "Expanded Cargohold",
+      "defaultVolume": 520,
+      "datacoreItemId": "75122676850663303800132790007435065118784335310290908203187983845069389952581",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/83497"
+    },
+    {
+      "typeId": 83498,
+      "name": "Cargo Grid III",
+      "category": "Module",
+      "group": "Expanded Cargohold",
+      "defaultVolume": 1040,
+      "datacoreItemId": "64714722973407992508594842219305774744157786442239095133198513164259686341122",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/83498"
+    },
+    {
+      "typeId": 83499,
+      "name": "Cargo Grid IV",
+      "category": "Module",
+      "group": "Expanded Cargohold",
+      "defaultVolume": 2080,
+      "datacoreItemId": "45653991319116636218908233464178539164945731620181027268506028734861595230661",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/83499"
+    },
+    {
+      "typeId": 83500,
+      "name": "Cargo Grid V",
+      "category": "Module",
+      "group": "Expanded Cargohold",
+      "defaultVolume": 4160,
+      "datacoreItemId": "12766528263579519621684090713485732494871987627082065036625680198753649908454",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/83500"
+    },
+    {
+      "typeId": 83501,
+      "name": "Cargo Grid VI",
+      "category": "Module",
+      "group": "Expanded Cargohold",
+      "defaultVolume": 8320,
+      "datacoreItemId": "85139214582555700845657350708828113193518147807648890327210747688228647959893",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/83501"
+    },
+    {
+      "typeId": 83516,
+      "name": "Warp Entangler III",
+      "category": "Module",
+      "group": "Warp Scrambler",
+      "defaultVolume": 50,
+      "datacoreItemId": "28145118831961417212719448823562717296544210798043140825731641938037091659397",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/83516"
+    },
+    {
+      "typeId": 83517,
+      "name": "Warp Entangler IV",
+      "category": "Module",
+      "group": "Warp Scrambler",
+      "defaultVolume": 50,
+      "datacoreItemId": "87273467291126286737121826176230545164634317398222241793789486042559592893643",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/83517"
+    },
+    {
+      "typeId": 83518,
+      "name": "Warp Entangler V",
+      "category": "Module",
+      "group": "Warp Scrambler",
+      "defaultVolume": 50,
+      "datacoreItemId": "51916315662950679112694293969989161628539330753351000698389212933252574153293",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/83518"
+    },
+    {
+      "typeId": 83519,
+      "name": "Warp Entangler VI",
+      "category": "Module",
+      "group": "Warp Scrambler",
+      "defaultVolume": 50,
+      "datacoreItemId": "61090194150251594867132289727418245051430708601689465425578968427647290945445",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/83519"
+    },
+    {
+      "typeId": 83520,
+      "name": "Stasis Net III",
+      "category": "Module",
+      "group": "Stasis Web",
+      "defaultVolume": 50,
+      "datacoreItemId": "52055431954032955241690341155963022419250150509713127065628893960901952017716",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/83520"
+    },
+    {
+      "typeId": 83521,
+      "name": "Stasis Net IV",
+      "category": "Module",
+      "group": "Stasis Web",
+      "defaultVolume": 50,
+      "datacoreItemId": "72257802271157274153733909966490403181946876617945110778458526862749957209377",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/83521"
+    },
+    {
+      "typeId": 83522,
+      "name": "Stasis Net V",
+      "category": "Module",
+      "group": "Stasis Web",
+      "defaultVolume": 50,
+      "datacoreItemId": "81283564597306780365310157752403675255003717861915548857458386538399881807959",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/83522"
+    },
+    {
+      "typeId": 83523,
+      "name": "Stasis Net VI",
+      "category": "Module",
+      "group": "Stasis Web",
+      "defaultVolume": 50,
+      "datacoreItemId": "84759648274308107784190075448234745099677261300137874622637351474172269243693",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/83523"
+    },
+    {
+      "typeId": 83525,
+      "name": "Purified Moon Cutting Laser",
+      "category": "Module",
+      "group": "Asteroid Mining Laser",
+      "defaultVolume": 80,
+      "datacoreItemId": "80904529664004018343423107008877734795197399820952544208381205329190962003142",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/83525"
+    },
+    {
+      "typeId": 83528,
+      "name": "Medium Cutting Laser",
+      "category": "Module",
+      "group": "Asteroid Mining Laser",
+      "defaultVolume": 75,
+      "datacoreItemId": "3097926485983389015332226265885091349527040665617767088658233946273128163673",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/83528"
+    },
+    {
+      "typeId": 83536,
+      "name": "Afterburner III",
+      "category": "Module",
+      "group": "Propulsion Module",
+      "defaultVolume": 40,
+      "datacoreItemId": "21724132406256703311133987978421162285329916876938753266436552252652582814612",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/83536"
+    },
+    {
+      "typeId": 83613,
+      "name": "Thermal-electro Nanitic Brace II",
+      "category": "Module",
+      "group": "Nanitic Brace",
+      "defaultVolume": 70,
+      "datacoreItemId": "69551825731319262135339697970385359329704254032128744500131346445154969100216",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/83613"
+    },
+    {
+      "typeId": 83614,
+      "name": "Thermal-electro Nanitic Brace III",
+      "category": "Module",
+      "group": "Nanitic Brace",
+      "defaultVolume": 140,
+      "datacoreItemId": "68967488142169112212173082085500787214770267607690084949059800875997699134641",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/83614"
+    },
+    {
+      "typeId": 83615,
+      "name": "Thermal-electro Nanitic Brace IV",
+      "category": "Module",
+      "group": "Nanitic Brace",
+      "defaultVolume": 280,
+      "datacoreItemId": "25899217003678137853603525214547787660625022049918511946598795076741731990927",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/83615"
+    },
+    {
+      "typeId": 83618,
+      "name": "Explonetic-electro Nanitic Brace II",
+      "category": "Module",
+      "group": "Nanitic Brace",
+      "defaultVolume": 20,
+      "datacoreItemId": "24457450660921671231783583596210409161129636719834751245184369274123718505948",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/83618"
+    },
+    {
+      "typeId": 83619,
+      "name": "Explonetic-electro Nanitic Brace III",
+      "category": "Module",
+      "group": "Nanitic Brace",
+      "defaultVolume": 40,
+      "datacoreItemId": "46085026165474955641339138402590314089581085066957532881729199305505264156936",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/83619"
+    },
+    {
+      "typeId": 83620,
+      "name": "Explonetic-electro Nanitic Brace IV",
+      "category": "Module",
+      "group": "Nanitic Brace",
+      "defaultVolume": 80,
+      "datacoreItemId": "22601132281289078880027964610535501754399638818580097809834240411944800914477",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/83620"
+    },
+    {
+      "typeId": 83623,
+      "name": "Explo-electro Nanitic Brace II",
+      "category": "Module",
+      "group": "Nanitic Brace",
+      "defaultVolume": 20,
+      "datacoreItemId": "47866731913819282423331116223417840550928189613085322852572579230893343847511",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/83623"
+    },
+    {
+      "typeId": 83624,
+      "name": "Explo-electro Nanitic Brace III",
+      "category": "Module",
+      "group": "Nanitic Brace",
+      "defaultVolume": 40,
+      "datacoreItemId": "47382115681896740141635720028343619842841540848466826172642875959701132729004",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/83624"
+    },
+    {
+      "typeId": 83625,
+      "name": "Explo-electro Nanitic Brace IV",
+      "category": "Module",
+      "group": "Nanitic Brace",
+      "defaultVolume": 80,
+      "datacoreItemId": "25621384982989145296879974504005692683259979669222522178687315752754664366502",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/83625"
+    },
+    {
+      "typeId": 83628,
+      "name": "Thermalnetic Nanitic Brace II",
+      "category": "Module",
+      "group": "Nanitic Brace",
+      "defaultVolume": 70,
+      "datacoreItemId": "113294734063963370383954395566165389130546598689717718076051181267638889497581",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/83628"
+    },
+    {
+      "typeId": 83629,
+      "name": "Thermalnetic Nanitic Brace III",
+      "category": "Module",
+      "group": "Nanitic Brace",
+      "defaultVolume": 140,
+      "datacoreItemId": "87402240527234989091489553837914984749993197837006189922994792776117409222250",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/83629"
+    },
+    {
+      "typeId": 83630,
+      "name": "Thermalnetic Nanitic Brace IV",
+      "category": "Module",
+      "group": "Nanitic Brace",
+      "defaultVolume": 280,
+      "datacoreItemId": "81217710750596853764732755103385144902352486414414651727229526956264259217115",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/83630"
+    },
+    {
+      "typeId": 83768,
+      "name": "EM Field Array II",
+      "category": "Module",
+      "group": "Shield Hardener",
+      "defaultVolume": 20,
+      "datacoreItemId": "112587264055252130903902364208016044534426458133014202347567091679858970241200",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/83768"
+    },
+    {
+      "typeId": 83769,
+      "name": "EM Field Array III",
+      "category": "Module",
+      "group": "Shield Hardener",
+      "defaultVolume": 40,
+      "datacoreItemId": "13965262802650015536657580807417950934855144231852451488408153219081192821087",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/83769"
+    },
+    {
+      "typeId": 83770,
+      "name": "EM Field Array IV",
+      "category": "Module",
+      "group": "Shield Hardener",
+      "defaultVolume": 80,
+      "datacoreItemId": "16785401944408337897900785256732655078904529403633139131988871082668964475897",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/83770"
+    },
+    {
+      "typeId": 83772,
+      "name": "Thermal Field Array II",
+      "category": "Module",
+      "group": "Shield Hardener",
+      "defaultVolume": 2.5,
+      "datacoreItemId": "563530077382283313452680191324755058605420750830131415947911420622513810821",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/83772"
+    },
+    {
+      "typeId": 83773,
+      "name": "Thermal Field Array III",
+      "category": "Module",
+      "group": "Shield Hardener",
+      "defaultVolume": 3,
+      "datacoreItemId": "98746821139385456157687844850759388144102973420012543995757982999659953861937",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/83773"
+    },
+    {
+      "typeId": 83774,
+      "name": "Thermal Field Array IV",
+      "category": "Module",
+      "group": "Shield Hardener",
+      "defaultVolume": 3.5,
+      "datacoreItemId": "7461521474045169353821591962843721321922871392855852917838607597845392240043",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/83774"
+    },
+    {
+      "typeId": 83777,
+      "name": "Explosive Field Array II",
+      "category": "Module",
+      "group": "Shield Hardener",
+      "defaultVolume": 20,
+      "datacoreItemId": "27056789521385116162366336336232106426107391923311612169020364289572031690934",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/83777"
+    },
+    {
+      "typeId": 83778,
+      "name": "Explosive Field Array III",
+      "category": "Module",
+      "group": "Shield Hardener",
+      "defaultVolume": 40,
+      "datacoreItemId": "96353800096459677110877638908279875132579518862764507591492990655648068383670",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/83778"
+    },
+    {
+      "typeId": 83779,
+      "name": "Explosive Field Array IV",
+      "category": "Module",
+      "group": "Shield Hardener",
+      "defaultVolume": 80,
+      "datacoreItemId": "23042373351123728148699111404895037630597955655624786295457968629804591314374",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/83779"
+    },
+    {
+      "typeId": 83782,
+      "name": "Kinetic Field Array II",
+      "category": "Module",
+      "group": "Shield Hardener",
+      "defaultVolume": 20,
+      "datacoreItemId": "33358220130205530808733592199018185327324582200091046935500309538670435966060",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/83782"
+    },
+    {
+      "typeId": 83783,
+      "name": "Kinetic Field Array III",
+      "category": "Module",
+      "group": "Shield Hardener",
+      "defaultVolume": 40,
+      "datacoreItemId": "23400830643106591142167566490391389195240679010544568027859167805185260239662",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/83783"
+    },
+    {
+      "typeId": 83784,
+      "name": "Kinetic Field Array IV",
+      "category": "Module",
+      "group": "Shield Hardener",
+      "defaultVolume": 80,
+      "datacoreItemId": "111339154691440967869225655555843054640144559457056464919607410863953016093782",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/83784"
+    },
+    {
+      "typeId": 83818,
+      "name": "Fossilized Exotronics",
+      "category": "Commodity",
+      "group": "Exotronic Frames",
+      "defaultVolume": 5,
+      "datacoreItemId": "99309780115438104119740230466693296239536671111712850230998228997308339793177",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/83818"
+    },
+    {
+      "typeId": 83839,
+      "name": "Salt",
+      "category": "Material",
+      "group": "Mineral",
+      "defaultVolume": 0.10000000149011612,
+      "datacoreItemId": "1484063360364482000187839143011469862461972229291931848144105166448607209412",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/83839"
+    },
+    {
+      "typeId": 83891,
+      "name": "Gravionite",
+      "category": "Material",
+      "group": "Rogue Drone Components",
+      "defaultVolume": 1,
+      "datacoreItemId": "14962840798450488708067094435102378195008229720783133661657360171551571417780",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/83891"
+    },
+    {
+      "typeId": 83892,
+      "name": "Luminalis",
+      "category": "Material",
+      "group": "Rogue Drone Components",
+      "defaultVolume": 1,
+      "datacoreItemId": "100213936568080428178936676751145554008300600043583570853237169877030825563990",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/83892"
+    },
+    {
+      "typeId": 83893,
+      "name": "Eclipsite",
+      "category": "Material",
+      "group": "Rogue Drone Components",
+      "defaultVolume": 1,
+      "datacoreItemId": "102529230573660328144254954402366975201223163047937324332038609775599586400468",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/83893"
+    },
+    {
+      "typeId": 83894,
+      "name": "Radiantium",
+      "category": "Material",
+      "group": "Rogue Drone Components",
+      "defaultVolume": 1,
+      "datacoreItemId": "50831236193803434911191761972333955925825218801302957423414987757854362161383",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/83894"
+    },
+    {
+      "typeId": 83895,
+      "name": "Radiantium Mining Lens",
+      "category": "Charge",
+      "group": "Asteroid Mining Crystal",
+      "defaultVolume": 3,
+      "datacoreItemId": "17661501981191062985640970609322725235254858113491594707779250953161184772718",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/83895"
+    },
+    {
+      "typeId": 83896,
+      "name": "Gravionite Mining Lens",
+      "category": "Charge",
+      "group": "Asteroid Mining Crystal",
+      "defaultVolume": 5,
+      "datacoreItemId": "63013894365149921933995772039296377649868385816846602784762534152228137975703",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/83896"
+    },
+    {
+      "typeId": 83897,
+      "name": "Luminalis Mining Lens",
+      "category": "Charge",
+      "group": "Asteroid Mining Crystal",
+      "defaultVolume": 3,
+      "datacoreItemId": "105703034715518088855659738402719914805452405589527819014235063160923901196007",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/83897"
+    },
+    {
+      "typeId": 83898,
+      "name": "Eclipsite Mining Lens",
+      "category": "Charge",
+      "group": "Asteroid Mining Crystal",
+      "defaultVolume": 5,
+      "datacoreItemId": "4181520756015453980335922257070798966078234509302829427037464530260672028361",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/83898"
+    },
+    {
+      "typeId": 83899,
+      "name": "Catalytic Dust",
+      "category": "Material",
+      "group": "Rogue Drone Components",
+      "defaultVolume": 0.10000000149011612,
+      "datacoreItemId": "27826521293235197094242640043904880173417681520971876664837173487698250286000",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/83899"
+    },
+    {
+      "typeId": 83978,
+      "name": "Navigational Artefact",
+      "category": "Commodity",
+      "group": "Miscellaneous",
+      "defaultVolume": 0.10000000149011612,
+      "datacoreItemId": "18322611085973510576035833412972684481124005949332687252129068621596310649715",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/83978"
+    },
+    {
+      "typeId": 83979,
+      "name": "Oil Painting",
+      "category": "Commodity",
+      "group": "Miscellaneous",
+      "defaultVolume": 0.10000000149011612,
+      "datacoreItemId": "72073071389871461384921713380205144509071426304687603867735542696725499725906",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/83979"
+    },
+    {
+      "typeId": 83980,
+      "name": "Stranger's Head",
+      "category": "Commodity",
+      "group": "Miscellaneous",
+      "defaultVolume": 0.10000000149011612,
+      "datacoreItemId": "41558263671459501282451671839266246270796973682095075097690626449079046098492",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/83980"
+    },
+    {
+      "typeId": 83981,
+      "name": "Miner Hiring Form",
+      "category": "Commodity",
+      "group": "Miscellaneous",
+      "defaultVolume": 0.10000000149011612,
+      "datacoreItemId": "107482573115502832067644433085897203253512283684079840509641956014951135526723",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/83981"
+    },
+    {
+      "typeId": 83982,
+      "name": "Network Pollinator",
+      "category": "Commodity",
+      "group": "Miscellaneous",
+      "defaultVolume": 0.10000000149011612,
+      "datacoreItemId": "25831868846818050453463284812238027698029633904039423718075472790164677862265",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/83982"
+    },
+    {
+      "typeId": 83983,
+      "name": "Old Neurocord",
+      "category": "Commodity",
+      "group": "Miscellaneous",
+      "defaultVolume": 0.10000000149011612,
+      "datacoreItemId": "35180861659531818522084002158106312728499980654320096268759179125259344124463",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/83983"
+    },
+    {
+      "typeId": 83984,
+      "name": "Synod Propaganda",
+      "category": "Commodity",
+      "group": "Miscellaneous",
+      "defaultVolume": 0.10000000149011612,
+      "datacoreItemId": "96295476860523121322976316812599928760428826402394748103438210526035648135663",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/83984"
+    },
+    {
+      "typeId": 83985,
+      "name": "Normalization Permit",
+      "category": "Commodity",
+      "group": "Miscellaneous",
+      "defaultVolume": 0.10000000149011612,
+      "datacoreItemId": "24121602881925825934927750963039029083032938962543097031326448965516287546426",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/83985"
+    },
+    {
+      "typeId": 83986,
+      "name": "Very Strange Musical Instrument",
+      "category": "Commodity",
+      "group": "Miscellaneous",
+      "defaultVolume": 0.10000000149011612,
+      "datacoreItemId": "43399354669219923825815689128040065701415815588199758899503080806531358088099",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/83986"
+    },
+    {
+      "typeId": 83987,
+      "name": "Multimedia Library",
+      "category": "Commodity",
+      "group": "Miscellaneous",
+      "defaultVolume": 0.10000000149011612,
+      "datacoreItemId": "28660164034080927884148127935042895972607298419846437699120557549506403705922",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/83987"
+    },
+    {
+      "typeId": 83988,
+      "name": "Drone Signal Records",
+      "category": "Commodity",
+      "group": "Miscellaneous",
+      "defaultVolume": 0.10000000149011612,
+      "datacoreItemId": "30756325159990946575810088644672529682823840562516308087448291142961889988376",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/83988"
+    },
+    {
+      "typeId": 84180,
+      "name": "Printed Circuits",
+      "category": "Material",
+      "group": "Manufacturing Component",
+      "defaultVolume": 4,
+      "datacoreItemId": "82787742659298498006074990915624394269591089796644830393389015755282199779695",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/84180"
+    },
+    {
+      "typeId": 84182,
+      "name": "Reinforced Alloys",
+      "category": "Material",
+      "group": "Manufacturing Component",
+      "defaultVolume": 10,
+      "datacoreItemId": "49715018881187063464982895989747772465399312245755063089335058600087350804960",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/84182"
+    },
+    {
+      "typeId": 84204,
+      "name": "Batched Reinforced Alloys",
+      "category": "Material",
+      "group": "Manufacturing Component",
+      "defaultVolume": 100,
+      "datacoreItemId": "6628690016943861960940488831876297499079076702735430669822152267598833523975",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/84204"
+    },
+    {
+      "typeId": 84206,
+      "name": "Packaged Reinforced Alloys",
+      "category": "Material",
+      "group": "Manufacturing Component",
+      "defaultVolume": 1000,
+      "datacoreItemId": "53696324216604566245269068818244663604276570032400646353924227384399233493155",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/84206"
+    },
+    {
+      "typeId": 84210,
+      "name": "Carbon Weave",
+      "category": "Material",
+      "group": "Manufacturing Component",
+      "defaultVolume": 15,
+      "datacoreItemId": "18519378372876492592614394986243568576263465955131482590977962624155930594364",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/84210"
+    },
+    {
+      "typeId": 84556,
+      "name": "Smart Turret",
+      "category": "Deployable",
+      "group": "Defense",
+      "defaultVolume": 300,
+      "datacoreItemId": "89167777542305248543780662678059547581349329287975311511744920800368976638931",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/84556"
+    },
+    {
+      "typeId": 84810,
+      "name": "Ship chassis materials S ( copy )",
+      "category": "Material",
+      "group": "Manufacturing Component",
+      "defaultVolume": 20000,
+      "datacoreItemId": "25772969418108241936824761570473648865988717892731541394989880508526411206507",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/84810"
+    },
+    {
+      "typeId": 84868,
+      "name": "SOF-40 Fuel",
+      "category": "Commodity",
+      "group": "Crude Fuel",
+      "defaultVolume": 0.2800000011920929,
+      "datacoreItemId": "65314608582713745319189773579326333150623760867786301507809336300152644041559",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/84868"
+    },
+    {
+      "typeId": 84955,
+      "name": "Smart Gate",
+      "category": "Deployable",
+      "group": "Gates",
+      "defaultVolume": 10000,
+      "datacoreItemId": "75240885134895557608476854399302992314515011388577119550976209403137044136574",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/84955"
+    },
+    {
+      "typeId": 85291,
+      "name": "Deployable Beacon",
+      "category": "Deployable",
+      "group": "Deployable Beacon",
+      "defaultVolume": 50,
+      "datacoreItemId": "81944229219801494766491439288679768261713892332418432236563474998587478788749",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/85291"
+    },
+    {
+      "typeId": 86465,
+      "name": "Fuel Experiment Transcript 1/3",
+      "category": "Commodity",
+      "group": "Miscellaneous",
+      "defaultVolume": 0.10000000149011612,
+      "datacoreItemId": "15577690421709527024411703622412627400663219126645831549733748696388297291939",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/86465"
+    },
+    {
+      "typeId": 86466,
+      "name": "Fuel Experiment Transcript 2/3",
+      "category": "Commodity",
+      "group": "Miscellaneous",
+      "defaultVolume": 0.10000000149011612,
+      "datacoreItemId": "74230475579891895745278906147507669944352371204897827562408324304055628021843",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/86466"
+    },
+    {
+      "typeId": 86467,
+      "name": "Fuel Experiment Transcript 3/3",
+      "category": "Commodity",
+      "group": "Miscellaneous",
+      "defaultVolume": 0.10000000149011612,
+      "datacoreItemId": "55746833997758665402556836024002285002994068523524926353368339946296103627560",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/86467"
+    },
+    {
+      "typeId": 86615,
+      "name": "Jump Drive Test Transcription 1/5",
+      "category": "Commodity",
+      "group": "Miscellaneous",
+      "defaultVolume": 0.10000000149011612,
+      "datacoreItemId": "43636482626150483992943583667189577437673974305840731132914043685119808581215",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/86615"
+    },
+    {
+      "typeId": 86616,
+      "name": "Jump Drive Test Transcription 2/5",
+      "category": "Commodity",
+      "group": "Miscellaneous",
+      "defaultVolume": 0.10000000149011612,
+      "datacoreItemId": "113199585121326349419761027880561289684578066760635404771488230616755531021967",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/86616"
+    },
+    {
+      "typeId": 86617,
+      "name": "Jump Drive Test Transcription 3/5",
+      "category": "Commodity",
+      "group": "Miscellaneous",
+      "defaultVolume": 0.10000000149011612,
+      "datacoreItemId": "37728376649676332676710593729809954598228448592962067191539075196602879448160",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/86617"
+    },
+    {
+      "typeId": 86618,
+      "name": "Jump Drive Test Transcription 4/5",
+      "category": "Commodity",
+      "group": "Miscellaneous",
+      "defaultVolume": 0.10000000149011612,
+      "datacoreItemId": "24801641424239377682321850233319550650888448693522791827723021732238043976864",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/86618"
+    },
+    {
+      "typeId": 86619,
+      "name": "Jump Drive Test Transcription 5/5",
+      "category": "Commodity",
+      "group": "Miscellaneous",
+      "defaultVolume": 0.10000000149011612,
+      "datacoreItemId": "23512632052020551862044386639144467413908357130083862778339935501742085451429",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/86619"
+    },
+    {
+      "typeId": 86620,
+      "name": "Mining Drone Behavior 1/8",
+      "category": "Commodity",
+      "group": "Miscellaneous",
+      "defaultVolume": 0.10000000149011612,
+      "datacoreItemId": "63284055582591529969237257208106159391791277418652625328715143878866483592432",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/86620"
+    },
+    {
+      "typeId": 86621,
+      "name": "Mining Drone Behavior 2/8",
+      "category": "Commodity",
+      "group": "Miscellaneous",
+      "defaultVolume": 0.10000000149011612,
+      "datacoreItemId": "4199201624258973380755690589691841380273848979100197351988040305374621423590",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/86621"
+    },
+    {
+      "typeId": 86622,
+      "name": "Mining Drone Behavior 3/8",
+      "category": "Commodity",
+      "group": "Miscellaneous",
+      "defaultVolume": 0.10000000149011612,
+      "datacoreItemId": "52624264646437848387239559141209745190000402883563975286939066363337039334400",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/86622"
+    },
+    {
+      "typeId": 86623,
+      "name": "Mining Drone Behavior 4/8",
+      "category": "Commodity",
+      "group": "Miscellaneous",
+      "defaultVolume": 0.10000000149011612,
+      "datacoreItemId": "12473764647142065409366744265619550140752470527728330701650688209417540961773",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/86623"
+    },
+    {
+      "typeId": 86624,
+      "name": "Mining Drone Behavior 5/8",
+      "category": "Commodity",
+      "group": "Miscellaneous",
+      "defaultVolume": 0.10000000149011612,
+      "datacoreItemId": "58440886444574558739596104863451619918599985264324557577790479281764787468300",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/86624"
+    },
+    {
+      "typeId": 86625,
+      "name": "Mining Drone Behavior 6/8",
+      "category": "Commodity",
+      "group": "Miscellaneous",
+      "defaultVolume": 0.10000000149011612,
+      "datacoreItemId": "40474332209857034582194023724994890565922209245842934785110356804954491192215",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/86625"
+    },
+    {
+      "typeId": 86626,
+      "name": "Mining Drone Behavior 7/8",
+      "category": "Commodity",
+      "group": "Miscellaneous",
+      "defaultVolume": 0.10000000149011612,
+      "datacoreItemId": "94068025666723148764968794727717254507436482063169272661870803236339041332784",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/86626"
+    },
+    {
+      "typeId": 86627,
+      "name": "Mining Drone Behavior 8/8",
+      "category": "Commodity",
+      "group": "Miscellaneous",
+      "defaultVolume": 0.10000000149011612,
+      "datacoreItemId": "107615726866134710663614614472857678887701561617527032071217461282424549998794",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/86627"
+    },
+    {
+      "typeId": 86634,
+      "name": "Exclave Keep Database Fragment",
+      "category": "Commodity",
+      "group": "Miscellaneous",
+      "defaultVolume": 0.10000000149011612,
+      "datacoreItemId": "37131385319110740844860209223399076239987371820048329595092523899185267783304",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/86634"
+    },
+    {
+      "typeId": 86635,
+      "name": "Exclave Keep Database Fragment",
+      "category": "Commodity",
+      "group": "Miscellaneous",
+      "defaultVolume": 0.10000000149011612,
+      "datacoreItemId": "107147054555673114831137628425549947556120401226275371679023139522656329463104",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/86635"
+    },
+    {
+      "typeId": 86636,
+      "name": "Exclave Keep Database Fragment",
+      "category": "Commodity",
+      "group": "Miscellaneous",
+      "defaultVolume": 0.10000000149011612,
+      "datacoreItemId": "40607520942175847807259745980209881572379837922685766462983605523472586779321",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/86636"
+    },
+    {
+      "typeId": 86637,
+      "name": "Exclave Keep Database Fragment",
+      "category": "Commodity",
+      "group": "Miscellaneous",
+      "defaultVolume": 0.10000000149011612,
+      "datacoreItemId": "51211901440599064098881071984144831349002528225413580378820214591042342943161",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/86637"
+    },
+    {
+      "typeId": 86638,
+      "name": "Exclave Keep Database Fragment",
+      "category": "Commodity",
+      "group": "Miscellaneous",
+      "defaultVolume": 0.10000000149011612,
+      "datacoreItemId": "11350652764142098879483557669495192550280283130503808226723241899426600547387",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/86638"
+    },
+    {
+      "typeId": 86657,
+      "name": "Stillness Keep Database Fragment",
+      "category": "Commodity",
+      "group": "Miscellaneous",
+      "defaultVolume": 0.10000000149011612,
+      "datacoreItemId": "105410740447910130203155681113398171614788561180823024351910952827140525450031",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/86657"
+    },
+    {
+      "typeId": 86658,
+      "name": "Stillness Keep Database Fragment",
+      "category": "Commodity",
+      "group": "Miscellaneous",
+      "defaultVolume": 0.10000000149011612,
+      "datacoreItemId": "86647845824754767783708004751116299140627383712113641568100014409442330803772",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/86658"
+    },
+    {
+      "typeId": 86659,
+      "name": "Stillness Keep Database Fragment",
+      "category": "Commodity",
+      "group": "Miscellaneous",
+      "defaultVolume": 0.10000000149011612,
+      "datacoreItemId": "98463349722639388739421754383507580913131553215838193412549851863587226641368",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/86659"
+    },
+    {
+      "typeId": 86681,
+      "name": "Crude Matter Keep Database Fragment",
+      "category": "Commodity",
+      "group": "Miscellaneous",
+      "defaultVolume": 0.10000000149011612,
+      "datacoreItemId": "84824274337976503399390558064992769224227267119943367145766826617542145343591",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/86681"
+    },
+    {
+      "typeId": 86682,
+      "name": "Crude Matter Keep Database Fragment",
+      "category": "Commodity",
+      "group": "Miscellaneous",
+      "defaultVolume": 0.10000000149011612,
+      "datacoreItemId": "57757624994004934696788644780931987153747744239769070399392925157756922921768",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/86682"
+    },
+    {
+      "typeId": 86683,
+      "name": "Crude Matter Keep Database Fragment",
+      "category": "Commodity",
+      "group": "Miscellaneous",
+      "defaultVolume": 0.10000000149011612,
+      "datacoreItemId": "77244508834194873928011447998879843826925765417611333209411409407935222373600",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/86683"
+    },
+    {
+      "typeId": 86684,
+      "name": "Crude Matter Keep Database Fragment",
+      "category": "Commodity",
+      "group": "Miscellaneous",
+      "defaultVolume": 0.10000000149011612,
+      "datacoreItemId": "103623509366636938838890400346967258325148157650097989843946801850519745288124",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/86684"
+    },
+    {
+      "typeId": 86685,
+      "name": "Crude Matter Keep Database Fragment",
+      "category": "Commodity",
+      "group": "Miscellaneous",
+      "defaultVolume": 0.10000000149011612,
+      "datacoreItemId": "63521956987203845405470430822572086369834433627475881763084468648258969436145",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/86685"
+    },
+    {
+      "typeId": 86686,
+      "name": "Trinary Keep Database Fragment",
+      "category": "Commodity",
+      "group": "Miscellaneous",
+      "defaultVolume": 0.10000000149011612,
+      "datacoreItemId": "829703017693985172189901276520690600488320074462940757375941814621595488589",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/86686"
+    },
+    {
+      "typeId": 86687,
+      "name": "Trinary Keep Database Fragment",
+      "category": "Commodity",
+      "group": "Miscellaneous",
+      "defaultVolume": 0.10000000149011612,
+      "datacoreItemId": "15899004674921720760428516370475685368288296986709561000866274485883263196554",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/86687"
+    },
+    {
+      "typeId": 86688,
+      "name": "Trinary Keep Database Fragment",
+      "category": "Commodity",
+      "group": "Miscellaneous",
+      "defaultVolume": 0.10000000149011612,
+      "datacoreItemId": "75149561098623866520360786982724116536726356827015728483415899818141246305565",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/86688"
+    },
+    {
+      "typeId": 86689,
+      "name": "Fabricators Keep Database Fragment",
+      "category": "Commodity",
+      "group": "Miscellaneous",
+      "defaultVolume": 0.10000000149011612,
+      "datacoreItemId": "33001694571606349795268401890992548500292146758335445351055395840453609914806",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/86689"
+    },
+    {
+      "typeId": 86690,
+      "name": "Fabricators Keep Database Fragment",
+      "category": "Commodity",
+      "group": "Miscellaneous",
+      "defaultVolume": 0.10000000149011612,
+      "datacoreItemId": "73233696383583051031979789427167451507540131784362291505506167585681111090384",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/86690"
+    },
+    {
+      "typeId": 86691,
+      "name": "Fabricators Keep Database Fragment",
+      "category": "Commodity",
+      "group": "Miscellaneous",
+      "defaultVolume": 0.10000000149011612,
+      "datacoreItemId": "63067079378683186894186020741828311679044964197335299328697207443913608031872",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/86691"
+    },
+    {
+      "typeId": 86692,
+      "name": "Fabricators Keep Database Fragment",
+      "category": "Commodity",
+      "group": "Miscellaneous",
+      "defaultVolume": 0.10000000149011612,
+      "datacoreItemId": "92733925655905889143505668826854182980892820458881747037530935788142408328991",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/86692"
+    },
+    {
+      "typeId": 86693,
+      "name": "Fabricators Keep Database Fragment",
+      "category": "Commodity",
+      "group": "Miscellaneous",
+      "defaultVolume": 0.10000000149011612,
+      "datacoreItemId": "15373980681073902269907815244823699706664312210715363671878271057285502153054",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/86693"
+    },
+    {
+      "typeId": 86694,
+      "name": "Fabricators Keep Database Fragment",
+      "category": "Commodity",
+      "group": "Miscellaneous",
+      "defaultVolume": 0.10000000149011612,
+      "datacoreItemId": "98576983433814503140035685122555420611764763537651558212724095541519177596655",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/86694"
+    },
+    {
+      "typeId": 86695,
+      "name": "Keeper Keep Database Fragment",
+      "category": "Commodity",
+      "group": "Miscellaneous",
+      "defaultVolume": 0.10000000149011612,
+      "datacoreItemId": "59009118445534842862939594919187708692455258207927927195746589016742249094807",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/86695"
+    },
+    {
+      "typeId": 86696,
+      "name": "Keeper Keep Database Fragment",
+      "category": "Commodity",
+      "group": "Miscellaneous",
+      "defaultVolume": 0.10000000149011612,
+      "datacoreItemId": "54720384679174962270504728632098364157516781422633839969993573222903025697852",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/86696"
+    },
+    {
+      "typeId": 86697,
+      "name": "Keeper Keep Database Fragment",
+      "category": "Commodity",
+      "group": "Miscellaneous",
+      "defaultVolume": 0.10000000149011612,
+      "datacoreItemId": "56274504816942739561406958972851066332659506934954867245865755640281166431630",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/86697"
+    },
+    {
+      "typeId": 86698,
+      "name": "Keeper Keep Database Fragment",
+      "category": "Commodity",
+      "group": "Miscellaneous",
+      "defaultVolume": 0.10000000149011612,
+      "datacoreItemId": "89864796911005890252980578707758078920360406546640890579644560481207685471722",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/86698"
+    },
+    {
+      "typeId": 86699,
+      "name": "Keeper Keep Database Fragment",
+      "category": "Commodity",
+      "group": "Miscellaneous",
+      "defaultVolume": 0.10000000149011612,
+      "datacoreItemId": "47667055379136474594562484624836150698940734090889842263553432844087517820072",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/86699"
+    },
+    {
+      "typeId": 86700,
+      "name": "Keeper Keep Database Fragment",
+      "category": "Commodity",
+      "group": "Miscellaneous",
+      "defaultVolume": 0.10000000149011612,
+      "datacoreItemId": "100182194827957177868093909268978772416101347865256625157020015315384060454379",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/86700"
+    },
+    {
+      "typeId": 86702,
+      "name": "Vault Promotional Material",
+      "category": "Commodity",
+      "group": "Miscellaneous",
+      "defaultVolume": 0.10000000149011612,
+      "datacoreItemId": "30629362785400982324256413101502600282136526038988812821966335974812702645340",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/86702"
+    },
+    {
+      "typeId": 86765,
+      "name": "Derelict C304320 Data Fragment",
+      "category": "Commodity",
+      "group": "Miscellaneous",
+      "defaultVolume": 0.10000000149011612,
+      "datacoreItemId": "83447667968885181558803986149178340825876058769201888032878886759243359549340",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/86765"
+    },
+    {
+      "typeId": 86766,
+      "name": "Derelict C304320 Data Fragment",
+      "category": "Commodity",
+      "group": "Miscellaneous",
+      "defaultVolume": 0.10000000149011612,
+      "datacoreItemId": "16583781513790349563647063474928145858814554184394916684910383094666910595638",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/86766"
+    },
+    {
+      "typeId": 86767,
+      "name": "Derelict C304320 Data Fragment",
+      "category": "Commodity",
+      "group": "Miscellaneous",
+      "defaultVolume": 0.10000000149011612,
+      "datacoreItemId": "91462417532003360238995953632491445220214265665544950017693202336505173944391",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/86767"
+    },
+    {
+      "typeId": 86798,
+      "name": "Derelict C102403",
+      "category": "Commodity",
+      "group": "Miscellaneous",
+      "defaultVolume": 0.10000000149011612,
+      "datacoreItemId": "67112787889496464389282595521750514230298453768608473938937866344727101513680",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/86798"
     },
     {
       "typeId": 87119,
-      "name": "Unknown Type 87119",
-      "category": "Unknown",
-      "group": "Unknown",
-      "defaultVolume": null,
-      "datacoreItemId": null,
+      "name": "Printer S",
+      "category": "Deployable",
+      "group": "Industry",
+      "defaultVolume": 10000,
+      "datacoreItemId": "26431481269709817762103264368320002229598380588622586392058155865085801143",
       "itemIds": [
         9999000005
       ],
       "sourceUrl": "https://evedataco.re/explore/types/87119"
     },
     {
+      "typeId": 87120,
+      "name": "Printer L",
+      "category": "Deployable",
+      "group": "Industry",
+      "defaultVolume": 10000,
+      "datacoreItemId": "68755944501465130474650513185264313902888317091098950978564152758324430565563",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/87120"
+    },
+    {
+      "typeId": 87160,
+      "name": "Refuge",
+      "category": "Deployable",
+      "group": "Core",
+      "defaultVolume": 10000,
+      "datacoreItemId": "106862238634521753607618014024685222746581911398193195815442943295426625255234",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/87160"
+    },
+    {
+      "typeId": 87161,
+      "name": "Portable Refinery",
+      "category": "Deployable",
+      "group": "Core",
+      "defaultVolume": 10000,
+      "datacoreItemId": "96322367359074157518331156264550111939073242382391272236754625674917219843253",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/87161"
+    },
+    {
+      "typeId": 87162,
+      "name": "Portable Printer",
+      "category": "Deployable",
+      "group": "Core",
+      "defaultVolume": 10000,
+      "datacoreItemId": "49093729854402668907490769436642374426657501376396290353655430473248350429876",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/87162"
+    },
+    {
+      "typeId": 87375,
+      "name": "Rich Common Ore",
+      "category": "Asteroid",
+      "group": "Natural Resources",
+      "defaultVolume": 1,
+      "datacoreItemId": "16935569395337509248177798374650999029861199607688475156432371448992563682375",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/87375"
+    },
+    {
+      "typeId": 87566,
+      "name": "Portable Storage",
+      "category": "Deployable",
+      "group": "Core",
+      "defaultVolume": 1000,
+      "datacoreItemId": "57510296462348266276142321486552390133696644243093854627985951738898048999575",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/87566"
+    },
+    {
+      "typeId": 87595,
+      "name": "Unrefined Radiantium",
+      "category": "Asteroid",
+      "group": "Natural Resources",
+      "defaultVolume": 1,
+      "datacoreItemId": "61383877018277183586186138146648894007607314334263431849754328122098215334739",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/87595"
+    },
+    {
+      "typeId": 87599,
+      "name": "Cryogenic Ejector S",
+      "category": "Module",
+      "group": "Heat Ejector",
+      "defaultVolume": 80,
+      "datacoreItemId": "44944128156270102113155559735077083711518501686173239532960079942343221995095",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/87599"
+    },
+    {
+      "typeId": 87698,
+      "name": "Wend",
+      "category": "Ship",
+      "group": "Shuttle",
+      "defaultVolume": 4000,
+      "datacoreItemId": "23472476807152242604714869582919203867412862019252117708757511241702315926358",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/87698"
+    },
+    {
+      "typeId": 87846,
+      "name": "Recurve",
+      "category": "Ship",
+      "group": "Corvette",
+      "defaultVolume": 16000,
+      "datacoreItemId": "26794654468012890359229071897456053202406288200868546946918660834246190801589",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/87846"
+    },
+    {
+      "typeId": 87847,
+      "name": "Reflex",
+      "category": "Ship",
+      "group": "Corvette",
+      "defaultVolume": 13000,
+      "datacoreItemId": "52971011281940554056055455911910491918398975514195279139693896944240901330025",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/87847"
+    },
+    {
+      "typeId": 87848,
+      "name": "Reiver",
+      "category": "Ship",
+      "group": "Corvette",
+      "defaultVolume": 12000,
+      "datacoreItemId": "26294824765154050620923338216546401629554418276314958706616492163096723654583",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/87848"
+    },
+    {
+      "typeId": 88063,
+      "name": "Refinery M",
+      "category": "Deployable",
+      "group": "Industry",
+      "defaultVolume": 10000,
+      "datacoreItemId": "35381205079790450131034974070198014242344240347619153354828326312902442328294",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/88063"
+    },
+    {
+      "typeId": 88064,
+      "name": "Refinery L",
+      "category": "Deployable",
+      "group": "Industry",
+      "defaultVolume": 10000,
+      "datacoreItemId": "113157091886552617066664590050262331601657775511163467630553123748300087893877",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/88064"
+    },
+    {
+      "typeId": 88067,
+      "name": "Printer M",
+      "category": "Deployable",
+      "group": "Industry",
+      "defaultVolume": 10000,
+      "datacoreItemId": "64559281742442331153988233468885151327006660811415826855033585294726141879900",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/88067"
+    },
+    {
       "typeId": 88068,
-      "name": "Unknown Type 88068",
-      "category": "Unknown",
-      "group": "Unknown",
-      "defaultVolume": null,
-      "datacoreItemId": null,
+      "name": "Assembler",
+      "category": "Deployable",
+      "group": "Industry",
+      "defaultVolume": 10000,
+      "datacoreItemId": "61640284792439338996025669070505285809001675807164573233614253650486177409775",
       "itemIds": [
         9999000006
       ],
       "sourceUrl": "https://evedataco.re/explore/types/88068"
     },
     {
+      "typeId": 88069,
+      "name": "Shipyard S",
+      "category": "Deployable",
+      "group": "Industry",
+      "defaultVolume": 10000,
+      "datacoreItemId": "104105533975843211780966959045203403863246722375829870024794872144530731248515",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/88069"
+    },
+    {
+      "typeId": 88070,
+      "name": "Shipyard M",
+      "category": "Deployable",
+      "group": "Industry",
+      "defaultVolume": 10000,
+      "datacoreItemId": "33119967693080369220178635730687763213521683326100478772415225011486975608701",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/88070"
+    },
+    {
+      "typeId": 88071,
+      "name": "Shipyard L",
+      "category": "Deployable",
+      "group": "Industry",
+      "defaultVolume": 10000,
+      "datacoreItemId": "61924173920682222157289950188479535904456957497465398645014836765515587380028",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/88071"
+    },
+    {
       "typeId": 88082,
-      "name": "Unknown Type 88082",
-      "category": "Unknown",
-      "group": "Unknown",
-      "defaultVolume": null,
-      "datacoreItemId": null,
+      "name": "Smart Storage Unit S",
+      "category": "Deployable",
+      "group": "Storage",
+      "defaultVolume": 1000,
+      "datacoreItemId": "72243834582896676496617740918817843302285882468875437434358749899655361315215",
       "itemIds": [
         888800006
       ],
       "sourceUrl": "https://evedataco.re/explore/types/88082"
     },
     {
+      "typeId": 88083,
+      "name": "Smart Storage Unit M",
+      "category": "Deployable",
+      "group": "Storage",
+      "defaultVolume": 1000,
+      "datacoreItemId": "108567106394284661018052668842266511769015451026197289949535286699399063635260",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/88083"
+    },
+    {
       "typeId": 88086,
-      "name": "Unknown Type 88086",
-      "category": "Unknown",
-      "group": "Unknown",
-      "defaultVolume": null,
-      "datacoreItemId": null,
+      "name": "Small Gate",
+      "category": "Deployable",
+      "group": "Gates",
+      "defaultVolume": 10000,
+      "datacoreItemId": "28226870542546076754961353887918200011515273214497321054232773391861786741221",
       "itemIds": [
         90185,
         90186
       ],
       "sourceUrl": "https://evedataco.re/explore/types/88086"
+    },
+    {
+      "typeId": 88092,
+      "name": "Network Node",
+      "category": "Deployable",
+      "group": "Core",
+      "defaultVolume": 10000,
+      "datacoreItemId": "32968617144585093676128361145540324699066145928867662492657667287463338194975",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/88092"
+    },
+    {
+      "typeId": 88093,
+      "name": "Hangar M",
+      "category": "Deployable",
+      "group": "Hangars",
+      "defaultVolume": 10000,
+      "datacoreItemId": "115661091336999718864682339860853000646739490163470303016762012796635722123128",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/88093"
+    },
+    {
+      "typeId": 88094,
+      "name": "Hangar L",
+      "category": "Deployable",
+      "group": "Hangars",
+      "defaultVolume": 10000,
+      "datacoreItemId": "38522456544263193610558926468337508653688208807187934245985603168251845346096",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/88094"
+    },
+    {
+      "typeId": 88098,
+      "name": "Totem 1",
+      "category": "Deployable",
+      "group": "Misc.",
+      "defaultVolume": 10000,
+      "datacoreItemId": "72291879903033801530777428221874289292202550383230099088992886237386472247593",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/88098"
+    },
+    {
+      "typeId": 88099,
+      "name": "Totem 2",
+      "category": "Deployable",
+      "group": "Misc.",
+      "defaultVolume": 10000,
+      "datacoreItemId": "85993887501250030546318704401928708047842993738997786613912987196979890408547",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/88099"
+    },
+    {
+      "typeId": 88100,
+      "name": "Wall 1",
+      "category": "Deployable",
+      "group": "Misc.",
+      "defaultVolume": 10000,
+      "datacoreItemId": "32278400513669474746719921102460075950270076332787892102802299164886473831907",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/88100"
+    },
+    {
+      "typeId": 88101,
+      "name": "Wall 2",
+      "category": "Deployable",
+      "group": "Misc.",
+      "defaultVolume": 10000,
+      "datacoreItemId": "42353091732227201814238064568914021508495528400610869391552965843424856477344",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/88101"
+    },
+    {
+      "typeId": 88234,
+      "name": "Troilite Sulfide Grains",
+      "category": "Material",
+      "group": "Mineral",
+      "defaultVolume": 0.10000000149011612,
+      "datacoreItemId": "67622676671577413482085455646650060642254481357111350261603993814658246783052",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/88234"
+    },
+    {
+      "typeId": 88235,
+      "name": "Feldspar Crystal Shards",
+      "category": "Material",
+      "group": "Mineral",
+      "defaultVolume": 0.10000000149011612,
+      "datacoreItemId": "98722621443305171646694042592593518449396333333777463383723244420105775041019",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/88235"
+    },
+    {
+      "typeId": 88319,
+      "name": "D2 Fuel",
+      "category": "Commodity",
+      "group": "Hydrogen Fuel",
+      "defaultVolume": 0.2800000011920929,
+      "datacoreItemId": "109614235577794200845285982943249387324458076444631602922797011672357285977276",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/88319"
+    },
+    {
+      "typeId": 88335,
+      "name": "D1 Fuel",
+      "category": "Commodity",
+      "group": "Hydrogen Fuel",
+      "defaultVolume": 0.2800000011920929,
+      "datacoreItemId": "60597553377526644998426398831478021925783486636691418520088382050634197537741",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/88335"
+    },
+    {
+      "typeId": 88561,
+      "name": "Thermal Composites",
+      "category": "Material",
+      "group": "Manufacturing Component",
+      "defaultVolume": 10,
+      "datacoreItemId": "78052186241868843874657946687624237447555700174421962370160879068146036938155",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/88561"
+    },
+    {
+      "typeId": 88564,
+      "name": "Feral Echo",
+      "category": "Material",
+      "group": "Manufacturing Component",
+      "defaultVolume": 0.10000000149011612,
+      "datacoreItemId": "14057529720911046597503595589528349231990637757488652351693869853379543063795",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/88564"
+    },
+    {
+      "typeId": 88565,
+      "name": "Still Knot",
+      "category": "Material",
+      "group": "Manufacturing Component",
+      "defaultVolume": 5,
+      "datacoreItemId": "67265549235689800725203507158032914285465907689917200176290042503077169701504",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/88565"
+    },
+    {
+      "typeId": 88764,
+      "name": "Salvaged Materials",
+      "category": "Commodity",
+      "group": "Salvage",
+      "defaultVolume": 5,
+      "datacoreItemId": "55772665958696498786210324043032259166507690017750449781544390521937330073918",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/88764"
+    },
+    {
+      "typeId": 88765,
+      "name": "Mummified Clone",
+      "category": "Commodity",
+      "group": "Salvage",
+      "defaultVolume": 0.20000000298023224,
+      "datacoreItemId": "58496874726991105895669044116748392121272154841054226243843265520351151955955",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/88765"
+    },
+    {
+      "typeId": 88780,
+      "name": "Echo Chamber",
+      "category": "Material",
+      "group": "Manufacturing Component",
+      "defaultVolume": 20,
+      "datacoreItemId": "72842574284411737272672678443654706840565311663000476430472563502096188386027",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/88780"
+    },
+    {
+      "typeId": 88781,
+      "name": "Chitinous Organics",
+      "category": "Material",
+      "group": "Manufacturing Component",
+      "defaultVolume": 10,
+      "datacoreItemId": "21751314841880649949319635174897539616738393724853283395649229480302668483290",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/88781"
+    },
+    {
+      "typeId": 88782,
+      "name": "Aromatic Carbon Weave",
+      "category": "Material",
+      "group": "Manufacturing Component",
+      "defaultVolume": 10,
+      "datacoreItemId": "73295892619553993750810348358065825800955685792289951843763806669857632117057",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/88782"
+    },
+    {
+      "typeId": 88783,
+      "name": "Kerogen Tar",
+      "category": "Material",
+      "group": "Manufacturing Component",
+      "defaultVolume": 5,
+      "datacoreItemId": "65859464990658079660142996010824736969603012122728863182391099129147151070190",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/88783"
+    },
+    {
+      "typeId": 88839,
+      "name": "Batched Printed Circuits",
+      "category": "Material",
+      "group": "Manufacturing Component",
+      "defaultVolume": 40,
+      "datacoreItemId": "23264637542334133435349833286711533188849661709128387825450866180336898548611",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/88839"
+    },
+    {
+      "typeId": 88840,
+      "name": "Packaged Printed Circuits",
+      "category": "Material",
+      "group": "Manufacturing Component",
+      "defaultVolume": 400,
+      "datacoreItemId": "16595687428659134714220943360907624632469275640468260592050159312564367148244",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/88840"
+    },
+    {
+      "typeId": 88841,
+      "name": "Batched Carbon Weave",
+      "category": "Material",
+      "group": "Manufacturing Component",
+      "defaultVolume": 150,
+      "datacoreItemId": "73473201088408630722363357595073623087261199720820245960615901155519961551267",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/88841"
+    },
+    {
+      "typeId": 88842,
+      "name": "Packaged Carbon Weave",
+      "category": "Material",
+      "group": "Manufacturing Component",
+      "defaultVolume": 1500,
+      "datacoreItemId": "59660356264911479653198365419609650090944953369267740755321523511621366387686",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/88842"
+    },
+    {
+      "typeId": 88843,
+      "name": "Batched Thermal Composites",
+      "category": "Material",
+      "group": "Manufacturing Component",
+      "defaultVolume": 100,
+      "datacoreItemId": "14688544071080710548440861665809325244456797648692011931079425636865901685899",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/88843"
+    },
+    {
+      "typeId": 88844,
+      "name": "Packaged Thermal Composites",
+      "category": "Material",
+      "group": "Manufacturing Component",
+      "defaultVolume": 1000,
+      "datacoreItemId": "34794991854012137711020942979798987105139380640496268831317496620835078484913",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/88844"
+    },
+    {
+      "typeId": 88886,
+      "name": "Heat Exchanger XS",
+      "category": "Module",
+      "group": "Heat Ejector",
+      "defaultVolume": 40,
+      "datacoreItemId": "32227958063130188410996123238974192796775086032789606110003206985756963562866",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/88886"
+    },
+    {
+      "typeId": 88887,
+      "name": "Compressed Coolant",
+      "category": "Charge",
+      "group": "Heat Sink Charge",
+      "defaultVolume": 5,
+      "datacoreItemId": "22928334433543460799369574932658531535908502343127833194197576671377908721918",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/88887"
+    },
+    {
+      "typeId": 88889,
+      "name": "Heat Exchanger S",
+      "category": "Module",
+      "group": "Heat Ejector",
+      "defaultVolume": 80,
+      "datacoreItemId": "68887958432083445351612434280810491499907486422418752618595194340635928103812",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/88889"
+    },
+    {
+      "typeId": 89087,
+      "name": "Synod Technocore",
+      "category": "Material",
+      "group": "Manufacturing Component",
+      "defaultVolume": 20,
+      "datacoreItemId": "63068238647511760480316449459410207359014651813431114542919931726688830544777",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/89087"
+    },
+    {
+      "typeId": 89088,
+      "name": "Exclave Technocore",
+      "category": "Material",
+      "group": "Manufacturing Component",
+      "defaultVolume": 20,
+      "datacoreItemId": "74000600342103198586228058334836329762705219765648520830626835333269457871394",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/89088"
+    },
+    {
+      "typeId": 89089,
+      "name": "Building Foam",
+      "category": "Material",
+      "group": "Manufacturing Component",
+      "defaultVolume": 470,
+      "datacoreItemId": "24769300214168743824172863967284490916823423833921187122636603927244197553865",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/89089"
+    },
+    {
+      "typeId": 89258,
+      "name": "Hydrocarbon Residue",
+      "category": "Material",
+      "group": "Mineral",
+      "defaultVolume": 1,
+      "datacoreItemId": "37183199378092202825076546449732385075499030242965416584466778519667764089767",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/89258"
+    },
+    {
+      "typeId": 89259,
+      "name": "Silica Grains",
+      "category": "Material",
+      "group": "Mineral",
+      "defaultVolume": 1,
+      "datacoreItemId": "78238675431961098682381454381313717869368720773973871664129330903568564609894",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/89259"
+    },
+    {
+      "typeId": 89260,
+      "name": "Iron-Rich Nodules",
+      "category": "Material",
+      "group": "Mineral",
+      "defaultVolume": 1,
+      "datacoreItemId": "33067717337055512232434102294988201249440798234765474600638863381800175135032",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/89260"
+    },
+    {
+      "typeId": 89775,
+      "name": "SEER I",
+      "category": "Deployable",
+      "group": "Misc.",
+      "defaultVolume": 50,
+      "datacoreItemId": "74007996646472994317928914074188171742436890921866015953736589719053076956978",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/89775"
+    },
+    {
+      "typeId": 89776,
+      "name": "SEER II",
+      "category": "Deployable",
+      "group": "Misc.",
+      "defaultVolume": 50,
+      "datacoreItemId": "63667161126841398228412887509524510904647975864340727938666162378497804697483",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/89776"
+    },
+    {
+      "typeId": 89777,
+      "name": "HARBINGER I",
+      "category": "Deployable",
+      "group": "Misc.",
+      "defaultVolume": 50,
+      "datacoreItemId": "92881515397755040337740264099258048397056002050603835194409492589528935257492",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/89777"
+    },
+    {
+      "typeId": 89778,
+      "name": "HARBINGER II",
+      "category": "Deployable",
+      "group": "Misc.",
+      "defaultVolume": 50,
+      "datacoreItemId": "16629258139013934888714904143776610365321641604380401581903136202870639119605",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/89778"
+    },
+    {
+      "typeId": 89779,
+      "name": "RAINMAKER II",
+      "category": "Deployable",
+      "group": "Misc.",
+      "defaultVolume": 50,
+      "datacoreItemId": "11973294014127978314187830778124588002537640521680752348156427451297852133377",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/89779"
+    },
+    {
+      "typeId": 89780,
+      "name": "RAINMAKER I",
+      "category": "Deployable",
+      "group": "Misc.",
+      "defaultVolume": 50,
+      "datacoreItemId": "48119397442044635929063052581969348932777690122851035380906663087194514514892",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/89780"
+    },
+    {
+      "typeId": 89794,
+      "name": "Defiled Crude Matter",
+      "category": "Asteroid",
+      "group": "Rift",
+      "defaultVolume": 1,
+      "datacoreItemId": "73190390894302823336670340952812680079344845805839776054758930540112376444658",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/89794"
+    },
+    {
+      "typeId": 90184,
+      "name": "Relay",
+      "category": "Deployable",
+      "group": "Industry",
+      "defaultVolume": 10000,
+      "datacoreItemId": "78579492848106597576053258467639870137935614949183441804319032899638480672116",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/90184"
+    },
+    {
+      "typeId": 90887,
+      "name": "Leap",
+      "category": "Module",
+      "group": "Warp Accelerator",
+      "defaultVolume": 20,
+      "datacoreItemId": "24713952231749392334088545507872827008985707532825608032093428318353805096706",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/90887"
+    },
+    {
+      "typeId": 91106,
+      "name": "Stride",
+      "category": "Ship",
+      "group": "Corvette",
+      "defaultVolume": 12000,
+      "datacoreItemId": "104011708312998591230660773552205353385233041674707940685650692789211601708506",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/91106"
+    },
+    {
+      "typeId": 91107,
+      "name": "Carom",
+      "category": "Ship",
+      "group": "Corvette",
+      "defaultVolume": 12000,
+      "datacoreItemId": "13157720812485008847793614806614610645004115998411368385116364263945133242561",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/91107"
+    },
+    {
+      "typeId": 91374,
+      "name": "Char",
+      "category": "Asteroid",
+      "group": "Char",
+      "defaultVolume": 1,
+      "datacoreItemId": "25628108729027779500050018572075564748854799736515329646418686696356056642833",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/91374"
+    },
+    {
+      "typeId": 91375,
+      "name": "Slag",
+      "category": "Asteroid",
+      "group": "Slag",
+      "defaultVolume": 1,
+      "datacoreItemId": "24304988208663785571237077530349474847993789974837528127260785743582589323835",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/91375"
+    },
+    {
+      "typeId": 91376,
+      "name": "Ingot",
+      "category": "Asteroid",
+      "group": "Ingot",
+      "defaultVolume": 1,
+      "datacoreItemId": "59592074702633612663164761360320799795715902536589597287656153147743853511041",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/91376"
+    },
+    {
+      "typeId": 91377,
+      "name": "Comet",
+      "category": "Asteroid",
+      "group": "Comet",
+      "defaultVolume": 1,
+      "datacoreItemId": "79289184570322494020909370630219459689927505815675218753144224107021363500847",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/91377"
+    },
+    {
+      "typeId": 91378,
+      "name": "Dewdrop",
+      "category": "Asteroid",
+      "group": "Dewdrop",
+      "defaultVolume": 1,
+      "datacoreItemId": "48655881636972749698672187781812843080229073001614283739354043086583595501384",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/91378"
+    },
+    {
+      "typeId": 91379,
+      "name": "Ember",
+      "category": "Asteroid",
+      "group": "Ember",
+      "defaultVolume": 1,
+      "datacoreItemId": "34667369100673682217992127312577535679334075586931047311383689859220787432250",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/91379"
+    },
+    {
+      "typeId": 91380,
+      "name": "Glint",
+      "category": "Asteroid",
+      "group": "Glint",
+      "defaultVolume": 1,
+      "datacoreItemId": "31069553375205239791043775752437965743761295617783903782922913251209779826893",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/91380"
+    },
+    {
+      "typeId": 91381,
+      "name": "Soot",
+      "category": "Asteroid",
+      "group": "Soot",
+      "defaultVolume": 1,
+      "datacoreItemId": "56701802683671734767794185358603160019278727935156428940188130158682504933146",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/91381"
+    },
+    {
+      "typeId": 99001,
+      "name": "Palladium",
+      "category": "Material",
+      "group": "Manufacturing Component",
+      "defaultVolume": 5,
+      "datacoreItemId": "78467462274086259510583762346153139049565630290695459058328884683366844677439",
+      "itemIds": [],
+      "sourceUrl": "https://evedataco.re/explore/types/99001"
     }
   ],
   "failures": []

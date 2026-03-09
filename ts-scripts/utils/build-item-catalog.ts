@@ -12,10 +12,18 @@ type TestResources = {
     item?: { typeId?: number; itemId?: number };
 };
 
-type Seed = {
-    typeId: number;
-    itemIds: number[];
+type DatacoreTypeAttribute = {
+    trait_type?: string;
+    value?: string | number;
 };
+
+type DatacoreTypeRecord = {
+    smartItemId?: string;
+    name?: string;
+    attributes?: DatacoreTypeAttribute[];
+};
+
+type DatacoreTypesResponse = Record<string, DatacoreTypeRecord>;
 
 type CatalogEntry = {
     typeId: number;
@@ -48,7 +56,7 @@ function addSeed(map: Map<number, Set<number>>, typeId?: number, ...itemIds: Arr
     }
 }
 
-function collectSeeds(resources: TestResources): Seed[] {
+function collectSeedMap(resources: TestResources): Map<number, Set<number>> {
     const byType = new Map<number, Set<number>>();
 
     addSeed(byType, resources.networkNode?.typeId, resources.networkNode?.itemId);
@@ -70,70 +78,87 @@ function collectSeeds(resources: TestResources): Seed[] {
         addSeed(byType, typeId);
     }
 
-    return [...byType.entries()]
-        .map(([typeId, itemIds]) => ({ typeId, itemIds: [...itemIds].sort((a, b) => a - b) }))
-        .sort((a, b) => a.typeId - b.typeId);
+    return byType;
 }
 
-function parseField(html: string, label: string): string | null {
-    const regex = new RegExp(`\\b${label}:\\s*([^\\n\\r<]+)`, "i");
-    const match = html.match(regex);
-    return match?.[1]?.trim() ?? null;
+function getAttributeValue(attributes: DatacoreTypeAttribute[] | undefined, key: string): string | number | null {
+    if (!attributes?.length) return null;
+    const match = attributes.find((attribute) => attribute.trait_type?.toLowerCase() === key.toLowerCase());
+    return match?.value ?? null;
 }
 
-function parseName(html: string, fallbackTypeId: number): string {
-    const heading = html.match(/##\s+(.+?)\s+\[(\d+)\]/);
-    if (heading?.[1]) return heading[1].trim();
-    return `Unknown Type ${fallbackTypeId}`;
-}
-
-async function fetchCatalogEntry(baseUrl: string, seed: Seed): Promise<CatalogEntry> {
-    const sourceUrl = `${baseUrl.replace(/\/$/, "")}/explore/types/${seed.typeId}`;
+async function fetchAllTypes(baseUrl: string): Promise<DatacoreTypesResponse> {
+    const sourceUrl = `${baseUrl.replace(/\/$/, "")}/api-stillness/types`;
     const response = await fetch(sourceUrl);
     if (!response.ok) {
         throw new Error(`Failed to fetch ${sourceUrl}: ${response.status} ${response.statusText}`);
     }
 
-    const html = await response.text();
-    const name = parseName(html, seed.typeId);
-    const category = parseField(html, "categoryName") ?? "Unknown";
-    const group = parseField(html, "groupName") ?? "Unknown";
-    const volumeRaw = parseField(html, "volume");
-    const datacoreItemId = parseField(html, "itemId");
+    const body = (await response.json()) as unknown;
+    if (!body || typeof body !== "object" || Array.isArray(body)) {
+        throw new Error(`Unexpected payload from ${sourceUrl}`);
+    }
 
-    return {
-        typeId: seed.typeId,
-        name,
-        category,
-        group,
-        defaultVolume: volumeRaw ? Number(volumeRaw) : null,
-        datacoreItemId,
-        itemIds: seed.itemIds,
-        sourceUrl,
-    };
+    return body as DatacoreTypesResponse;
 }
 
 async function main() {
     const workspaceRoot = getWorkspaceRoot();
     const resources = readTestResources(workspaceRoot);
-    const seeds = collectSeeds(resources);
+    const seedMap = collectSeedMap(resources);
+    const seeds = [...seedMap.entries()]
+        .map(([typeId, itemIds]) => ({ typeId, itemIds: [...itemIds].sort((a, b) => a - b) }))
+        .sort((a, b) => a.typeId - b.typeId);
     const baseUrl = process.env.DATACORE_BASE_URL ?? "https://evedataco.re";
+    const scope = (process.env.CATALOG_SCOPE ?? "all").toLowerCase();
 
-    if (seeds.length === 0) {
+    if (scope !== "all" && scope !== "seed") {
+        throw new Error(`Invalid CATALOG_SCOPE: ${scope}. Expected 'all' or 'seed'.`);
+    }
+
+    if (scope === "seed" && seeds.length === 0) {
         throw new Error("No typeIds found in test-resources.json and TYPE_IDS was empty.");
     }
+
+    const datacoreTypes = await fetchAllTypes(baseUrl);
+    const targetTypeIds = scope === "all"
+        ? Object.keys(datacoreTypes)
+            .map((value) => Number(value))
+            .filter((value) => Number.isFinite(value) && value > 0)
+            .sort((a, b) => a - b)
+        : seeds.map((seed) => seed.typeId);
 
     const outputPath = path.resolve(workspaceRoot, "catalog", "item-catalog.json");
     const entries: CatalogEntry[] = [];
     const failures: Array<{ typeId: number; error: string }> = [];
 
-    for (const seed of seeds) {
+    for (const typeId of targetTypeIds) {
         try {
-            const entry = await fetchCatalogEntry(baseUrl, seed);
+            const typeData = datacoreTypes[String(typeId)];
+            if (!typeData) {
+                throw new Error(`Type ${typeId} not found in /api-stillness/types payload`);
+            }
+
+            const category = getAttributeValue(typeData.attributes, "categoryName");
+            const group = getAttributeValue(typeData.attributes, "groupName");
+            const volume = getAttributeValue(typeData.attributes, "volume");
+            const seedItemIds = seedMap.get(typeId);
+
+            const entry: CatalogEntry = {
+                typeId,
+                name: typeData.name?.trim() || `Unknown Type ${typeId}`,
+                category: typeof category === "string" && category.trim() ? category.trim() : "Unknown",
+                group: typeof group === "string" && group.trim() ? group.trim() : "Unknown",
+                defaultVolume: typeof volume === "number" ? volume : volume ? Number(volume) : null,
+                datacoreItemId: typeData.smartItemId ?? null,
+                itemIds: seedItemIds ? [...seedItemIds].sort((a, b) => a - b) : [],
+                sourceUrl: `${baseUrl.replace(/\/$/, "")}/explore/types/${typeId}`,
+            };
+
             entries.push(entry);
         } catch (error) {
             failures.push({
-                typeId: seed.typeId,
+                typeId,
                 error: error instanceof Error ? error.message : String(error),
             });
         }
@@ -143,10 +168,11 @@ async function main() {
         generatedAt: new Date().toISOString(),
         source: {
             baseUrl,
-            note: "Off-chain reference data generated from Datacore type pages.",
+            note: "Off-chain reference data generated from Datacore /api-stillness/types.",
+            scope,
         },
         summary: {
-            requestedTypes: seeds.length,
+            requestedTypes: targetTypeIds.length,
             resolvedTypes: entries.length,
             failedTypes: failures.length,
         },
