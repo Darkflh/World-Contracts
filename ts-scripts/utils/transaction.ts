@@ -36,12 +36,15 @@ export async function executeSponsoredTransaction(
     const transactionBytes = await sponsoredTx.build({ client });
 
     const playerSignature = await playerKeypair.signTransaction(transactionBytes);
-    const adminSignature = await adminKeypair.signTransaction(transactionBytes);
+    const isSameSigner = playerAddress.toLowerCase() === adminAddress.toLowerCase();
+    const signatures = isSameSigner
+        ? [playerSignature.signature]
+        : [playerSignature.signature, (await adminKeypair.signTransaction(transactionBytes)).signature];
 
-    // Execute with both signatures
+    // Execute with one or two signatures depending on signer/gas-owner relationship
     return await client.executeTransactionBlock({
         transactionBlock: transactionBytes,
-        signature: [playerSignature.signature, adminSignature.signature],
+        signature: signatures,
         options: options || { showObjectChanges: true, showEffects: true, showEvents: true },
     });
 }
