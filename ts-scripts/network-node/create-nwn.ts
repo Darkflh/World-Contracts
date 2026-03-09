@@ -110,7 +110,20 @@ async function main() {
             return;
         }
 
-        await createNetworkNode(characterObject, NWN_TYPE_ID, NWN_ITEM_ID, ctx);
+        try {
+            await createNetworkNode(characterObject, NWN_TYPE_ID, NWN_ITEM_ID, ctx);
+        } catch (error) {
+            const message = error instanceof Error ? error.message : String(error);
+            const alreadyExists =
+                message.includes("::network_node::anchor") && message.includes("abort code: 2");
+
+            if (alreadyExists) {
+                console.log("NWN already exists on-chain. Skipping create.");
+                return;
+            }
+
+            throw error;
+        }
     } catch (error) {
         handleError(error);
     }

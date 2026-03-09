@@ -60,7 +60,8 @@
     "prepare:decoder": "cd tools/error-decoder && cp index.html styles.css dist/",
     "build:decoder": "npm run extract:errors && npm run compile:decoder && npm run prepare:decoder",
     "dev:decoder": "npm run extract:errors && npm run compile:decoder -- --watch",
-    "debug:prepare": "chmod +x ./scripts/prepare-debug.sh && ./scripts/prepare-debug.sh"
+    "debug:prepare": "chmod +x ./scripts/prepare-debug.sh && ./scripts/prepare-debug.sh",
+    "run-integration-test:ps1": "pwsh -NoProfile -ExecutionPolicy Bypass -File ./scripts/run-integration-test.ps1"
   },
   "dependencies": {
     "@mysten/bcs": "^2.0.2",
