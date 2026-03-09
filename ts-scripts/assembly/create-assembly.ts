@@ -18,6 +18,26 @@ import {
 } from "../utils/constants";
 import { deriveObjectId } from "../utils/derive-object-id";
 
+async function objectExists(
+    objectId: string,
+    ctx: ReturnType<typeof initializeContext>
+): Promise<boolean> {
+    try {
+        const object = await ctx.client.getObject({
+            id: objectId,
+            options: { showType: true },
+        });
+
+        if (object.data) {
+            return true;
+        }
+
+        return false;
+    } catch {
+        return false;
+    }
+}
+
 async function createAssembly(
     characterObjectId: string,
     networkNodeObjectId: string,
@@ -86,6 +106,18 @@ async function main() {
         );
 
         for (const assembly of ASSEMBLIES) {
+            const assemblyObject = deriveObjectId(
+                config.objectRegistry,
+                Number(assembly.itemId),
+                config.packageId
+            );
+
+            if (await objectExists(assemblyObject, ctx)) {
+                console.log("Assembly already exists on-chain. Skipping create.");
+                console.log("Assembly Object Id: ", assemblyObject);
+                continue;
+            }
+
             await createAssembly(
                 characterObject,
                 networkNodeObject,

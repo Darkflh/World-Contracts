@@ -113,7 +113,27 @@ async function main() {
                 );
             }
 
-            await online(networkNodeObject, assemblyObject, assemblyOwnerCap, client, keypair, config);
+            try {
+                await online(
+                    networkNodeObject,
+                    assemblyObject,
+                    assemblyOwnerCap,
+                    client,
+                    keypair,
+                    config
+                );
+            } catch (error) {
+                const message = error instanceof Error ? error.message : String(error);
+                const alreadyOnline =
+                    message.includes("::status::online") && message.includes("abort code: 0");
+
+                if (alreadyOnline) {
+                    console.log("\nAssembly is already online. Skipping.");
+                    continue;
+                }
+
+                throw error;
+            }
         }
     } catch (error) {
         handleError(error);

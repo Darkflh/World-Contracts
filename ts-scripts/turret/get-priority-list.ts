@@ -273,7 +273,21 @@ async function main() {
             },
         ];
 
-        const list = await getTurretPriorityList(turretId, characterId, candidates, ctx);
+        let list: ReturnTargetPriorityListArg[] = [];
+        try {
+            list = await getTurretPriorityList(turretId, characterId, candidates, ctx);
+        } catch (error) {
+            const message = error instanceof Error ? error.message : String(error);
+            const knownDecodeIssue =
+                message.includes("DevInspect failed") && message.includes("peel_u8");
+
+            if (knownDecodeIssue) {
+                console.warn("Skipping priority-list decode: candidate payload not accepted by current target implementation.");
+                return;
+            }
+
+            throw error;
+        }
         console.log("ReturnTargetPriorityList length:", list.length);
         list.forEach((entry, i) => {
             console.log(
