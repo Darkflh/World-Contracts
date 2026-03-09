@@ -15,6 +15,26 @@ import { delay, getDelayMs } from "../utils/delay";
 
 const TRIBE_ID = 100;
 
+async function objectExists(
+    objectId: string,
+    ctx: ReturnType<typeof initializeContext>
+): Promise<boolean> {
+    try {
+        const object = await ctx.client.getObject({
+            id: objectId,
+            options: { showType: true },
+        });
+
+        if (object.data) {
+            return true;
+        }
+
+        return false;
+    } catch {
+        return false;
+    }
+}
+
 async function createCharacter(
     tenant: string,
     characterAddress: string,
@@ -34,6 +54,12 @@ async function createCharacter(
         config.packageId
     );
     console.log("Pre-computed Character ID:", precomputedCharacterId);
+
+    const alreadyExists = await objectExists(precomputedCharacterId, ctx);
+    if (alreadyExists) {
+        console.log("Character already exists on-chain. Skipping create.");
+        return precomputedCharacterId;
+    }
 
     const tx = new Transaction();
     const [character] = tx.moveCall({
