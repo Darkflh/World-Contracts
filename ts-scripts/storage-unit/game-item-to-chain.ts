@@ -21,6 +21,28 @@ import {
 } from "../utils/constants";
 import { getOwnerCap } from "./helper";
 
+function envBigInt(name: string, fallback: bigint): bigint {
+    const raw = process.env[name];
+    if (!raw || raw.trim() === "") return fallback;
+    return BigInt(raw.trim());
+}
+
+function envU64(name: string, fallback: bigint): bigint {
+    const value = envBigInt(name, fallback);
+    if (value < 0n) throw new Error(`${name} must be >= 0`);
+    return value;
+}
+
+function envU32(name: string, fallback: number): number {
+    const raw = process.env[name];
+    if (!raw || raw.trim() === "") return fallback;
+    const parsed = Number(raw.trim());
+    if (!Number.isInteger(parsed) || parsed < 0 || parsed > 0xffffffff) {
+        throw new Error(`${name} must be an integer between 0 and 4294967295`);
+    }
+    return parsed;
+}
+
 async function gameItemToChain(
     storageUnit: string,
     characterId: string,
@@ -113,15 +135,20 @@ async function main() {
             throw new Error(`OwnerCap not found for ${storageUnit}`);
         }
 
+        const typeId = envU64("ITEM_TYPE_ID", ITEM_A_TYPE_ID);
+        const itemId = envU64("ITEM_ITEM_ID", ITEM_A_ITEM_ID);
+        const volume = envU64("ITEM_VOLUME", 10n);
+        const quantity = envU32("ITEM_QUANTITY", 10);
+
         await gameItemToChain(
             storageUnit,
             characterObject,
             storageUnitOwnerCap,
             playerAddress,
-            ITEM_A_TYPE_ID,
-            ITEM_A_ITEM_ID,
-            10n,
-            10,
+            typeId,
+            itemId,
+            volume,
+            quantity,
             adminAddress,
             client,
             playerCtx.keypair,

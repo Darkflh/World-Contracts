@@ -34,6 +34,7 @@
     "create-storage-unit": "tsx ts-scripts/storage-unit/create-storage-unit.ts",
     "ssu-online": "tsx ts-scripts/storage-unit/online.ts",
     "game-item-to-chain": "tsx ts-scripts/storage-unit/game-item-to-chain.ts",
+    "add-test-item": "tsx ts-scripts/storage-unit/add-test-item.ts",
     "chain-item-to-game": "tsx ts-scripts/storage-unit/chain-item-to-game.ts",
     "withdraw-deposit": "tsx ts-scripts/storage-unit/withdraw-deposit.ts",
     "deposit-to-ephemeral-inventory": "tsx ts-scripts/storage-unit/deposit-to-ephemeral-inventory.ts",
