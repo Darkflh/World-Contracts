@@ -33,6 +33,7 @@ use world::{
     access::{Self, OwnerCap, ServerAddressRegistry, AdminACL},
     character::Character,
     energy::EnergyConfig,
+    extension_freeze,
     in_game_id::{Self, TenantItemId},
     inventory::{Self, Inventory, Item},
     location::{Self, Location, LocationRegistry},
@@ -71,6 +72,10 @@ const ESenderCannotAccessCharacter: vector<u8> = b"Address cannot access Charact
 const EItemParentMismatch: vector<u8> = b"Item was not withdrawn from this storage unit";
 #[error(code = 12)]
 const EMetadataNotSet: vector<u8> = b"Metadata not set on assembly";
+#[error(code = 13)]
+const EExtensionConfigFrozen: vector<u8> = b"Extension configuration is frozen";
+#[error(code = 14)]
+const EExtensionNotConfigured: vector<u8> = b"Extension must be configured before freezing";
 
 // Future thought: Can we make the behaviour attached dynamically using dof
 // === Structs ===
@@ -113,6 +118,7 @@ public fun authorize_extension<Auth: drop>(
 ) {
     let storage_unit_id = object::id(storage_unit);
     assert!(access::is_authorized(owner_cap, storage_unit_id), EAssemblyNotAuthorized);
+    assert!(!extension_freeze::is_extension_frozen(&storage_unit.id), EExtensionConfigFrozen);
     let previous_extension = storage_unit.extension;
     storage_unit.extension.swap_or_fill(type_name::with_defining_ids<Auth>());
     event::emit(ExtensionAuthorizedEvent {
@@ -122,6 +128,19 @@ public fun authorize_extension<Auth: drop>(
         previous_extension,
         owner_cap_id: object::id(owner_cap),
     });
+}
+
+/// Freezes the storage unit's extension configuration so the owner can no longer change it (builds user trust).
+/// Requires an extension to be configured. One-time; cannot be undone.
+public fun freeze_extension_config(
+    storage_unit: &mut StorageUnit,
+    owner_cap: &OwnerCap<StorageUnit>,
+) {
+    let storage_unit_id = object::id(storage_unit);
+    assert!(access::is_authorized(owner_cap, storage_unit_id), EAssemblyNotAuthorized);
+    assert!(option::is_some(&storage_unit.extension), EExtensionNotConfigured);
+    assert!(!extension_freeze::is_extension_frozen(&storage_unit.id), EExtensionConfigFrozen);
+    extension_freeze::freeze_extension_config(&mut storage_unit.id, storage_unit_id);
 }
 
 public fun online(
@@ -443,6 +462,11 @@ public fun energy_source_id(storage_unit: &StorageUnit): &Option<ID> {
     &storage_unit.energy_source_id
 }
 
+/// Returns true if the storage unit's extension configuration is frozen (owner cannot change extension).
+public fun is_extension_frozen(storage_unit: &StorageUnit): bool {
+    extension_freeze::is_extension_frozen(&storage_unit.id)
+}
+
 // === Admin Functions ===
 public fun anchor(
     registry: &mut ObjectRegistry,
@@ -650,6 +674,7 @@ public fun unanchor(
             key,
         ),
     );
+    extension_freeze::remove_frozen_marker_if_present(&mut id);
     metadata.do!(|metadata| metadata.delete());
     let _ = option::destroy_with_default(energy_source_id, object::id(network_node));
     id.delete();
@@ -677,6 +702,7 @@ public fun unanchor_orphan(storage_unit: StorageUnit, admin_acl: &AdminACL, ctx:
         ),
     );
     status.unanchor(storage_unit_id, key);
+    extension_freeze::remove_frozen_marker_if_present(&mut id);
     metadata.do!(|metadata| metadata.delete());
     option::destroy_none(energy_source_id);
 
