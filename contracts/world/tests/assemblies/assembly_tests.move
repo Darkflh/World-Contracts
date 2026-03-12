@@ -4,15 +4,15 @@ module world::assembly_tests;
 use std::{string::utf8, unit_test::assert_eq};
 use sui::{clock, test_scenario as ts};
 use world::{
-    access::{AdminACL, OwnerCap},
+    access::{Self, AdminACL, OwnerCap},
     assembly::{Self, Assembly},
     character::{Self, Character},
     energy::{Self, EnergyConfig},
-    location,
+    location::{Self, LocationRegistry},
     network_node::{Self, NetworkNode},
     object_registry::ObjectRegistry,
     status,
-    test_helpers::{Self, governor, admin, user_a, tenant, in_game_id}
+    test_helpers::{Self, governor, admin, user_a, user_b, tenant, in_game_id}
 };
 
 const CHARACTER_ITEM_ID: u32 = 2001;
@@ -38,6 +38,9 @@ const FUEL_VOLUME: u64 = 10;
 
 // Energy constants (ASSEMBLY_TYPE_1 = 8888 requires 50 energy)
 const ASSEMBLY_ENERGY_REQUIRED: u64 = 50;
+
+const ASSEMBLY_B_ITEM_ID: u64 = 1002;
+const CHARACTER_B_ITEM_ID: u32 = 2002;
 
 // Helper to setup test environment
 fun setup(ts: &mut ts::Scenario) {
@@ -100,8 +103,17 @@ fun create_network_node(ts: &mut ts::Scenario, character_id: ID): ID {
     id
 }
 
-// Helper to create assembly. Returns (assembly_id, character_id).
+// Helper to create assembly. Returns assembly_id.
 fun create_assembly(ts: &mut ts::Scenario, nwn_id: ID, character_id: ID): ID {
+    create_assembly_with_item_id(ts, nwn_id, character_id, ITEM_ID)
+}
+
+fun create_assembly_with_item_id(
+    ts: &mut ts::Scenario,
+    nwn_id: ID,
+    character_id: ID,
+    item_id: u64,
+): ID {
     ts::next_tx(ts, admin());
     let character = ts::take_shared_by_id<Character>(ts, character_id);
     let mut registry = ts::take_shared<ObjectRegistry>(ts);
@@ -113,7 +125,7 @@ fun create_assembly(ts: &mut ts::Scenario, nwn_id: ID, character_id: ID): ID {
         &mut nwn,
         &character,
         &admin_acl,
-        ITEM_ID,
+        item_id,
         TYPE_ID,
         LOCATION_HASH,
         ts.ctx(),
@@ -246,6 +258,67 @@ fun test_online_offline() {
 }
 
 #[test]
+fun test_borrow_owner_cap_and_transfer_to_address() {
+    let mut ts = ts::begin(governor());
+    setup(&mut ts);
+
+    let character_id = create_character(&mut ts, user_a(), (CHARACTER_ITEM_ID as u32));
+    let nwn_id = create_network_node(&mut ts, character_id);
+    let assembly_id = create_assembly(&mut ts, nwn_id, character_id);
+    let clock = clock::create_for_testing(ts.ctx());
+
+    // OwnerCap<Assembly> is on Character; borrow from character, transfer to user_b, then use as user_b in next tx
+    ts::next_tx(&mut ts, user_a());
+    {
+        let mut character = ts::take_shared_by_id<Character>(&ts, character_id);
+        let (owner_cap, receipt) = character.borrow_owner_cap<Assembly>(
+            ts::most_recent_receiving_ticket<OwnerCap<Assembly>>(&character_id),
+            ts.ctx(),
+        );
+
+        access::transfer_owner_cap_with_receipt<Assembly>(
+            owner_cap,
+            receipt,
+            user_b(),
+            ts.ctx(),
+        );
+        ts::return_shared(character);
+    };
+
+    // Bring network node online so assembly can reserve energy
+    ts::next_tx(&mut ts, user_a());
+    {
+        let mut nwn = ts::take_shared_by_id<NetworkNode>(&ts, nwn_id);
+        let mut character = ts::take_shared_by_id<Character>(&ts, character_id);
+        let (owner_cap, receipt) = character.borrow_owner_cap<NetworkNode>(
+            ts::most_recent_receiving_ticket<OwnerCap<NetworkNode>>(&character_id),
+            ts.ctx(),
+        );
+        nwn.deposit_fuel_test(&owner_cap, FUEL_TYPE_ID, FUEL_VOLUME, 10, &clock);
+        nwn.online(&owner_cap, &clock);
+        character.return_owner_cap(owner_cap, receipt);
+        ts::return_shared(character);
+        ts::return_shared(nwn);
+    };
+
+    // user_b (new owner of the cap) brings assembly online to validate cross-account transfer
+    ts::next_tx(&mut ts, user_b());
+    {
+        let mut assembly = ts::take_shared_by_id<Assembly>(&ts, assembly_id);
+        let mut nwn = ts::take_shared_by_id<NetworkNode>(&ts, nwn_id);
+        let energy_config = ts::take_shared<EnergyConfig>(&ts);
+        let owner_cap = ts::take_from_sender<OwnerCap<Assembly>>(&ts);
+        assembly.online(&mut nwn, &energy_config, &owner_cap);
+        ts::return_to_sender(&ts, owner_cap);
+        ts::return_shared(assembly);
+        ts::return_shared(nwn);
+        ts::return_shared(energy_config);
+    };
+    clock.destroy_for_testing();
+    ts::end(ts);
+}
+
+#[test]
 fun test_unanchor() {
     let mut ts = ts::begin(governor());
     setup(&mut ts);
@@ -286,6 +359,59 @@ fun test_unanchor() {
     ts::return_shared(energy_config);
     ts::return_shared(admin_acl);
     ts::return_shared(registry);
+    ts::end(ts);
+}
+
+#[test]
+fun reveal_assembly_location() {
+    let mut ts = ts::begin(governor());
+    setup(&mut ts);
+
+    let character_id = create_character(&mut ts, user_a(), (CHARACTER_ITEM_ID as u32));
+    let nwn_id = create_network_node(&mut ts, character_id);
+    let assembly_id = create_assembly(&mut ts, nwn_id, character_id);
+
+    let solarsystem: u64 = 42;
+    let x = utf8(b"100");
+    let y = utf8(b"200");
+    let z = utf8(b"300");
+
+    ts::next_tx(&mut ts, admin());
+    {
+        let assembly = ts::take_shared_by_id<Assembly>(&ts, assembly_id);
+        let mut registry = ts::take_shared<LocationRegistry>(&ts);
+        let admin_acl = ts::take_shared<AdminACL>(&ts);
+        assembly::reveal_location(
+            &assembly,
+            &mut registry,
+            &admin_acl,
+            solarsystem,
+            x,
+            y,
+            z,
+            ts.ctx(),
+        );
+        ts::return_shared(admin_acl);
+        ts::return_shared(registry);
+        ts::return_shared(assembly);
+    };
+
+    ts::next_tx(&mut ts, admin());
+    {
+        let registry = ts::take_shared<LocationRegistry>(&ts);
+        let coords = location::get_location(&registry, assembly_id);
+        assert!(option::is_some(&coords), 0);
+        let coords_ref = option::borrow(&coords);
+        let expected_solarsystem: u64 = 42;
+        let expected_x = utf8(b"100");
+        let expected_y = utf8(b"200");
+        let expected_z = utf8(b"300");
+        assert_eq!(location::solarsystem(coords_ref), expected_solarsystem);
+        assert_eq!(location::x(coords_ref), expected_x);
+        assert_eq!(location::y(coords_ref), expected_y);
+        assert_eq!(location::z(coords_ref), expected_z);
+        ts::return_shared(registry);
+    };
     ts::end(ts);
 }
 
@@ -421,5 +547,65 @@ fun test_unanchor_orphan_fails_when_energy_source_set() {
         ts::return_shared(admin_acl);
     };
 
+    ts::end(ts);
+}
+
+#[test]
+fun test_update_metadata_assembly_success() {
+    let mut ts = ts::begin(governor());
+    setup(&mut ts);
+
+    let character_id = create_character(&mut ts, user_a(), (CHARACTER_ITEM_ID as u32));
+    let nwn_id = create_network_node(&mut ts, character_id);
+    let assembly_id = create_assembly(&mut ts, nwn_id, character_id);
+
+    ts::next_tx(&mut ts, user_a());
+    {
+        let mut assembly = ts::take_shared_by_id<Assembly>(&ts, assembly_id);
+        let mut character = ts::take_shared_by_id<Character>(&ts, character_id);
+        let (owner_cap, receipt) = character.borrow_owner_cap<Assembly>(
+            ts::most_recent_receiving_ticket<OwnerCap<Assembly>>(&character_id),
+            ts.ctx(),
+        );
+        assembly.update_metadata_name(&owner_cap, utf8(b"New Name"));
+        character.return_owner_cap(owner_cap, receipt);
+        ts::return_shared(character);
+        ts::return_shared(assembly);
+    };
+    ts::end(ts);
+}
+
+#[test]
+#[expected_failure(abort_code = assembly::EAssemblyNotAuthorized)]
+fun test_update_metadata_assembly_wrong_cap() {
+    let mut ts = ts::begin(governor());
+    setup(&mut ts);
+
+    let character_a_id = create_character(&mut ts, user_a(), (CHARACTER_ITEM_ID as u32));
+    let nwn_id = create_network_node(&mut ts, character_a_id);
+    let assembly_a_id = create_assembly(&mut ts, nwn_id, character_a_id);
+
+    let character_b_id = create_character(&mut ts, user_b(), CHARACTER_B_ITEM_ID);
+    let _assembly_b_id = create_assembly_with_item_id(
+        &mut ts,
+        nwn_id,
+        character_b_id,
+        ASSEMBLY_B_ITEM_ID,
+    );
+
+    // user_b tries to update user_a's assembly using user_b's OwnerCap<Assembly>
+    ts::next_tx(&mut ts, user_b());
+    {
+        let mut assembly_a = ts::take_shared_by_id<Assembly>(&ts, assembly_a_id);
+        let mut character_b = ts::take_shared_by_id<Character>(&ts, character_b_id);
+        let (owner_cap_b, receipt) = character_b.borrow_owner_cap<Assembly>(
+            ts::most_recent_receiving_ticket<OwnerCap<Assembly>>(&character_b_id),
+            ts.ctx(),
+        );
+        assembly_a.update_metadata_name(&owner_cap_b, utf8(b"X"));
+        character_b.return_owner_cap(owner_cap_b, receipt);
+        ts::return_shared(character_b);
+        ts::return_shared(assembly_a);
+    };
     ts::end(ts);
 }

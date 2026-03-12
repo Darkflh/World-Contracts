@@ -2,13 +2,14 @@
 /// Basic operations are anchor, unanchor, online, offline and destroy
 module world::assembly;
 
+use std::string::String;
 use sui::{derived_object, event};
 use world::{
     access::{Self, AdminACL, OwnerCap},
     character::Character,
     energy::EnergyConfig,
     in_game_id::{Self, TenantItemId},
-    location::{Self, Location},
+    location::{Self, Location, LocationRegistry},
     metadata::{Self, Metadata},
     network_node::{NetworkNode, OfflineAssemblies, HandleOrphanedAssemblies, UpdateEnergySources},
     object_registry::ObjectRegistry,
@@ -31,6 +32,8 @@ const ENetworkNodeDoesNotExist: vector<u8> =
 const EAssemblyOnline: vector<u8> = b"Assembly should be offline";
 #[error(code = 6)]
 const EAssemblyHasEnergySource: vector<u8> = b"Assembly has an energy source";
+#[error(code = 7)]
+const EMetadataNotSet: vector<u8> = b"Metadata not set on assembly";
 
 // === Structs ===
 // TODO: find an elegant way to decouple the common fields across all structs
@@ -42,7 +45,7 @@ public struct Assembly has key {
     status: AssemblyStatus,
     location: Location,
     energy_source_id: Option<ID>,
-    metadata: Option<Metadata>,
+    metadata: Option<Metadata>, // TODO: make it non-optional
 }
 
 // === Events ===
@@ -90,6 +93,66 @@ public fun offline(
     release_energy(assembly, network_node, energy_config);
 
     assembly.status.offline(assembly_id, assembly.key);
+}
+
+public fun update_metadata_name(
+    assembly: &mut Assembly,
+    owner_cap: &OwnerCap<Assembly>,
+    name: String,
+) {
+    assert!(access::is_authorized(owner_cap, object::id(assembly)), EAssemblyNotAuthorized);
+    assert!(option::is_some(&assembly.metadata), EMetadataNotSet);
+    let metadata = option::borrow_mut(&mut assembly.metadata);
+    metadata.update_name(assembly.key, name);
+}
+
+public fun update_metadata_description(
+    assembly: &mut Assembly,
+    owner_cap: &OwnerCap<Assembly>,
+    description: String,
+) {
+    assert!(access::is_authorized(owner_cap, object::id(assembly)), EAssemblyNotAuthorized);
+    assert!(option::is_some(&assembly.metadata), EMetadataNotSet);
+    let metadata = option::borrow_mut(&mut assembly.metadata);
+    metadata.update_description(assembly.key, description);
+}
+
+public fun update_metadata_url(
+    assembly: &mut Assembly,
+    owner_cap: &OwnerCap<Assembly>,
+    url: String,
+) {
+    assert!(access::is_authorized(owner_cap, object::id(assembly)), EAssemblyNotAuthorized);
+    assert!(option::is_some(&assembly.metadata), EMetadataNotSet);
+    let metadata = option::borrow_mut(&mut assembly.metadata);
+    metadata.update_url(assembly.key, url);
+}
+
+/// Reveals plain-text location (solarsystem, x, y, z) for this assembly. Admin ACL only. Optional; enables dapps (e.g. route maps).
+/// Temporary: use until the offchain location reveal service is ready.
+public fun reveal_location(
+    assembly: &Assembly,
+    registry: &mut LocationRegistry,
+    admin_acl: &AdminACL,
+    solarsystem: u64,
+    x: String,
+    y: String,
+    z: String,
+    ctx: &TxContext,
+) {
+    admin_acl.verify_sponsor(ctx);
+    location::reveal_location(
+        registry,
+        object::id(assembly),
+        assembly.key,
+        assembly.type_id,
+        assembly.owner_cap_id,
+        location::hash(&assembly.location),
+        solarsystem,
+        x,
+        y,
+        z,
+    );
 }
 
 // === View Functions ===

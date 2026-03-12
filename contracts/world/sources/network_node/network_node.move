@@ -8,6 +8,7 @@
 /// Future: There might be multiple power sources connected together to generate more energy that can be used by assemblies in the base
 module world::network_node;
 
+use std::string::String;
 use sui::{clock::Clock, derived_object, event};
 use world::{
     access::{Self, OwnerCap, AdminACL},
@@ -15,7 +16,7 @@ use world::{
     energy::{Self, EnergySource},
     fuel::{Self, FuelConfig, Fuel},
     in_game_id::{Self, TenantItemId},
-    location::{Self, Location},
+    location::{Self, Location, LocationRegistry},
     metadata::{Self, Metadata},
     object_registry::ObjectRegistry,
     status::{Self, AssemblyStatus}
@@ -44,6 +45,8 @@ const EUpdateEnergySourcesNotProcessed: vector<u8> =
 #[error(code = 9)]
 const EOrphanedAssembliesNotOfflined: vector<u8> =
     b"Orphaned assemblies must be offlined before destroying network node";
+#[error(code = 10)]
+const EMetadataNotSet: vector<u8> = b"Metadata not set on assembly";
 
 // === Structs ===
 /// Hot potato struct to enforce all connected assemblies are brought offline
@@ -155,6 +158,39 @@ public fun offline(
     }
 }
 
+public fun update_metadata_name(
+    nwn: &mut NetworkNode,
+    owner_cap: &OwnerCap<NetworkNode>,
+    name: String,
+) {
+    assert!(access::is_authorized(owner_cap, object::id(nwn)), ENetworkNodeNotAuthorized);
+    assert!(option::is_some(&nwn.metadata), EMetadataNotSet);
+    let metadata = option::borrow_mut(&mut nwn.metadata);
+    metadata.update_name(nwn.key, name);
+}
+
+public fun update_metadata_description(
+    nwn: &mut NetworkNode,
+    owner_cap: &OwnerCap<NetworkNode>,
+    description: String,
+) {
+    assert!(access::is_authorized(owner_cap, object::id(nwn)), ENetworkNodeNotAuthorized);
+    assert!(option::is_some(&nwn.metadata), EMetadataNotSet);
+    let metadata = option::borrow_mut(&mut nwn.metadata);
+    metadata.update_description(nwn.key, description);
+}
+
+public fun update_metadata_url(
+    nwn: &mut NetworkNode,
+    owner_cap: &OwnerCap<NetworkNode>,
+    url: String,
+) {
+    assert!(access::is_authorized(owner_cap, object::id(nwn)), ENetworkNodeNotAuthorized);
+    assert!(option::is_some(&nwn.metadata), EMetadataNotSet);
+    let metadata = option::borrow_mut(&mut nwn.metadata);
+    metadata.update_url(nwn.key, url);
+}
+
 // === View Functions ===
 /// Returns the list of connected assembly IDs
 public fun connected_assemblies(nwn: &NetworkNode): vector<ID> {
@@ -206,6 +242,31 @@ public(package) fun borrow_energy_source(nwn: &mut NetworkNode): &mut EnergySour
 
 public fun need_update(nwn: &NetworkNode, fuel_config: &FuelConfig, clock: &Clock): bool {
     nwn.fuel.need_update(fuel_config, clock)
+}
+
+public fun reveal_location(
+    nwn: &NetworkNode,
+    registry: &mut LocationRegistry,
+    admin_acl: &AdminACL,
+    solarsystem: u64,
+    x: String,
+    y: String,
+    z: String,
+    ctx: &TxContext,
+) {
+    admin_acl.verify_sponsor(ctx);
+    location::reveal_location(
+        registry,
+        object::id(nwn),
+        nwn.key,
+        nwn.type_id,
+        nwn.owner_cap_id,
+        location::hash(&nwn.location),
+        solarsystem,
+        x,
+        y,
+        z,
+    );
 }
 
 // === Admin Functions ===

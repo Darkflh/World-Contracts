@@ -16,15 +16,16 @@
 /// `get_target_priority_list` function in the extension package where that auth type is defined.
 module world::turret;
 
-use std::type_name::{Self, TypeName};
+use std::{string::String, type_name::{Self, TypeName}};
 use sui::{bcs, derived_object, event};
 use world::{
     access::{Self, OwnerCap, AdminACL},
     character::{Self, Character},
     energy::EnergyConfig,
+    extension_freeze,
     in_game_id::{Self, TenantItemId},
-    location::{Self, Location},
-    metadata::Metadata,
+    location::{Self, Location, LocationRegistry},
+    metadata::{Self, Metadata},
     network_node::{NetworkNode, UpdateEnergySources, OfflineAssemblies, HandleOrphanedAssemblies},
     object_registry::ObjectRegistry,
     status::{Self, AssemblyStatus}
@@ -49,6 +50,12 @@ const ETurretHasEnergySource: vector<u8> = b"Turret has an energy source";
 const EExtensionConfigured: vector<u8> = b"Extension is configured";
 #[error(code = 8)]
 const EInvalidOnlineReceipt: vector<u8> = b"Invalid online receipt";
+#[error(code = 9)]
+const EMetadataNotSet: vector<u8> = b"Metadata not set on assembly";
+#[error(code = 10)]
+const EExtensionConfigFrozen: vector<u8> = b"Extension configuration is frozen";
+#[error(code = 11)]
+const EExtensionNotConfigured: vector<u8> = b"Extension must be configured before freezing";
 
 // Priority weight increments applied by default rules (effective_weight_and_excluded)
 const STARTED_ATTACK_WEIGHT_INCREMENT: u64 = 10000;
@@ -74,10 +81,6 @@ public struct Turret has key {
     energy_source_id: Option<ID>,
     metadata: Option<Metadata>,
     extension: Option<TypeName>,
-    fire_rate_ms: u64,
-    last_fire_time_ms: u64,
-    locked_target_id: Option<u64>,
-    lock_time_ms: u64,
 }
 
 /// Target information struct
@@ -105,8 +108,6 @@ public struct TargetCandidate has copy, drop, store {
     priority_weight: u64,
     // One reason per candidate; game sends the single most relevant (e.g. STARTED_ATTACK over ENTERED when both apply).
     behaviour_change: BehaviourChangeReason,
-    // whether the turret has line of sight to this target
-    has_line_of_sight: bool,
 }
 
 /// Return Target info struct
@@ -144,16 +145,11 @@ public struct ExtensionAuthorizedEvent has copy, drop {
     owner_cap_id: ID,
 }
 
-public struct TargetLockedEvent has copy, drop {
-    turret_id: ID,
-    target_id: u64,
-    locked: bool,
-}
-
 // === Public Functions ===
 public fun authorize_extension<Auth: drop>(turret: &mut Turret, owner_cap: &OwnerCap<Turret>) {
     let turret_id = object::id(turret);
     assert!(access::is_authorized(owner_cap, turret_id), ETurretNotAuthorized);
+    assert!(!extension_freeze::is_extension_frozen(&turret.id), EExtensionConfigFrozen);
     let previous_extension = turret.extension;
     turret.extension.swap_or_fill(type_name::with_defining_ids<Auth>());
     event::emit(ExtensionAuthorizedEvent {
@@ -163,6 +159,16 @@ public fun authorize_extension<Auth: drop>(turret: &mut Turret, owner_cap: &Owne
         previous_extension,
         owner_cap_id: object::id(owner_cap),
     });
+}
+
+/// Freezes the turret's extension configuration so the owner can no longer change it (builds user trust).
+/// Requires an extension to be configured. One-time; cannot be undone.
+public fun freeze_extension_config(turret: &mut Turret, owner_cap: &OwnerCap<Turret>) {
+    let turret_id = object::id(turret);
+    assert!(access::is_authorized(owner_cap, turret_id), ETurretNotAuthorized);
+    assert!(option::is_some(&turret.extension), EExtensionNotConfigured);
+    assert!(!extension_freeze::is_extension_frozen(&turret.id), EExtensionConfigFrozen);
+    extension_freeze::freeze_extension_config(&mut turret.id, turret_id);
 }
 
 public fun online(
@@ -332,6 +338,58 @@ public fun peel_target_candidate(candidate_bytes: vector<u8>): TargetCandidate {
     peel_target_candidate_from_bcs(&mut bcs_data)
 }
 
+public fun update_metadata_name(turret: &mut Turret, owner_cap: &OwnerCap<Turret>, name: String) {
+    assert!(access::is_authorized(owner_cap, object::id(turret)), ETurretNotAuthorized);
+    assert!(option::is_some(&turret.metadata), EMetadataNotSet);
+    let metadata = option::borrow_mut(&mut turret.metadata);
+    metadata.update_name(turret.key, name);
+}
+
+public fun update_metadata_description(
+    turret: &mut Turret,
+    owner_cap: &OwnerCap<Turret>,
+    description: String,
+) {
+    assert!(access::is_authorized(owner_cap, object::id(turret)), ETurretNotAuthorized);
+    assert!(option::is_some(&turret.metadata), EMetadataNotSet);
+    let metadata = option::borrow_mut(&mut turret.metadata);
+    metadata.update_description(turret.key, description);
+}
+
+public fun update_metadata_url(turret: &mut Turret, owner_cap: &OwnerCap<Turret>, url: String) {
+    assert!(access::is_authorized(owner_cap, object::id(turret)), ETurretNotAuthorized);
+    assert!(option::is_some(&turret.metadata), EMetadataNotSet);
+    let metadata = option::borrow_mut(&mut turret.metadata);
+    metadata.update_url(turret.key, url);
+}
+
+/// Reveals plain-text location (solarsystem, x, y, z) for this turret. Admin ACL only. Optional; enables dapps (e.g. route maps).
+/// Temporary: use until the offchain location reveal service is ready.
+public fun reveal_location(
+    turret: &Turret,
+    registry: &mut LocationRegistry,
+    admin_acl: &AdminACL,
+    solarsystem: u64,
+    x: String,
+    y: String,
+    z: String,
+    ctx: &TxContext,
+) {
+    admin_acl.verify_sponsor(ctx);
+    location::reveal_location(
+        registry,
+        object::id(turret),
+        turret.key,
+        turret.type_id,
+        turret.owner_cap_id,
+        location::hash(&turret.location),
+        solarsystem,
+        x,
+        y,
+        z,
+    );
+}
+
 // === View Functions ===
 public fun status(turret: &Turret): &AssemblyStatus {
     &turret.status
@@ -362,6 +420,11 @@ public fun extension_type(turret: &Turret): TypeName {
 /// Returns true if the turret is configured with extension logic
 public fun is_extension_configured(turret: &Turret): bool {
     option::is_some(&turret.extension)
+}
+
+/// Returns true if the turret's extension configuration is frozen (owner cannot change extension).
+public fun is_extension_frozen(turret: &Turret): bool {
+    extension_freeze::is_extension_frozen(&turret.id)
 }
 
 public fun type_id(turret: &Turret): u64 {
@@ -412,123 +475,6 @@ public fun return_priority_weight(entry: &ReturnTargetPriorityList): u64 {
     entry.priority_weight
 }
 
-/// Returns whether the target has line of sight to the turret.
-public fun has_line_of_sight(candidate: &TargetCandidate): bool {
-    candidate.has_line_of_sight
-}
-
-/// Returns the turret's fire rate in milliseconds (time between shots).
-public fun fire_rate_ms(turret: &Turret): u64 {
-    turret.fire_rate_ms
-}
-
-/// Returns the turret's last fire time in milliseconds.
-public fun last_fire_time_ms(turret: &Turret): u64 {
-    turret.last_fire_time_ms
-}
-
-/// Checks if enough time has passed since the last fire for the next shot.
-/// current_time_ms: current game time in milliseconds
-public fun can_fire(turret: &Turret, current_time_ms: u64): bool {
-    let time_since_last_fire = if (current_time_ms > turret.last_fire_time_ms) {
-        current_time_ms - turret.last_fire_time_ms
-    } else {
-        0
-    };
-    time_since_last_fire >= turret.fire_rate_ms
-}
-
-/// Updates the turret's last fire time. Should be called when the turret fires.
-public fun update_last_fire_time(turret: &mut Turret, current_time_ms: u64) {
-    turret.last_fire_time_ms = current_time_ms;
-}
-
-/// Sets a new fire rate for the turret (in milliseconds).
-public fun set_fire_rate_ms(turret: &mut Turret, owner_cap: &OwnerCap<Turret>, new_fire_rate_ms: u64) {
-    let turret_id = object::id(turret);
-    assert!(access::is_authorized(owner_cap, turret_id), ETurretNotAuthorized);
-    turret.fire_rate_ms = new_fire_rate_ms;
-}
-
-/// Locks onto a target to improve accuracy. Resets lock time to 0.
-public fun lock_target(turret: &mut Turret, target_id: u64) {
-    turret.locked_target_id = option::some(target_id);
-    turret.lock_time_ms = 0;
-    event::emit(TargetLockedEvent {
-        turret_id: object::id(turret),
-        target_id,
-        locked: true,
-    });
-}
-
-/// Unlocks the current target.
-public fun unlock_target(turret: &mut Turret) {
-    let turret_id = object::id(turret);
-    let current_target = turret.locked_target_id;
-    turret.locked_target_id = option::none();
-    turret.lock_time_ms = 0;
-    
-    if (option::is_some(&current_target)) {
-        event::emit(TargetLockedEvent {
-            turret_id,
-            target_id: *option::borrow(&current_target),
-            locked: false,
-        });
-    };
-}
-
-/// Checks if turret has a locked target.
-public fun has_locked_target(turret: &Turret): bool {
-    option::is_some(&turret.locked_target_id)
-}
-
-/// Returns the locked target ID if any.
-public fun locked_target_id(turret: &Turret): Option<u64> {
-    turret.locked_target_id
-}
-
-/// Returns the current lock time in milliseconds.
-public fun lock_time_ms(turret: &Turret): u64 {
-    turret.lock_time_ms
-}
-
-/// Updates lock time when target is targeted. If target_id differs from locked target, breaks lock.
-public fun update_lock_time(turret: &mut Turret, current_time_ms: u64, target_id: u64) {
-    if (option::contains(&turret.locked_target_id, &target_id)) {
-        // Continue building lock time
-        if (current_time_ms > turret.lock_time_ms) {
-            turret.lock_time_ms = current_time_ms;
-        };
-    } else {
-        // Different target or no lock - break lock
-        turret.locked_target_id = option::none();
-        turret.lock_time_ms = 0;
-    };
-}
-
-/// Calculates accuracy bonus (0-100) based on lock duration.
-/// Full accuracy (100) at 5 seconds of sustained lock.
-public fun calculate_accuracy_bonus(turret: &Turret, current_time_ms: u64): u64 {
-    if (!has_locked_target(turret)) {
-        return 0
-    };
-    
-    let lock_duration = if (current_time_ms > turret.lock_time_ms) {
-        current_time_ms - turret.lock_time_ms
-    } else {
-        0
-    };
-    
-    // 5 seconds (5000ms) = 100% accuracy bonus
-    let max_lock_time: u64 = 5000;
-    if (lock_duration >= max_lock_time) {
-        return 100
-    };
-    
-    // Linear scaling: (lock_duration / max_lock_time) * 100
-    ((lock_duration * 100) / max_lock_time)
-}
-
 /// Constructs a ReturnTargetPriorityList entry (for extensions and tests).
 public fun new_return_target_priority_list(
     target_item_id: u64,
@@ -575,12 +521,16 @@ public fun anchor(
         status: status::anchor(turret_id, turret_key),
         location: location::attach(location_hash),
         energy_source_id: option::some(network_node_id),
-        metadata: option::none(),
+        metadata: std::option::some(
+            metadata::create_metadata(
+                turret_id,
+                turret_key,
+                b"".to_string(),
+                b"".to_string(),
+                b"".to_string(),
+            ),
+        ),
         extension: option::none(),
-        fire_rate_ms: 15000,
-        last_fire_time_ms: 0,
-        locked_target_id: option::none(),
-        lock_time_ms: 0,
     };
 
     network_node.connect_assembly(turret_id);
@@ -624,7 +574,7 @@ public fun unanchor(
 ) {
     admin_acl.verify_sponsor(ctx);
     let Turret {
-        id,
+        mut id,
         key,
         status,
         location,
@@ -648,6 +598,7 @@ public fun unanchor(
     status.unanchor(turret_id, key);
 
     // TODO: drop everything
+    extension_freeze::remove_frozen_marker_if_present(&mut id);
     location.remove();
     metadata.do!(|metadata| metadata.delete());
     let _ = option::destroy_with_default(energy_source_id, nwn_id);
@@ -657,7 +608,7 @@ public fun unanchor(
 public fun unanchor_orphan(turret: Turret, admin_acl: &AdminACL, ctx: &TxContext) {
     admin_acl.verify_sponsor(ctx);
     let Turret {
-        id,
+        mut id,
         key,
         status,
         location,
@@ -671,6 +622,7 @@ public fun unanchor_orphan(turret: Turret, admin_acl: &AdminACL, ctx: &TxContext
 
     let turret_id = object::uid_to_inner(&id);
     status.unanchor(turret_id, key);
+    extension_freeze::remove_frozen_marker_if_present(&mut id);
     location.remove();
     metadata.do!(|metadata| metadata.delete());
     id.delete();
@@ -721,7 +673,6 @@ fun peel_target_candidate_from_bcs(bcs_data: &mut bcs::BCS): TargetCandidate {
     let is_aggressor = bcs_data.peel_bool();
     let priority_weight = bcs_data.peel_u64();
     let behaviour_change = peel_behaviour_change_reason(bcs_data.peel_u8());
-    let has_line_of_sight = bcs_data.peel_bool();
     TargetCandidate {
         item_id,
         type_id,
@@ -734,7 +685,6 @@ fun peel_target_candidate_from_bcs(bcs_data: &mut bcs::BCS): TargetCandidate {
         is_aggressor,
         priority_weight,
         behaviour_change,
-        has_line_of_sight,
     }
 }
 
@@ -753,31 +703,30 @@ fun peel_return_target_priority_list_from_bcs(bcs_data: &mut bcs::BCS): ReturnTa
 }
 
 /// Default rules for turret to shoot:
-/// - No line of sight to target: exclude from the return list (cannot fire without sight)
-/// - Same tribe as owner: exclude from the return list (never target tribe members)
+/// - Owner (matching character_id): always exclude from the return list
+/// - Same tribe as owner and not aggressor: exclude from the return list
 /// - STOPPED_ATTACK (candidate's behaviour_change): exclude from the return list
 /// - STARTED_ATTACK: add STARTED_ATTACK_WEIGHT_INCREMENT to priority weight
-/// - ENTERED: add ENTERED_WEIGHT_INCREMENT to priority weight if not same tribe as owner
+/// - ENTERED: add ENTERED_WEIGHT_INCREMENT to priority weight if not same tribe as owner or is aggressor
 /// - UNSPECIFIED: no change to weight
 fun effective_weight_and_excluded(
     candidate: &TargetCandidate,
     owner_character: &Character,
 ): (u64, bool) {
-    // First check: no line of sight means target cannot be engaged
-    if (!candidate.has_line_of_sight) {
-        return (0, true)
-    };
-    
     let mut weight = candidate.priority_weight;
+    let owner_character_id = owner_character.key().item_id() as u32;
+    let is_owner = candidate.character_id != 0 && candidate.character_id == owner_character_id;
     let same_tribe = candidate.character_tribe == character::tribe(owner_character);
-    let mut excluded = same_tribe;
+    let mut excluded = is_owner || (same_tribe && !candidate.is_aggressor);
     let reason = candidate.behaviour_change;
     if (reason == BehaviourChangeReason::STOPPED_ATTACK) {
         excluded = true;
     } else if (reason == BehaviourChangeReason::STARTED_ATTACK) {
         weight = weight + STARTED_ATTACK_WEIGHT_INCREMENT;
     } else if (reason == BehaviourChangeReason::ENTERED) {
-        if (candidate.character_tribe != character::tribe(owner_character)) {
+        if (
+            candidate.character_tribe != character::tribe(owner_character) || candidate.is_aggressor == true
+        ) {
             weight = weight + ENTERED_WEIGHT_INCREMENT;
         }
     };
@@ -829,4 +778,9 @@ fun return_list_contains_id(list: &vector<ReturnTargetPriorityList>, search_key:
 #[test_only]
 public fun destroy_online_receipt_test(receipt: OnlineReceipt) {
     let OnlineReceipt { .. } = receipt;
+}
+
+#[test_only]
+public fun metadata(turret: &Turret): &Option<Metadata> {
+    &turret.metadata
 }

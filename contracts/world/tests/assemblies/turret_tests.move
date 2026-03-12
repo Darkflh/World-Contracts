@@ -9,7 +9,7 @@ use world::{
     energy::EnergyConfig,
     network_node::{Self, NetworkNode},
     object_registry::ObjectRegistry,
-    test_helpers::{Self, admin, governor, tenant, user_a},
+    test_helpers::{Self, admin, governor, tenant, user_a, user_b},
     turret::{Self, Turret, OnlineReceipt}
 };
 
@@ -295,6 +295,7 @@ fun anchor_turret_succeeds() {
         assert_eq!(turret.type_id(), TURRET_TYPE_ID);
         assert_eq!(turret.is_online(), false);
         assert_eq!(turret.is_extension_configured(), false);
+        assert_eq!(turret.metadata().is_some(), true);
         ts::return_shared(turret);
     };
     ts::end(ts);
@@ -373,6 +374,39 @@ fun authorize_extension_succeeds() {
     {
         let turret = ts::take_shared_by_id<Turret>(&ts, turret_id);
         assert_eq!(turret.is_extension_configured(), true);
+        ts::return_shared(turret);
+    };
+    ts::end(ts);
+}
+
+#[test]
+fun freeze_extension_config_succeeds() {
+    let mut ts = ts::begin(governor());
+    setup(&mut ts);
+
+    let character_id = create_character(&mut ts, user_a(), 201, 100);
+    let nwn_id = create_network_node(&mut ts, character_id);
+    let turret_id = create_turret(&mut ts, character_id, nwn_id, TURRET_ITEM_ID_1);
+
+    ts::next_tx(&mut ts, user_a());
+    {
+        let mut turret = ts::take_shared_by_id<Turret>(&ts, turret_id);
+        let mut character = ts::take_shared_by_id<Character>(&ts, character_id);
+        let (owner_cap, receipt) = character.borrow_owner_cap<Turret>(
+            ts::receiving_ticket_by_id<OwnerCap<Turret>>(turret.owner_cap_id()),
+            ts.ctx(),
+        );
+        turret.authorize_extension<TurretAuth>(&owner_cap);
+        turret.freeze_extension_config(&owner_cap);
+        character.return_owner_cap(owner_cap, receipt);
+        ts::return_shared(character);
+        ts::return_shared(turret);
+    };
+
+    ts::next_tx(&mut ts, user_a());
+    {
+        let turret = ts::take_shared_by_id<Turret>(&ts, turret_id);
+        assert_eq!(turret.is_extension_frozen(), true);
         ts::return_shared(turret);
     };
     ts::end(ts);
@@ -498,6 +532,52 @@ fun priority_list_without_extension_does_not_add_same_tribe() {
         let turret = ts::take_shared_by_id<Turret>(&ts, turret_id);
         let character = ts::take_shared_by_id<Character>(&ts, character_id);
         assert_eq!(character.tribe(), 100);
+        let receipt = turret.verify_online();
+        let result = turret.get_target_priority_list(
+            &character,
+            candidate_list_bytes,
+            receipt,
+        );
+        let decoded = turret::unpack_return_priority_list(result);
+        assert_eq!(vector::length(&decoded), 0);
+        ts::return_shared(character);
+        ts::return_shared(turret);
+    };
+    ts::end(ts);
+}
+
+#[test]
+fun priority_list_excludes_owner_by_character_id() {
+    let mut ts = ts::begin(governor());
+    setup(&mut ts);
+
+    // Owner has game_character_id 108 (create_character item_id).
+    let character_id = create_character(&mut ts, user_a(), 108, 100);
+    let nwn_id = create_network_node(&mut ts, character_id);
+    let turret_id = create_turret(&mut ts, character_id, nwn_id, TURRET_ITEM_ID_1);
+    bring_network_node_online(&mut ts, character_id, nwn_id);
+    bring_turret_online(&mut ts, character_id, turret_id, nwn_id);
+
+    // Single candidate: owner's ship (character_id 108). Would be included if not owner (different tribe 200, aggressor).
+    let candidate_list_bytes = candidate_list_bytes_from_target_candidate(
+        1,
+        1,
+        0,
+        108, // owner's game_character_id -> must be excluded
+        200,
+        80,
+        50,
+        30,
+        true,
+        10,
+        0,
+    );
+
+    ts::next_tx(&mut ts, user_a());
+    {
+        let turret = ts::take_shared_by_id<Turret>(&ts, turret_id);
+        let character = ts::take_shared_by_id<Character>(&ts, character_id);
+        assert_eq!(character.game_character_id(), 108);
         let receipt = turret.verify_online();
         let result = turret.get_target_priority_list(
             &character,
@@ -1091,6 +1171,147 @@ fun unanchor_orphan_fails_when_has_energy_source() {
         let turret = ts::take_shared_by_id<Turret>(&ts, turret_id);
         turret.unanchor_orphan(&admin_acl, ts.ctx());
         ts::return_shared(admin_acl);
+    };
+    ts::end(ts);
+}
+
+#[test]
+#[expected_failure(abort_code = turret::ETurretNotAuthorized)]
+fun test_update_metadata_turret_wrong_cap() {
+    let mut ts = ts::begin(governor());
+    setup(&mut ts);
+    let character_a_id = create_character(&mut ts, user_a(), 117, 100);
+    let character_b_id = create_character(&mut ts, user_b(), 118, 100);
+    let nwn_a_id = create_network_node(&mut ts, character_a_id);
+    let nwn_b_id = create_network_node_with_item_id(&mut ts, character_b_id, NWN_ITEM_ID_2);
+    let turret_a_id = create_turret(&mut ts, character_a_id, nwn_a_id, TURRET_ITEM_ID_1);
+    let turret_b_id = create_turret(&mut ts, character_b_id, nwn_b_id, TURRET_ITEM_ID_2);
+
+    ts::next_tx(&mut ts, user_b());
+    {
+        let mut turret_a = ts::take_shared_by_id<Turret>(&ts, turret_a_id);
+        let mut character_b = ts::take_shared_by_id<Character>(&ts, character_b_id);
+        let turret_b = ts::take_shared_by_id<Turret>(&ts, turret_b_id);
+        let (owner_cap_b, receipt) = character_b.borrow_owner_cap<Turret>(
+            ts::receiving_ticket_by_id<OwnerCap<Turret>>(turret_b.owner_cap_id()),
+            ts.ctx(),
+        );
+        turret_a.update_metadata_name(&owner_cap_b, utf8(b"X"));
+        character_b.return_owner_cap(owner_cap_b, receipt);
+        ts::return_shared(character_b);
+        ts::return_shared(turret_b);
+        ts::return_shared(turret_a);
+    };
+    ts::end(ts);
+}
+
+#[test]
+#[expected_failure(abort_code = turret::EExtensionConfigFrozen)]
+fun authorize_extension_fails_after_freeze() {
+    let mut ts = ts::begin(governor());
+    setup(&mut ts);
+
+    let character_id = create_character(&mut ts, user_a(), 202, 100);
+    let nwn_id = create_network_node(&mut ts, character_id);
+    let turret_id = create_turret(&mut ts, character_id, nwn_id, TURRET_ITEM_ID_1);
+
+    ts::next_tx(&mut ts, user_a());
+    {
+        let mut turret = ts::take_shared_by_id<Turret>(&ts, turret_id);
+        let mut character = ts::take_shared_by_id<Character>(&ts, character_id);
+        let (owner_cap, receipt) = character.borrow_owner_cap<Turret>(
+            ts::receiving_ticket_by_id<OwnerCap<Turret>>(turret.owner_cap_id()),
+            ts.ctx(),
+        );
+        turret.authorize_extension<TurretAuth>(&owner_cap);
+        turret.freeze_extension_config(&owner_cap);
+        character.return_owner_cap(owner_cap, receipt);
+        ts::return_shared(character);
+        ts::return_shared(turret);
+    };
+
+    ts::next_tx(&mut ts, user_a());
+    {
+        let mut turret = ts::take_shared_by_id<Turret>(&ts, turret_id);
+        let mut character = ts::take_shared_by_id<Character>(&ts, character_id);
+        let (owner_cap, receipt) = character.borrow_owner_cap<Turret>(
+            ts::receiving_ticket_by_id<OwnerCap<Turret>>(turret.owner_cap_id()),
+            ts.ctx(),
+        );
+        turret.authorize_extension<TurretAuth>(&owner_cap);
+        character.return_owner_cap(owner_cap, receipt);
+        ts::return_shared(character);
+        ts::return_shared(turret);
+    };
+    ts::end(ts);
+}
+
+#[test]
+#[expected_failure(abort_code = turret::EExtensionNotConfigured)]
+fun freeze_extension_config_fails_when_no_extension() {
+    let mut ts = ts::begin(governor());
+    setup(&mut ts);
+
+    let character_id = create_character(&mut ts, user_a(), 203, 100);
+    let nwn_id = create_network_node(&mut ts, character_id);
+    let turret_id = create_turret(&mut ts, character_id, nwn_id, TURRET_ITEM_ID_1);
+
+    ts::next_tx(&mut ts, user_a());
+    {
+        let mut turret = ts::take_shared_by_id<Turret>(&ts, turret_id);
+        let mut character = ts::take_shared_by_id<Character>(&ts, character_id);
+        let (owner_cap, receipt) = character.borrow_owner_cap<Turret>(
+            ts::receiving_ticket_by_id<OwnerCap<Turret>>(turret.owner_cap_id()),
+            ts.ctx(),
+        );
+        turret.freeze_extension_config(&owner_cap);
+        character.return_owner_cap(owner_cap, receipt);
+        ts::return_shared(character);
+        ts::return_shared(turret);
+    };
+    ts::end(ts);
+}
+
+#[test]
+#[expected_failure(abort_code = turret::ETurretNotAuthorized)]
+fun freeze_extension_config_fails_unauthorized() {
+    let mut ts = ts::begin(governor());
+    setup(&mut ts);
+
+    let character_a_id = create_character(&mut ts, user_a(), 204, 100);
+    let character_b_id = create_character(&mut ts, user_b(), 205, 101);
+    let nwn_id = create_network_node(&mut ts, character_a_id);
+    let turret_a_id = create_turret(&mut ts, character_a_id, nwn_id, TURRET_ITEM_ID_1);
+    let turret_b_id = create_turret(&mut ts, character_b_id, nwn_id, TURRET_ITEM_ID_2);
+
+    ts::next_tx(&mut ts, user_a());
+    {
+        let mut turret_a = ts::take_shared_by_id<Turret>(&ts, turret_a_id);
+        let mut character_a = ts::take_shared_by_id<Character>(&ts, character_a_id);
+        let (owner_cap_a, receipt_a) = character_a.borrow_owner_cap<Turret>(
+            ts::receiving_ticket_by_id<OwnerCap<Turret>>(turret_a.owner_cap_id()),
+            ts.ctx(),
+        );
+        turret_a.authorize_extension<TurretAuth>(&owner_cap_a);
+        character_a.return_owner_cap(owner_cap_a, receipt_a);
+        ts::return_shared(character_a);
+        ts::return_shared(turret_a);
+    };
+
+    ts::next_tx(&mut ts, user_b());
+    {
+        let mut turret_a = ts::take_shared_by_id<Turret>(&ts, turret_a_id);
+        let turret_b = ts::take_shared_by_id<Turret>(&ts, turret_b_id);
+        let mut character_b = ts::take_shared_by_id<Character>(&ts, character_b_id);
+        let (owner_cap_b, receipt_b) = character_b.borrow_owner_cap<Turret>(
+            ts::receiving_ticket_by_id<OwnerCap<Turret>>(turret_b.owner_cap_id()),
+            ts.ctx(),
+        );
+        turret_a.freeze_extension_config(&owner_cap_b);
+        character_b.return_owner_cap(owner_cap_b, receipt_b);
+        ts::return_shared(character_b);
+        ts::return_shared(turret_a);
+        ts::return_shared(turret_b);
     };
     ts::end(ts);
 }
