@@ -22,6 +22,7 @@
     "configure-fuel-energy": "tsx ts-scripts/network-node/configure-fuel-energy.ts",
     "configure-gate-distance": "tsx ts-scripts/gate/configure-distance.ts",
     "create-character": "tsx ts-scripts/character/create-character.ts",
+    "list-characters": "tsx ts-scripts/character/list-my-characters.ts",
     "create-nwn": "tsx ts-scripts/network-node/create-nwn.ts",
     "deposit-fuel": "tsx ts-scripts/network-node/deposit-fuel.ts",
     "online-nwn": "tsx ts-scripts/network-node/online-nwn.ts",

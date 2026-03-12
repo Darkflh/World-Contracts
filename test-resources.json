@@ -1,11 +1,11 @@
 {
-  "_comment": "Character: Dark III | Datacore: https://evedataco.re/explore/characters/0xdeff29e218f0fb85c014d2d10744c5b04c2d04be",
+  "_comment": "Character: Utopia Hackathon | Wallet: 0xc884e7b932836e0f1cdf5b7dad40ee296d47d7f8d5c131a72890c3fb0d5c9003",
   "locationHash": "0x16217de8ec7330ec3eac32831df5c9cd9b21a255756a5fd5762dd7f49f6cc049",
   "character": {
     "gameCharacterId": 2112072537,
     "gameCharacterBId": 900000001,
     "gameCharacterCId": 900000002,
-    "datacoreAddress": "0xdeff29e218f0fb85c014d2d10744c5b04c2d04be"
+    "datacoreAddress": "0xc884e7b932836e0f1cdf5b7dad40ee296d47d7f8d5c131a72890c3fb0d5c9003"
   },
   "networkNode": {
     "typeId": 555,

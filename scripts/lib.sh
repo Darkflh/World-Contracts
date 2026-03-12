@@ -15,8 +15,8 @@ get_env() {
     local env="${1:-${SUI_NETWORK:-localnet}}"
     [[ "$env" == "local" ]] && env="localnet"
     case "$env" in
-        localnet|testnet|mainnet|devnet) echo "$env" ;;
-        *) echo "Usage: $0 [localnet|testnet|mainnet|devnet]" >&2; exit 1 ;;
+        localnet|testnet|mainnet|devnet|utopia) echo "$env" ;;
+        *) echo "Usage: $0 [localnet|testnet|mainnet|devnet|utopia]" >&2; exit 1 ;;
     esac
 }
 
@@ -41,7 +41,11 @@ publish() {
     tmp=$(mktemp)
     trap "rm -f $tmp" RETURN
 
-    sui client switch --env "$env"
+    # For utopia, use testnet as the switch target but the RPC will use the environment variable
+    local switch_env="$env"
+    [[ "$env" == "utopia" ]] && switch_env="testnet"
+    
+    sui client switch --env "$switch_env"
 
     if [[ "$env" == "localnet" ]]; then
         if [[ -n "$localnet_pubfile" ]]; then

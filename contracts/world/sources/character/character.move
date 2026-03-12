@@ -129,7 +129,7 @@ public fun create_character(
     character_address: address,
     name: String,
     ctx: &mut TxContext,
-): Character {
+) {
     assert!(game_character_id != 0, EGameCharacterIdEmpty);
     assert!(tribe_id != 0, ETribeIdEmpty);
     assert!(character_address != @0x0, EAddressEmpty);
@@ -165,21 +165,23 @@ public fun create_character(
 
     access::transfer_owner_cap(owner_cap, object::id_address(&character));
 
+    // Transfer character to the player's wallet address
+    transfer::transfer(character, character_address);
+
     // Create a temporary PlayerProfile and transfer it to the player's wallet address (character_address)
     // so clients can query characters by wallet. TODO: Replace with Character OwnerCap-to-wallet flow.
     let player_profile = PlayerProfile {
         id: object::new(ctx),
-        character_id: object::id(&character),
+        character_id,
     };
     transfer::transfer(player_profile, character_address);
 
     event::emit(CharacterCreatedEvent {
-        character_id: object::id(&character),
+        character_id,
         key: character_key,
         tribe_id,
         character_address,
     });
-    character
 }
 
 // borrow owner cap from character
@@ -206,11 +208,6 @@ public fun return_owner_cap<T: key>(
     receipt: access::ReturnOwnerCapReceipt,
 ) {
     access::return_owner_cap_to_object(owner_cap, receipt, object::id_address(character));
-}
-
-public fun share_character(character: Character, admin_acl: &AdminACL, ctx: &TxContext) {
-    admin_acl.verify_sponsor(ctx);
-    transfer::share_object(character);
 }
 
 public fun update_tribe(

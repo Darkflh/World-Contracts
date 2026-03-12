@@ -62,7 +62,7 @@ async function createCharacter(
     }
 
     const tx = new Transaction();
-    const [character] = tx.moveCall({
+    tx.moveCall({
         target: `${config.packageId}::${MODULES.CHARACTER}::create_character`,
         arguments: [
             tx.object(config.objectRegistry),
@@ -73,11 +73,6 @@ async function createCharacter(
             tx.pure.address(characterAddress),
             tx.pure.string("frontier-character-a"),
         ],
-    });
-
-    tx.moveCall({
-        target: `${config.packageId}::${MODULES.CHARACTER}::share_character`,
-        arguments: [character, tx.object(adminAcl)],
     });
 
     const result = await client.signAndExecuteTransaction({

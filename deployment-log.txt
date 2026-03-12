@@ -1,0 +1,49 @@
+Lockfile is up to date, resolution step is skipped
+Already up to date
+
+Γò¡ Warning ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓò«
+Γöé                                                                              Γöé
+Γöé   Ignored build scripts: esbuild@0.27.2.                                     Γöé
+Γöé   Run "pnpm approve-builds" to pick which dependencies should be allowed     Γöé
+Γöé   to run scripts.                                                            Γöé
+Γöé                                                                              Γöé
+Γò░ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓò»
+Done in 990ms using pnpm v10.30.3
+
+> world-contracts@1.0.0 deploy-world C:\Users\james\sui-frontier\world-contracts
+> chmod +x ./scripts/deploy-world.sh && ./scripts/deploy-world.sh "testnet"
+
+
+> world-contracts@1.0.0 clean C:\Users\james\sui-frontier\world-contracts
+> rm -rf contracts/world/Published.toml contracts/extension_examples/Published.toml deployments/*
+
+--- pnpm i ---
+Lockfile is up to date, resolution step is skipped
+Already up to date
+
+Γò¡ Warning ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓò«
+Γöé                                                                              Γöé
+Γöé   Ignored build scripts: esbuild@0.27.2.                                     Γöé
+Γöé   Run "pnpm approve-builds" to pick which dependencies should be allowed     Γöé
+Γöé   to run scripts.                                                            Γöé
+Γöé                                                                              Γöé
+Γò░ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓò»
+Done in 961ms using pnpm v10.30.3
+--- sui client publish ---
+Active environment switched to [testnet]
+--- extract-object-ids ---
+C:\Users\james\sui-frontier\world-contracts\ts-scripts\utils\helper.ts:247
+    if (!id) throw new Error(`${label} not found`);
+                   ^
+
+Error: GovernorCap (owner 0x78ab156279190cfd8d293865c6e7a2ccb1e0cc8a3fb234190c43d076b7f1eb79) not found
+    at requireId (C:\Users\james\sui-frontier\world-contracts\ts-scripts\utils\helper.ts:247:20)
+    at extractWorldIds (C:\Users\james\sui-frontier\world-contracts\ts-scripts\utils\extract-object-ids.ts:48:22)
+    at main (C:\Users\james\sui-frontier\world-contracts\ts-scripts\utils\extract-object-ids.ts:125:19)
+    at <anonymous> (C:\Users\james\sui-frontier\world-contracts\ts-scripts\utils\extract-object-ids.ts:135:1)
+    at ModuleJob.run (node:internal/modules/esm/module_job:430:25)
+    at async node:internal/modules/esm/loader:639:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
+
+Node.js v25.8.0
+ΓÇëELIFECYCLEΓÇë Command failed with exit code 1.
